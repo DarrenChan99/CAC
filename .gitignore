@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+dist/
+
+# Vercel
+.vercel
+
+# Environment
+.env
+.env*.local
+
+# OS / editor
+.DS_Store
+*.pem
+*.tsbuildinfo
