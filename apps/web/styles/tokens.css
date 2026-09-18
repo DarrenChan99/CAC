@@ -1,0 +1,176 @@
+/* Caretaker design tokens — transcribed from "Caretaker Foundations.dc.html".
+   Palette: Forest & Paper. Nothing downstream should hardcode a hex. */
+
+@theme {
+  /* ---- Color ---- */
+  --color-bg: #faf8f2;
+  --color-surface: #ffffff;
+  --color-primary: #1e5b3c;
+  --color-primary-hover: #14422b;
+  --color-text: #1b2a21;
+  --color-muted: #44544a;
+  --color-tint: #e3ede2;
+  /* accent is DECORATIVE ONLY — rings, rules, swatches. Never a text color. */
+  --color-accent: #9dbf97;
+  --color-warn: #6a4300;
+  --color-warn-bg: #fbf1dc;
+
+  /* ---- Type families ---- */
+  --font-resident: var(--font-atkinson), system-ui, sans-serif;
+  --font-family-view: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* ---- Resident scale (Atkinson Hyperlegible) ----
+     Never below 28px. Hierarchy never relies on weight alone.
+     rem-based so the OS text-size setting scales layout with the text. */
+  --text-r-display: 3.5rem; /* 56 */
+  --text-r-display--line-height: 1.05;
+  --text-r-display--letter-spacing: -0.02em;
+  --text-r-display--font-weight: 700;
+
+  --text-r-h1: 3rem; /* 48 */
+  --text-r-h1--line-height: 1.1;
+  --text-r-h1--letter-spacing: -0.015em;
+  --text-r-h1--font-weight: 700;
+
+  --text-r-h2: 2.5rem; /* 40 */
+  --text-r-h2--line-height: 1.15;
+  --text-r-h2--letter-spacing: -0.01em;
+  --text-r-h2--font-weight: 700;
+
+  --text-r-lead: 2rem; /* 32 */
+  --text-r-lead--line-height: 1.35;
+
+  --text-r-body: 1.75rem; /* 28 — the floor */
+  --text-r-body--line-height: 1.45;
+
+  /* ---- Family scale (Inter) ---- */
+  --text-f-h1: 2rem; /* 32 */
+  --text-f-h1--line-height: 1.15;
+  --text-f-h1--letter-spacing: -0.02em;
+  --text-f-h1--font-weight: 700;
+
+  --text-f-h2: 1.5rem; /* 24 */
+  --text-f-h2--line-height: 1.2;
+  --text-f-h2--letter-spacing: -0.01em;
+  --text-f-h2--font-weight: 600;
+
+  --text-f-h3: 1.25rem; /* 20 */
+  --text-f-h3--line-height: 1.3;
+  --text-f-h3--font-weight: 600;
+
+  --text-f-body: 1rem; /* 16 */
+  --text-f-body--line-height: 1.55;
+
+  --text-f-small: 0.875rem; /* 14 */
+  --text-f-small--line-height: 1.45;
+
+  --text-f-label: 0.75rem; /* 12 — mono, uppercase */
+  --text-f-label--line-height: 1.3;
+  --text-f-label--letter-spacing: 0.12em;
+
+  /* ---- Radius ---- */
+  --radius-r: 16px;
+  --radius-f: 12px;
+
+  /* ---- Motion (see lib/motion.ts for the spring presets) ---- */
+  --ct-press: 100ms;
+}
+
+@layer base {
+  :root {
+    /* Minimum tap targets. Resident 72, family 44 — §4 of the spec. */
+    --target-resident: 72px;
+    --target-family: 44px;
+    /* Translucent chrome, family view only. */
+    --ct-chrome-bg: rgb(255 255 255 / 0.68);
+    --ct-chrome-blur: blur(20px) saturate(180%);
+    --ct-chrome-edge: rgb(255 255 255 / 0.5);
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus is never removed — both views are keyboard and switch reachable. */
+  :focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+}
+
+/* The only looping animation in the resident view: the active-speaker ring.
+   Always paired with the words "Talking now" so the cue is never colour-only. */
+@keyframes ct-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 6px rgb(157 191 151 / 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgb(157 191 151 / 0.22);
+  }
+}
+
+@keyframes ct-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.ct-pulse {
+  animation: ct-pulse 2.4s ease-in-out infinite;
+}
+
+.ct-dot {
+  animation: ct-dot 1.4s ease-in-out infinite;
+}
+
+/* ---- Accessibility preferences ----
+   Declared once here so every component inherits them. */
+
+/* Reduced motion means a gentler equivalent, not the absence of feedback:
+   cross-fades survive, vestibular motion and overshoot do not. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The ring stays — as a static ring, so "who is talking" is still legible. */
+  .ct-pulse {
+    animation: none !important;
+    box-shadow: 0 0 0 8px rgb(157 191 151 / 0.45);
+  }
+
+  .ct-dot {
+    animation: none !important;
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --ct-chrome-bg: #ffffff;
+    --ct-chrome-blur: none;
+    --ct-chrome-edge: var(--color-tint);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --ct-chrome-bg: #ffffff;
+    --ct-chrome-blur: none;
+    --color-muted: #2b3a31;
+  }
+}
