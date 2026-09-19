@@ -9,11 +9,13 @@ import { spring } from "@/lib/motion";
 const NAV = [
   { label: "Dashboard", href: "/family" },
   { label: "In call", href: "/family/call" },
+  { label: "Calls", href: "/family/calls" },
   { label: "Approvals", href: "/family/approvals", badge: "3" },
-  { label: "Family tree", href: null },
-  { label: "Memories", href: null },
-  { label: "Med notes", href: null },
-  { label: "News", href: null },
+  { label: "Family tree", href: "/family/tree" },
+  { label: "Memories", href: "/family/memories" },
+  { label: "Med notes", href: "/family/med-notes" },
+  { label: "News", href: "/family/news-settings" },
+  { label: "Settings", href: "/family/settings" },
 ] as const;
 
 export function FamilySidebar() {
@@ -38,19 +40,6 @@ export function FamilySidebar() {
       <nav className="flex flex-col gap-0.5">
         {NAV.map((item) => {
           const active = item.href === pathname;
-
-          if (!item.href) {
-            return (
-              <span
-                key={item.label}
-                title="Designed in a later session"
-                className="flex min-h-[44px] cursor-not-allowed items-center justify-between rounded-[12px] px-3 text-f-body text-muted/45"
-              >
-                {item.label}
-                <span className="font-mono text-f-label uppercase">soon</span>
-              </span>
-            );
-          }
 
           return (
             <Link

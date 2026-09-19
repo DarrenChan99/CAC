@@ -23,7 +23,7 @@ export default function FamilyDashboard() {
             Pine Ridge, room 12 · iPad online
           </p>
         </div>
-        <Link href="/family/call">
+        <Link href="/family/start-call">
           <Button variant="primary">Start call</Button>
         </Link>
       </header>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #EFEDE6; }
+  a { color: #1E5B3C; }
+  a:hover { color: #14422B; }
+</style>
+</helmet>
+
+<div style="font-family: Inter, system-ui, sans-serif; color: #1B2A21; padding: 48px; display: flex; flex-direction: column; gap: 48px; align-items: flex-start">
+
+  <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: -.02em">Session 7 — Content, safety, settings</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #44544A">F9 Memories · F9b No match · F10 Med notes · F11 News · F12 Privacy · F13 Settings — each 1440×900</div>
+  </div>
+
+  <!-- ===== F9 MEMORIES AND SEARCH ===== -->
+  <section data-screen-label="F9 Memories and search" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F9 · Memories and search — “Emily's graduation”</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navMem }}" as="n" hint-placeholder-count="8">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Memories</div>
+          <span style="font-size: 13px; color: #44544A">38 saved across 14 calls</span>
+        </header>
+
+        <div style="flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; gap: 10px; align-items: center">
+            <div style="flex: 1; min-width: 0; background: #FAF8F2; border: 2px solid #1E5B3C; border-radius: 12px; padding: 13px 16px; font-size: 16px; color: #1B2A21">Emily's graduation</div>
+            <button style="min-height: 44px; padding: 0 22px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; flex: none" style-hover="background: #14422B">Search</button>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+            <span style="font-size: 13px; color: #44544A">Searches meaning, not just words — “graduation” finds “passed her course” too.</span>
+            <div style="margin-left: auto; display: flex; gap: 8px">
+              <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+                <div style="min-height: 44px; display: flex; align-items: center; padding: 0 16px; border-radius: 12px; background: {{ f.bg }}; border: {{ f.borderWidth }} solid {{ f.border }}; color: {{ f.fg }}; font-size: 14px; font-weight: {{ f.weight }}; cursor: pointer">{{ f.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; box-sizing: border-box; overflow: hidden">
+          <div style="flex: none; font-size: 14px; color: #44544A">4 results · best match first</div>
+          <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; overflow-y: auto">
+            <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+              <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px 20px; display: flex; gap: 20px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                <div style="width: 76px; height: 76px; flex: none; border-radius: 12px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); display: grid; place-items: center">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #1E5B3C">photo</span>
+                </div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">{{ r.kind }}</span>
+                    <span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #E3EDE2; color: #1E5B3C">{{ r.score }}</span>
+                  </div>
+                  <div style="font-size: 18px; font-weight: 600; line-height: 1.35">{{ r.title }}</div>
+                  <div style="border-left: 2px solid #E3EDE2; padding: 2px 0 2px 14px; font-size: 15px; color: #44544A; line-height: 1.5">{{ r.quote }}</div>
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px">
+                    <span style="font-size: 13px; color: #44544A">Said by <strong style="color: #1B2A21">{{ r.who }}</strong></span>
+                    <span style="width: 4px; height: 4px; border-radius: 999px; background: #C9D6C6"></span>
+                    <span style="font-size: 13px; color: #44544A">{{ r.call }}</span>
+                    <span style="width: 4px; height: 4px; border-radius: 999px; background: #C9D6C6"></span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1E5B3C; font-weight: 500; text-decoration: underline">{{ r.at }}</span>
+                  </div>
+                </div>
+                <div style="width: 152px; flex: none; display: flex; flex-direction: column; gap: 8px; justify-content: center">
+                  <button style="min-height: 44px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Play moment</button>
+                  <div style="font-size: 12px; color: #44544A; text-align: center">{{ r.shown }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F9b NO MATCH ===== -->
+  <section data-screen-label="F9b No match" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F9b · Empty states — no match, and nothing saved yet</div>
+    <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap">
+
+      <div style="width: 708px; height: 440px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+        <header style="height: 56px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; padding: 0 20px; gap: 12px">
+          <div style="font-size: 16px; font-weight: 600">Memories</div>
+          <span style="font-size: 13px; color: #44544A">no match</span>
+        </header>
+        <div style="flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; padding: 16px 20px">
+          <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 12px 14px; font-size: 15px; color: #1B2A21">Wei's fishing trips</div>
+        </div>
+        <div style="flex: 1; min-height: 0; display: grid; place-items: center; padding: 24px; box-sizing: border-box">
+          <div style="max-width: 460px; display: flex; flex-direction: column; gap: 12px">
+            <div style="font-size: 19px; font-weight: 600; line-height: 1.3">Nothing about fishing trips yet</div>
+            <p style="margin: 0; font-size: 15px; color: #44544A; line-height: 1.55">We searched 14 call transcripts and 38 memories. Nobody has talked about this on a call.</p>
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+              <div style="font-size: 13px; color: #44544A">Closest things we did find</div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <span style="font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: #FAF8F2; border: 1px solid #E3EDE2; cursor: pointer">Wei's garden</span>
+                <span style="font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: #FAF8F2; border: 1px solid #E3EDE2; cursor: pointer">the river walk</span>
+                <span style="font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: #FAF8F2; border: 1px solid #E3EDE2; cursor: pointer">Wei, remembered</span>
+              </div>
+            </div>
+            <button style="min-height: 44px; padding: 0 20px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; align-self: flex-start" style-hover="background: #E3EDE2">Write this memory yourself</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 708px; height: 440px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+        <header style="height: 56px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; padding: 0 20px; gap: 12px">
+          <div style="font-size: 16px; font-weight: 600">Memories</div>
+          <span style="font-size: 13px; color: #44544A">nothing saved yet</span>
+        </header>
+        <div style="flex: 1; min-height: 0; display: grid; place-items: center; padding: 24px; box-sizing: border-box">
+          <div style="max-width: 440px; text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center">
+            <div style="width: 64px; height: 64px; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center">
+              <img src="assets/tile-icon.png" alt="" style="height: 34px; width: auto; display: block; opacity: .75" />
+            </div>
+            <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Memories come from your calls</div>
+            <p style="margin: 0; font-size: 15px; color: #44544A; line-height: 1.55">When someone shares news on a call, we draft a memory and hold it here until a family member approves it. Nothing is saved without approval.</p>
+            <button style="min-height: 44px; padding: 0 24px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Start a call</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F10 MED NOTES ===== -->
+  <section data-screen-label="F10 Med notes" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F10 · Med notes — never shown on the resident's iPad</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navMed }}" as="n" hint-placeholder-count="8">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Med notes</div>
+          <span style="font-size: 13px; color: #44544A">7 approved · 1 waiting</span>
+        </header>
+
+        <div style="flex: none; background: #FBF1DC; border-bottom: 1px solid #EADFC4; padding: 16px 24px; display: flex; align-items: flex-start; gap: 14px">
+          <div style="width: 36px; height: 36px; flex: none; border-radius: 999px; background: #FFFFFF; display: grid; place-items: center; font-size: 17px; font-weight: 700; color: #6A4300">!</div>
+          <div style="min-width: 0">
+            <div style="font-size: 15px; font-weight: 600; color: #6A4300">These are notes from your family — not medical instructions</div>
+            <div style="font-size: 14px; color: #6A4300; line-height: 1.5; margin-top: 3px">Written down from what someone said on a call. They are not checked by a nurse or doctor, and they never appear on Grandma's iPad. For anything clinical, speak to Pine Ridge staff.</div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; padding: 20px 24px; display: grid; grid-template-columns: 1fr 336px; gap: 20px; box-sizing: border-box; overflow: hidden">
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+            <div style="flex: none; display: flex; align-items: center; gap: 10px">
+              <div style="font-size: 16px; font-weight: 600">Approved notes</div>
+              <span style="font-size: 13px; color: #44544A">newest first</span>
+            </div>
+            <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow-y: auto">
+              <sc-for list="{{ medNotes }}" as="m" hint-placeholder-count="6">
+                <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px 18px; display: flex; gap: 18px; align-items: flex-start">
+                  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px">
+                    <div style="font-size: 16px; font-weight: 600; line-height: 1.35">{{ m.title }}</div>
+                    <div style="border-left: 2px solid #E3EDE2; padding: 2px 0 2px 12px; font-size: 14px; color: #44544A; line-height: 1.5">{{ m.quote }}</div>
+                    <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap">
+                      <span style="font-size: 13px; color: #44544A">Said by <strong style="color: #1B2A21">{{ m.who }}</strong></span>
+                      <span style="width: 4px; height: 4px; border-radius: 999px; background: #C9D6C6"></span>
+                      <span style="font-size: 13px; color: #44544A">{{ m.call }}</span>
+                      <span style="width: 4px; height: 4px; border-radius: 999px; background: #C9D6C6"></span>
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1E5B3C; text-decoration: underline; cursor: pointer">{{ m.at }}</span>
+                    </div>
+                  </div>
+                  <div style="width: 132px; flex: none; display: flex; flex-direction: column; gap: 6px; align-items: flex-end">
+                    <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E3EDE2; color: #1E5B3C">{{ m.status }}</span>
+                    <span style="font-size: 12px; color: #44544A; text-align: right">{{ m.approver }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+            <div style="background: #FBF1DC; border: 1px solid #EADFC4; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #6A4300">Waiting for approval</div>
+              <div style="font-size: 15px; font-weight: 600; color: #6A4300; line-height: 1.35">Blood pressure pill at 8 am</div>
+              <div style="font-size: 13px; color: #6A4300; line-height: 1.5">David · Sunday 14:07. Not saved to the list until a second family member approves it.</div>
+              <div style="display: flex; gap: 8px">
+                <button style="flex: 1; min-height: 44px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Approve</button>
+                <button style="min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #C9B98F; background: #FFFFFF; color: #6A4300; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Discard</button>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+              <div style="font-size: 15px; font-weight: 600">Who can see these</div>
+              <sc-for list="{{ medAccess }}" as="a" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 10px">
+                  <div style="width: 30px; height: 30px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 12px; font-weight: 600; color: #1E5B3C">{{ a.initial }}</div>
+                  <div style="min-width: 0">
+                    <div style="font-size: 14px; font-weight: 500">{{ a.name }}</div>
+                    <div style="font-size: 12px; color: #44544A">{{ a.role }}</div>
+                  </div>
+                  <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: {{ a.color }}">{{ a.state }}</span>
+                </div>
+              </sc-for>
+              <div style="font-size: 12px; color: #44544A; line-height: 1.5; border-top: 1px solid #E3EDE2; padding-top: 10px">Grandma Mei is not on this list. Med notes never render in the resident view.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F11 NEWS SETTINGS ===== -->
+  <section data-screen-label="F11 News settings" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F11 · News settings</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navNews }}" as="n" hint-placeholder-count="8">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">News</div>
+          <span style="font-size: 13px; color: #44544A">what reaches Grandma's iPad</span>
+          <button style="margin-left: auto; min-height: 44px; padding: 0 18px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Save</button>
+        </header>
+
+        <div style="flex: 1; min-height: 0; padding: 24px; display: grid; grid-template-columns: 1fr 396px; gap: 24px; box-sizing: border-box; overflow: hidden">
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+
+            <div style="background: #FFFFFF; border: 2px solid #1E5B3C; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 18px">
+              <div style="flex: 1; min-width: 0">
+                <div style="font-size: 17px; font-weight: 600">Show Family News on Grandma's iPad</div>
+                <div style="font-size: 14px; color: #44544A; line-height: 1.5; margin-top: 4px">When off, the news tile disappears from her home screen entirely. Family updates still show.</div>
+              </div>
+              <div style="width: 68px; height: 38px; flex: none; border-radius: 999px; background: #1E5B3C; padding: 4px; box-sizing: border-box; display: flex; justify-content: flex-end; cursor: pointer">
+                <div style="width: 30px; height: 30px; border-radius: 999px; background: #FFFFFF"></div>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div>
+                <div style="font-size: 16px; font-weight: 600">Feeds</div>
+                <div style="font-size: 13px; color: #44544A; margin-top: 3px">Three stories a day, chosen from the feeds you turn on.</div>
+              </div>
+              <sc-for list="{{ feeds }}" as="f" hint-placeholder-count="6">
+                <div style="background: {{ f.bg }}; border: 1px solid {{ f.border }}; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 16px">
+                  <div style="flex: 1; min-width: 0">
+                    <div style="font-size: 15px; font-weight: 600; color: {{ f.titleColor }}">{{ f.name }}</div>
+                    <div style="font-size: 13px; color: #44544A; margin-top: 2px">{{ f.note }}</div>
+                  </div>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #44544A; flex: none">{{ f.group }}</span>
+                  <div style="width: 58px; height: 32px; flex: none; border-radius: 999px; background: {{ f.trackBg }}; padding: 3px; box-sizing: border-box; display: flex; justify-content: {{ f.knobPos }}; cursor: pointer">
+                    <div style="width: 26px; height: 26px; border-radius: 999px; background: #FFFFFF"></div>
+                  </div>
+                </div>
+              </sc-for>
+              <button style="min-height: 44px; border-radius: 12px; border: 1px dashed #B9C4B5; background: #FAF8F2; color: #1E5B3C; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="border-color: #1E5B3C">Add a feed by web address</button>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; align-items: flex-start; gap: 18px">
+              <div style="flex: 1; min-width: 0">
+                <div style="font-size: 16px; font-weight: 600">Keep it gentle</div>
+                <div style="font-size: 14px; color: #44544A; line-height: 1.55; margin-top: 4px">Filters out violence, disasters, and death before anything reaches her screen. About one story in four is held back. You can see what was held back below.</div>
+              </div>
+              <div style="width: 68px; height: 38px; flex: none; border-radius: 999px; background: #1E5B3C; padding: 4px; box-sizing: border-box; display: flex; justify-content: flex-end; cursor: pointer">
+                <div style="width: 30px; height: 30px; border-radius: 999px; background: #FFFFFF"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+            <div style="flex: none; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+              <div style="font-size: 15px; font-weight: 600">Today on her iPad</div>
+              <sc-for list="{{ newsPreview }}" as="n" hint-placeholder-count="3">
+                <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">{{ n.source }}</span>
+                  <div style="font-size: 15px; font-weight: 600; line-height: 1.4">{{ n.head }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+              <div style="flex: none; font-size: 15px; font-weight: 600">Held back this week</div>
+              <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; overflow-y: auto">
+                <sc-for list="{{ heldBack }}" as="h" hint-placeholder-count="4">
+                  <div style="background: #F0F0EA; border-radius: 10px; padding: 11px 12px; display: flex; flex-direction: column; gap: 4px">
+                    <div style="font-size: 14px; color: #44544A; line-height: 1.4">{{ h.head }}</div>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: #44544A">held · {{ h.reason }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F12 PRIVACY AND DATA ===== -->
+  <section data-screen-label="F12 Privacy and data" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F12 · Privacy and data — with delete confirmation</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navPriv }}" as="n" hint-placeholder-count="8">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Privacy and data</div>
+          <span style="font-size: 13px; color: #44544A">Chen family</span>
+        </header>
+
+        <div style="flex: 1; min-height: 0; padding: 24px; display: grid; grid-template-columns: 1fr 396px; gap: 24px; box-sizing: border-box; overflow: hidden">
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div>
+                <div style="font-size: 16px; font-weight: 600">What each person has agreed to</div>
+                <div style="font-size: 13px; color: #44544A; margin-top: 3px">Everyone consents for themselves. Nobody can consent on another adult's behalf.</div>
+              </div>
+              <sc-for list="{{ consents }}" as="c" hint-placeholder-count="6">
+                <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px">
+                  <div style="width: 36px; height: 36px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 14px; font-weight: 600; color: #1E5B3C">{{ c.initial }}</div>
+                  <div style="min-width: 0; flex: 1">
+                    <div style="font-size: 15px; font-weight: 600">{{ c.name }}</div>
+                    <div style="font-size: 13px; color: #44544A">{{ c.detail }}</div>
+                  </div>
+                  <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: {{ c.pillBg }}; color: {{ c.pillFg }}; flex: none">{{ c.state }}</span>
+                  <span style="font-size: 13px; font-weight: 600; color: #1E5B3C; cursor: pointer; text-decoration: underline; flex: none">Manage</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; align-items: flex-start; gap: 18px">
+                <div style="flex: 1; min-width: 0">
+                  <div style="font-size: 16px; font-weight: 600">Keep call audio</div>
+                  <div style="font-size: 14px; color: #44544A; line-height: 1.55; margin-top: 4px">Off by default. We keep voiceprints — mathematical fingerprints that cannot be played back — and written transcripts, but no recordings of anyone's voice.</div>
+                </div>
+                <div style="width: 68px; height: 38px; flex: none; border-radius: 999px; background: #C9D6C6; padding: 4px; box-sizing: border-box; display: flex; justify-content: flex-start; cursor: pointer">
+                  <div style="width: 30px; height: 30px; border-radius: 999px; background: #FFFFFF"></div>
+                </div>
+              </div>
+              <div style="background: #FAF8F2; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #44544A; line-height: 1.5">If you turn this on, every adult on the call is asked again before the next call starts.</div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #EADFC4; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div style="font-size: 16px; font-weight: 600">Your own data</div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap">
+                <button style="min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Export everything</button>
+                <button style="min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #C9B98F; background: #FBF1DC; color: #6A4300; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #F6E8C8">Delete my voiceprint</button>
+                <button style="min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #C9B98F; background: #FBF1DC; color: #6A4300; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #F6E8C8">Delete all family data</button>
+              </div>
+              <div style="font-size: 13px; color: #44544A; line-height: 1.5">Export arrives as a folder of plain text transcripts and photos — readable without Caretaker.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+            <div style="background: #E3EDE2; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #1E5B3C">In plain words</div>
+              <sc-for list="{{ plain }}" as="p" hint-placeholder-count="4">
+                <div style="background: #FFFFFF; border-radius: 10px; padding: 13px 14px; font-size: 14px; line-height: 1.5; color: #1B2A21">{{ p.text }}</div>
+              </sc-for>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+              <div style="font-size: 15px; font-weight: 600">What we hold right now</div>
+              <sc-for list="{{ holdings }}" as="h" hint-placeholder-count="4">
+                <div style="display: flex; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F0F0EA">
+                  <span style="font-size: 14px; color: #44544A; flex: 1">{{ h.label }}</span>
+                  <span style="font-size: 15px; font-weight: 600">{{ h.value }}</span>
+                </div>
+              </sc-for>
+              <div style="font-size: 12px; color: #44544A; line-height: 1.5; padding-top: 4px">0 audio recordings — retention is off.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- confirmation overlay -->
+        <div style="position: absolute; inset: 0; background: rgba(27,42,33,.34); display: grid; place-items: center; padding: 24px; box-sizing: border-box">
+          <div style="width: 568px; background: #FFFFFF; border: 1px solid #DCE4D9; border-radius: 12px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 8px 32px rgba(27,42,33,.18)">
+            <div style="font-size: 24px; font-weight: 600; line-height: 1.25">Delete Ken's voiceprint?</div>
+            <div style="background: #FBF1DC; border: 1px solid #EADFC4; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+              <div style="font-size: 14px; font-weight: 600; color: #6A4300">This is what you lose</div>
+              <sc-for list="{{ lose }}" as="l" hint-placeholder-count="3">
+                <div style="display: flex; gap: 10px; align-items: flex-start">
+                  <span style="width: 7px; height: 7px; flex: none; border-radius: 999px; background: #6A4300; margin-top: 7px"></span>
+                  <span style="font-size: 14px; color: #6A4300; line-height: 1.5">{{ l.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+              <div style="font-size: 14px; font-weight: 600">This is what stays</div>
+              <div style="font-size: 14px; color: #44544A; line-height: 1.5">Your name in the family tree, your photo, the 11 memories you approved, and every transcript — the words are kept, only the voice matching stops.</div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end">
+              <button style="min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="border-color: #1E5B3C">Keep my voiceprint</button>
+              <button style="min-height: 44px; padding: 0 22px; border-radius: 12px; border: none; background: #6A4300; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #523400">Delete it</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F13 SETTINGS ===== -->
+  <section data-screen-label="F13 Settings" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F13 · Settings — people, invite, device pairing</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navSet }}" as="n" hint-placeholder-count="8">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Settings</div>
+          <span style="font-size: 13px; color: #44544A">Chen family · 6 members</span>
+        </header>
+
+        <div style="flex: 1; min-height: 0; padding: 24px; display: grid; grid-template-columns: 1fr 396px; gap: 24px; box-sizing: border-box; overflow: hidden">
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+            <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+              <div style="flex: none; display: flex; align-items: baseline; gap: 10px">
+                <div style="font-size: 16px; font-weight: 600">Family members</div>
+                <span style="font-size: 13px; color: #44544A">roles decide who can approve things</span>
+              </div>
+              <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow-y: auto">
+                <sc-for list="{{ members }}" as="m" hint-placeholder-count="6">
+                  <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px">
+                    <div style="width: 40px; height: 40px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 15px; font-weight: 600; color: #1E5B3C">{{ m.initial }}</div>
+                    <div style="min-width: 0; flex: 1">
+                      <div style="font-size: 15px; font-weight: 600">{{ m.name }}</div>
+                      <div style="font-size: 13px; color: #44544A">{{ m.rel }} · {{ m.voice }}</div>
+                    </div>
+                    <div style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E3EDE2; font-size: 14px; font-weight: 600; color: {{ m.roleColor }}; flex: none; cursor: pointer" style-hover="border-color: #1E5B3C">{{ m.role }}</div>
+                    <span style="font-size: 13px; font-weight: 600; color: #1E5B3C; cursor: pointer; text-decoration: underline; flex: none">Remove</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="flex: none; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+              <div>
+                <div style="font-size: 16px; font-weight: 600">Invite someone</div>
+                <div style="font-size: 13px; color: #44544A; margin-top: 3px">They pick their own name, then enrol their voice. Link expires in 7 days.</div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center">
+                <div style="flex: 1; min-width: 0; background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 12px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">caretaker.app/invite/chen-2h9x4</div>
+                <button style="min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; flex: none" style-hover="background: #14422B">Copy invite</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <div style="font-size: 16px; font-weight: 600">Grandma's iPad</div>
+              <div style="background: #E3EDE2; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px">
+                <div style="width: 44px; height: 44px; flex: none; border-radius: 10px; background: #FFFFFF; display: grid; place-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #1E5B3C">iPad</div>
+                <div style="min-width: 0">
+                  <div style="font-size: 15px; font-weight: 600">Paired · online</div>
+                  <div style="font-size: 13px; color: #44544A">Pine Ridge, room 12 · seen 4 minutes ago</div>
+                </div>
+              </div>
+              <sc-for list="{{ device }}" as="d" hint-placeholder-count="4">
+                <div style="display: flex; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F0F0EA">
+                  <span style="font-size: 14px; color: #44544A; flex: 1">{{ d.label }}</span>
+                  <span style="font-size: 14px; font-weight: 600">{{ d.value }}</span>
+                </div>
+              </sc-for>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Pair another device</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #C9B98F; background: #FBF1DC; color: #6A4300; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer" style-hover="background: #F6E8C8">Unpair</button>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+              <div style="font-size: 15px; font-weight: 600">What each role can do</div>
+              <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+                <div style="background: #FAF8F2; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+                  <div style="font-size: 14px; font-weight: 600; color: {{ r.color }}">{{ r.name }}</div>
+                  <div style="font-size: 13px; color: #44544A; line-height: 1.5">{{ r.can }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1540,&quot;height&quot;:5100}}">
+class Component extends DCLogic {
+  nav(active) {
+    return [
+      { label: "Dashboard" },
+      { label: "Calls" },
+      { label: "Approvals", badge: "3" },
+      { label: "Family tree" },
+      { label: "Memories" },
+      { label: "Med notes" },
+      { label: "News" },
+      { label: "Settings" }
+    ].map(n => {
+      const on = n.label === active;
+      return {
+        label: n.label,
+        badge: n.badge || false,
+        bg: on ? "#E3EDE2" : "transparent",
+        fg: on ? "#1E5B3C" : "#44544A",
+        weight: on ? 600 : 400
+      };
+    });
+  }
+
+  renderVals() {
+    const filters = [
+      { label: "Everything", on: true },
+      { label: "Memories", on: false },
+      { label: "Transcripts", on: false },
+      { label: "People", on: false }
+    ].map(f => ({
+      label: f.label,
+      bg: f.on ? "#E3EDE2" : "#FFFFFF",
+      border: f.on ? "#1E5B3C" : "#E3EDE2",
+      borderWidth: f.on ? "2px" : "1px",
+      fg: f.on ? "#1E5B3C" : "#44544A",
+      weight: f.on ? 600 : 400
+    }));
+
+    const feeds = [
+      { name: "Pine Ridge village notices", note: "bin days, fête, library hours", group: "local", on: true },
+      { name: "Yorkshire Post — local", note: "four stories a day", group: "local", on: true },
+      { name: "BBC News — world", note: "headlines only", group: "world", on: true },
+      { name: "Gardening Weekly", note: "her own pick", group: "local", on: true },
+      { name: "Financial Times", note: "markets and pensions", group: "finance", on: false },
+      { name: "World in Brief", note: "wire service, unfiltered", group: "world", on: false }
+    ].map(f => ({
+      name: f.name,
+      note: f.note,
+      group: f.group,
+      bg: f.on ? "#FAF8F2" : "#FFFFFF",
+      border: f.on ? "#E3EDE2" : "#F0F0EA",
+      titleColor: f.on ? "#1B2A21" : "#44544A",
+      trackBg: f.on ? "#1E5B3C" : "#C9D6C6",
+      knobPos: f.on ? "flex-end" : "flex-start"
+    }));
+
+    const results = [
+      {
+        kind: "Memory + transcript moment", score: "best match",
+        title: "Emily passed her nursing finals",
+        quote: "“Grandma, I finished my course — I qualify in June.”",
+        who: "Emily", call: "Sunday 2:14 pm", at: "5:48", shown: "shown to Mei twice"
+      },
+      {
+        kind: "Transcript moment", score: "close",
+        title: "Lisa describes the graduation ceremony",
+        quote: "“The ceremony's in Leeds, we'll bring photos for you.”",
+        who: "Lisa", call: "Sunday 2:14 pm", at: "6:20", shown: "not shown yet"
+      },
+      {
+        kind: "Memory", score: "related",
+        title: "Emily started her nursing course",
+        quote: "“She's at the hospital three days a week now.”",
+        who: "Lisa", call: "12 Aug 3:11 pm", at: "3:11", shown: "shown to Mei 4 times"
+      },
+      {
+        kind: "Transcript moment", score: "related",
+        title: "Mei asks about the course",
+        quote: "“Is Emily still at the hospital course?”",
+        who: "Mei", call: "12 Aug 3:11 pm", at: "2:40", shown: "—"
+      }
+    ];
+
+    const medNotes = [
+      { title: "Blood pressure pill at 8 am", quote: "“Don't forget the blood pressure pill at eight, Ma.”", who: "David", call: "Sunday", at: "14:07", status: "approved", approver: "by Lisa, Sunday" },
+      { title: "Physio exercises twice a week", quote: "“The physio said twice a week, Tuesdays and Fridays.”", who: "Lisa", call: "12 Aug", at: "8:12", status: "approved", approver: "by Ken, 12 Aug" },
+      { title: "Hearing aid battery needs changing", quote: "“She said the left one keeps cutting out.”", who: "Ken", call: "12 Aug", at: "19:30", status: "approved", approver: "by David, 13 Aug" },
+      { title: "Prefers the morning appointments", quote: "“Ma gets tired after lunch, ask for mornings.”", who: "Lisa", call: "3 Jul", at: "11:55", status: "approved", approver: "by David, 3 Jul" },
+      { title: "Allergic to penicillin — she reminded us", quote: "“They know at the home, but write it down anyway.”", who: "Mei", call: "3 Jul", at: "12:20", status: "approved", approver: "by Lisa, 3 Jul" },
+      { title: "New reading glasses ordered", quote: "“The optician's sending them to the home.”", who: "Lisa", call: "24 Jun", at: "5:02", status: "approved", approver: "by Ken, 24 Jun" }
+    ];
+
+    const consents = [
+      { initial: "K", name: "Ken Chen", detail: "voiceprint · transcripts · 14 Mar 2026", state: "all given", ok: true },
+      { initial: "L", name: "Lisa Chen", detail: "voiceprint · transcripts · 2 Jan 2026", state: "all given", ok: true },
+      { initial: "D", name: "David Chen", detail: "voiceprint · transcripts · 2 Jan 2026", state: "all given", ok: true },
+      { initial: "E", name: "Emily Chen", detail: "voiceprint needs renewing · 14 Mar 2024", state: "renew", warn: true },
+      { initial: "K", name: "Karen Chen", detail: "transcripts only — declined voiceprint", state: "partial", warn: true },
+      { initial: "M", name: "Mei Chen", detail: "given with Lisa present · 2 Jan 2026", state: "all given", ok: true }
+    ].map(c => ({
+      initial: c.initial,
+      name: c.name,
+      detail: c.detail,
+      state: c.state,
+      pillBg: c.warn ? "#FBF1DC" : "#E3EDE2",
+      pillFg: c.warn ? "#6A4300" : "#1E5B3C"
+    }));
+
+    const members = [
+      { initial: "L", name: "Lisa Chen", rel: "daughter", voice: "enrolled", role: "Organiser" },
+      { initial: "D", name: "David Chen", rel: "son", voice: "enrolled", role: "Organiser" },
+      { initial: "K", name: "Ken Chen", rel: "grandson", voice: "enrolled", role: "Organiser" },
+      { initial: "E", name: "Emily Chen", rel: "granddaughter", voice: "needs re-enrolment", role: "Member" },
+      { initial: "J", name: "Jason Chen", rel: "grandson", voice: "enrolled", role: "Member" },
+      { initial: "K", name: "Karen Chen", rel: "daughter-in-law", voice: "not enrolled", role: "Viewer" }
+    ].map(m => ({
+      ...m,
+      roleColor: m.role === "Organiser" ? "#1E5B3C" : "#44544A"
+    }));
+
+    return {
+      navMem: this.nav("Memories"),
+      navMed: this.nav("Med notes"),
+      navNews: this.nav("News"),
+      navPriv: this.nav("Settings"),
+      navSet: this.nav("Settings"),
+      filters,
+      results,
+      medNotes,
+      feeds,
+      consents,
+      members,
+      medAccess: [
+        { initial: "L", name: "Lisa Chen", role: "daughter · organiser", state: "can approve", color: "#1E5B3C" },
+        { initial: "D", name: "David Chen", role: "son · organiser", state: "can approve", color: "#1E5B3C" },
+        { initial: "K", name: "Ken Chen", role: "grandson · organiser", state: "can approve", color: "#1E5B3C" },
+        { initial: "E", name: "Emily Chen", role: "granddaughter · member", state: "can read", color: "#44544A" }
+      ],
+      newsPreview: [
+        { source: "Pine Ridge notices", head: "The village fête moves to the green this Saturday" },
+        { source: "Yorkshire Post", head: "Rose garden by the river reopens after repairs" },
+        { source: "BBC News", head: "Long-range forecast: a mild week across the north" }
+      ],
+      heldBack: [
+        { head: "Three injured in town centre collision", reason: "violence" },
+        { head: "Care home closure leaves 40 residents moving", reason: "distressing" },
+        { head: "Obituary: local headmaster, 88", reason: "death" },
+        { head: "Flooding warning issued for the valley", reason: "disaster" }
+      ],
+      plain: [
+        { text: "We keep a voiceprint — a set of numbers. It cannot be turned back into your voice." },
+        { text: "We keep the words people said, written down, so Grandma can read who said what." },
+        { text: "We do not keep recordings unless your family turns that on. It is off." },
+        { text: "Anyone can delete their own voiceprint without asking the others." }
+      ],
+      holdings: [
+        { label: "Voiceprints", value: "5 people" },
+        { label: "Transcripts", value: "14 calls" },
+        { label: "Photos", value: "23" },
+        { label: "Audio recordings", value: "none" }
+      ],
+      lose: [
+        { text: "Grandma will see “Someone new” instead of “Ken, your grandson” when you speak." },
+        { text: "Your name stops appearing on new transcripts from the moment you delete." },
+        { text: "You would need ninety seconds of re-enrolment to get it back." }
+      ],
+      device: [
+        { label: "Screen", value: "always on, 6 am–9 pm" },
+        { label: "Volume", value: "set by staff" },
+        { label: "Family News tile", value: "showing" },
+        { label: "Med notes", value: "never shown" }
+      ],
+      roles: [
+        { name: "Organiser", can: "Approve memories, med notes, and tree edits. Invite and remove people. Pair devices.", color: "#1E5B3C" },
+        { name: "Member", can: "Join calls, add memories for approval, edit their own profile and voiceprint.", color: "#1B2A21" },
+        { name: "Viewer", can: "Join calls only. Cannot approve anything or see med notes.", color: "#44544A" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

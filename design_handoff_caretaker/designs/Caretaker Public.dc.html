@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #EFEDE6; }
+  a { color: #1E5B3C; }
+  a:hover { color: #14422B; }
+</style>
+</helmet>
+
+<div style="font-family: Inter, system-ui, sans-serif; color: #1B2A21; padding: 48px; display: flex; flex-direction: column; gap: 48px; align-items: flex-start">
+
+  <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: -.02em">Session 8 — Public landing</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #44544A">P1 · 1440×900 fold + demo/privacy · 390×844 mobile — Instrument Serif display, Inter body</div>
+  </div>
+
+  <!-- ===== P1 DESKTOP FOLD ===== -->
+  <section data-screen-label="P1 Landing fold" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">P1 · Landing — above the fold</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #14422B; border-radius: 12px; overflow: hidden; position: relative; display: flex; flex-direction: column">
+
+      <div style="position: absolute; right: -160px; top: -120px; width: 720px; height: 720px; border-radius: 999px; background: radial-gradient(closest-side, rgba(157,191,151,.22), transparent)"></div>
+
+      <header style="flex: none; height: 88px; display: flex; align-items: center; gap: 16px; padding: 0 56px; position: relative">
+        <img src="assets/tile-icon.png" alt="Caretaker" style="height: 40px; width: auto; display: block; flex: none" />
+        <div style="font-size: 19px; font-weight: 600; color: #FAF8F2; letter-spacing: -.01em">Caretaker</div>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 28px">
+          <span style="font-size: 15px; color: #C9D6C6; cursor: pointer">How it works</span>
+          <span style="font-size: 15px; color: #C9D6C6; cursor: pointer">Privacy</span>
+          <span style="font-size: 15px; color: #C9D6C6; cursor: pointer">For care homes</span>
+          <div style="min-height: 44px; display: flex; align-items: center; padding: 0 22px; border-radius: 12px; background: #FAF8F2; color: #14422B; font-size: 15px; font-weight: 600; cursor: pointer">Try the demo</div>
+        </div>
+      </header>
+
+      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 560px; gap: 56px; padding: 0 56px 56px; box-sizing: border-box; align-items: center; position: relative">
+
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: 28px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #C9D6C6">Video calls for people who forget faces</div>
+
+          <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 82px; line-height: 1.02; letter-spacing: -.02em; color: #FAF8F2">
+            Caretaker puts a name<br />on every voice.
+          </div>
+
+          <div style="max-width: 560px; display: flex; flex-direction: column; gap: 16px">
+            <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #E3EDE2">Four people crowd around one laptop. Everybody talks at once, everybody leans in. And to Grandma, a voice is just a voice.</p>
+            <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #FAF8F2; font-weight: 500">So we label it. As each person speaks, her screen says who they are and how they're related — in letters she can read from her chair.</p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+            <div style="min-height: 56px; display: flex; align-items: center; padding: 0 30px; border-radius: 14px; background: #FAF8F2; color: #14422B; font-size: 17px; font-weight: 600; cursor: pointer">Try the demo</div>
+            <div style="min-height: 56px; display: flex; align-items: center; padding: 0 26px; border-radius: 14px; border: 1px solid rgba(250,248,242,.36); color: #FAF8F2; font-size: 17px; font-weight: 500; cursor: pointer">Watch a call, 90 seconds</div>
+          </div>
+
+          <div style="font-size: 15px; color: #C9D6C6; line-height: 1.6; max-width: 520px">No app for her to learn. Her iPad rings, she taps the big green button, and the rest is your job — not hers.</div>
+        </div>
+
+        <!-- resident-view still -->
+        <div style="width: 560px; flex: none; position: relative">
+          <div style="width: 560px; height: 420px; box-sizing: border-box; background: #1B2A21; border: 10px solid #0E1A13; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 64px rgba(0,0,0,.34)">
+            <div style="flex: 1; min-height: 0; background: #223026 repeating-linear-gradient(135deg, rgba(157,191,151,.07) 0 12px, transparent 12px 24px); position: relative; display: flex; align-items: flex-end; padding: 22px">
+              <div style="background: rgba(250,248,242,.96); border-radius: 16px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; max-width: 420px">
+                <div style="width: 60px; height: 60px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 24px; font-weight: 700; color: #1E5B3C">L</div>
+                <div style="min-width: 0">
+                  <div style="font-size: 30px; font-weight: 700; line-height: 1.1; color: #1B2A21">Lisa</div>
+                  <div style="font-size: 22px; color: #44544A; line-height: 1.2">your daughter</div>
+                </div>
+              </div>
+              <div style="position: absolute; top: 20px; right: 20px; display: flex; align-items: center; gap: 9px; background: rgba(27,42,33,.72); border-radius: 999px; padding: 9px 16px">
+                <span style="width: 10px; height: 10px; border-radius: 999px; background: #9DBF97"></span>
+                <span style="font-size: 15px; font-weight: 600; color: #FAF8F2">Lisa is talking</span>
+              </div>
+            </div>
+            <div style="flex: none; background: #FAF8F2; padding: 16px 22px; display: flex; align-items: center; gap: 14px">
+              <div style="flex: 1; min-width: 0; font-size: 21px; line-height: 1.35; color: #1B2A21">“Ma, can you see all of us? Ken's squeezed in on the end.”</div>
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #C9D6C6; text-align: right">What Grandma sees · real screen, not a mockup</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== P1b DESKTOP DEMO + PRIVACY ===== -->
+  <section data-screen-label="P1b Landing demo" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">P1b · Landing — two-view switcher and the privacy line</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; padding: 48px 56px; display: flex; flex-direction: column; gap: 28px">
+
+      <div style="flex: none; display: flex; align-items: flex-end; gap: 32px; flex-wrap: wrap">
+        <div style="min-width: 0">
+          <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 52px; line-height: 1.05; letter-spacing: -.02em">Two screens, one call.</div>
+          <div style="font-size: 18px; color: #44544A; line-height: 1.6; margin-top: 10px; max-width: 620px">Her side is built for ten-foot reading and one tap. Your side is built for a laptop at the kitchen table. Same conversation, entirely different job.</div>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 8px; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 14px; padding: 6px">
+          <div style="min-height: 48px; display: flex; align-items: center; padding: 0 22px; border-radius: 10px; background: #1E5B3C; color: #FFFFFF; font-size: 16px; font-weight: 600; cursor: pointer">See what Grandma sees</div>
+          <div style="min-height: 48px; display: flex; align-items: center; padding: 0 22px; border-radius: 10px; color: #44544A; font-size: 16px; font-weight: 500; cursor: pointer" style-hover="background: #FAF8F2">What the family sees</div>
+        </div>
+      </div>
+
+      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="flex: none; display: flex; align-items: baseline; gap: 10px">
+            <div style="font-size: 17px; font-weight: 600">Her iPad</div>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">28px floor · one tap · no icons without words</span>
+          </div>
+          <div style="flex: 1; min-height: 0; background: #1B2A21; border: 8px solid #0E1A13; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+            <div style="flex: 1; min-height: 0; background: #223026 repeating-linear-gradient(135deg, rgba(157,191,151,.07) 0 12px, transparent 12px 24px); padding: 18px; display: flex; flex-direction: column; justify-content: space-between">
+              <div style="align-self: flex-end; display: flex; align-items: center; gap: 8px; background: rgba(27,42,33,.72); border-radius: 999px; padding: 8px 14px">
+                <span style="width: 9px; height: 9px; border-radius: 999px; background: #9DBF97"></span>
+                <span style="font-size: 14px; font-weight: 600; color: #FAF8F2">Emily is talking</span>
+              </div>
+              <div style="background: rgba(250,248,242,.96); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px">
+                <div style="width: 52px; height: 52px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 21px; font-weight: 700; color: #1E5B3C">E</div>
+                <div style="min-width: 0">
+                  <div style="font-size: 28px; font-weight: 700; line-height: 1.1">Emily</div>
+                  <div style="font-size: 20px; color: #44544A; line-height: 1.2">your granddaughter</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex: none; background: #FAF8F2; padding: 14px 18px; font-size: 19px; line-height: 1.35">“Grandma, I passed my driving test on Thursday!”</div>
+          </div>
+        </div>
+
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="flex: none; display: flex; align-items: baseline; gap: 10px">
+            <div style="font-size: 17px; font-weight: 600">Your laptop</div>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">named transcript · corrections · what got captured</span>
+          </div>
+          <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #DCE4D9; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+            <div style="flex: none; height: 44px; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 10px; padding: 0 16px">
+              <span style="font-size: 13px; font-weight: 600">Sunday 2:14 pm</span>
+              <span style="font-size: 12px; color: #44544A">5 people · 31 min</span>
+            </div>
+            <div style="flex: 1; min-height: 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 9px; overflow: hidden">
+              <sc-for list="{{ demoLines }}" as="l" hint-placeholder-count="5">
+                <div style="display: flex; gap: 10px; align-items: flex-start">
+                  <div style="width: 30px; height: 30px; flex: none; border-radius: 999px; background: {{ l.avBg }}; border: 1px {{ l.avStyle }} {{ l.avBorder }}; display: grid; place-items: center; font-size: 12px; font-weight: 600; color: #1E5B3C">{{ l.initial }}</div>
+                  <div style="flex: 1; min-width: 0; background: {{ l.bg }}; border: 1px {{ l.borderStyle }} {{ l.border }}; border-radius: 10px; padding: 9px 12px">
+                    <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px">
+                      <span style="font-size: 12px; font-weight: 600; color: {{ l.nameColor }}">{{ l.name }}</span>
+                      <sc-if value="{{ l.flag }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px; background: {{ l.flagBg }}; color: {{ l.flagFg }}">{{ l.flag }}</span>
+                      </sc-if>
+                    </div>
+                    <div style="font-size: 13px; line-height: 1.45; color: #1B2A21">{{ l.text }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="flex: none; border-top: 1px solid #E3EDE2; background: #FAF8F2; padding: 12px 16px; display: flex; align-items: center; gap: 10px">
+              <span style="font-size: 12px; font-weight: 600; color: #44544A">Captured</span>
+              <span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #E3EDE2; color: #1E5B3C">1 memory</span>
+              <span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #FBF1DC; color: #6A4300">1 med note</span>
+              <span style="margin-left: auto; font-size: 12px; color: #44544A">nothing saved without your approval</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex: none; background: #E3EDE2; border-radius: 14px; padding: 24px 28px; display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: start">
+        <div>
+          <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; line-height: 1.1; letter-spacing: -.01em">A voiceprint, not a recording.</div>
+          <div style="font-size: 14px; color: #44544A; line-height: 1.55; margin-top: 8px">Read the whole policy — it is two pages, in plain words.</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px">
+          <sc-for list="{{ privacy }}" as="p" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: 7px">
+              <div style="font-size: 16px; font-weight: 600; color: #1E5B3C">{{ p.title }}</div>
+              <div style="font-size: 14px; color: #1B2A21; line-height: 1.55">{{ p.body }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== P1 MOBILE ===== -->
+  <section data-screen-label="P1 Landing mobile" style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">P1 mobile · 390×844 — fold, switcher, privacy</div>
+    <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap">
+
+      <div style="width: 390px; height: 844px; flex: none; box-sizing: border-box; background: #14422B; border-radius: 26px; overflow: hidden; position: relative; display: flex; flex-direction: column">
+        <div style="position: absolute; right: -80px; top: -60px; width: 320px; height: 320px; border-radius: 999px; background: radial-gradient(closest-side, rgba(157,191,151,.22), transparent)"></div>
+        <div style="flex: none; height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 12px; font-weight: 600; color: #FAF8F2; position: relative">
+          <span>9:41</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; letter-spacing: .06em">5G ▪ 100%</span>
+        </div>
+        <div style="flex: none; height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 22px; position: relative">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 30px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 600; color: #FAF8F2">Caretaker</div>
+          <div style="margin-left: auto; min-height: 44px; display: flex; align-items: center; padding: 0 16px; border-radius: 10px; border: 1px solid rgba(250,248,242,.36); color: #FAF8F2; font-size: 14px; font-weight: 600">Menu</div>
+        </div>
+        <div style="flex: 1; min-height: 0; padding: 12px 22px 22px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #C9D6C6">Video calls for people who forget faces</div>
+          <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 46px; line-height: 1.04; letter-spacing: -.02em; color: #FAF8F2">Caretaker puts a name on every voice.</div>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #E3EDE2">Four people crowd around one laptop, everybody talks at once. To Grandma, a voice is just a voice — so we label it as it happens.</p>
+
+          <div style="background: #1B2A21; border: 6px solid #0E1A13; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+            <div style="height: 156px; flex: none; background: #223026 repeating-linear-gradient(135deg, rgba(157,191,151,.07) 0 10px, transparent 10px 20px); display: flex; align-items: flex-end; padding: 12px">
+              <div style="background: rgba(250,248,242,.96); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                <div style="width: 40px; height: 40px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 17px; font-weight: 700; color: #1E5B3C">L</div>
+                <div>
+                  <div style="font-size: 20px; font-weight: 700; line-height: 1.1">Lisa</div>
+                  <div style="font-size: 15px; color: #44544A; line-height: 1.2">your daughter</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex: none; background: #FAF8F2; padding: 11px 13px; font-size: 14px; line-height: 1.4">“Ma, can you see all of us?”</div>
+          </div>
+
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px">
+            <div style="min-height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 13px; background: #FAF8F2; color: #14422B; font-size: 16px; font-weight: 600">Try the demo</div>
+            <div style="min-height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 13px; border: 1px solid rgba(250,248,242,.36); color: #FAF8F2; font-size: 16px; font-weight: 500">Watch a call, 90 seconds</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 390px; height: 844px; flex: none; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 26px; overflow: hidden; display: flex; flex-direction: column">
+        <div style="flex: none; height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 12px; font-weight: 600; color: #1B2A21">
+          <span>9:41</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; letter-spacing: .06em">5G ▪ 100%</span>
+        </div>
+        <div style="flex: 1; min-height: 0; padding: 12px 22px 22px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto">
+          <div style="flex: none; font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; line-height: 1.06; letter-spacing: -.02em">Two screens, one call.</div>
+
+          <div style="display: flex; gap: 6px; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 5px">
+            <div style="flex: 1; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 9px; background: #1E5B3C; color: #FFFFFF; font-size: 14px; font-weight: 600; text-align: center">Grandma's view</div>
+            <div style="flex: 1; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 9px; color: #44544A; font-size: 14px; font-weight: 500; text-align: center">Family view</div>
+          </div>
+
+          <div style="flex: none; background: #1B2A21; border: 6px solid #0E1A13; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+            <div style="height: 168px; flex: none; background: #223026 repeating-linear-gradient(135deg, rgba(157,191,151,.07) 0 10px, transparent 10px 20px); padding: 12px; display: flex; flex-direction: column; justify-content: space-between">
+              <div style="align-self: flex-end; display: flex; align-items: center; gap: 7px; background: rgba(27,42,33,.72); border-radius: 999px; padding: 6px 11px">
+                <span style="width: 8px; height: 8px; border-radius: 999px; background: #9DBF97"></span>
+                <span style="font-size: 12px; font-weight: 600; color: #FAF8F2">Emily is talking</span>
+              </div>
+              <div style="background: rgba(250,248,242,.96); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                <div style="width: 40px; height: 40px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 17px; font-weight: 700; color: #1E5B3C">E</div>
+                <div>
+                  <div style="font-size: 20px; font-weight: 700; line-height: 1.1">Emily</div>
+                  <div style="font-size: 15px; color: #44544A; line-height: 1.2">your granddaughter</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex: none; background: #FAF8F2; padding: 11px 13px; font-size: 14px; line-height: 1.4">“Grandma, I passed my driving test!”</div>
+          </div>
+
+          <div style="flex: none; margin-top: auto; background: #E3EDE2; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+            <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.12">A voiceprint, not a recording.</div>
+            <sc-for list="{{ privacy }}" as="p" hint-placeholder-count="3">
+              <div style="font-size: 13px; line-height: 1.5; color: #1B2A21"><strong style="color: #1E5B3C">{{ p.title }}.</strong> {{ p.short }}</div>
+            </sc-for>
+          </div>
+
+          <div style="flex: none; min-height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 13px; background: #1E5B3C; color: #FFFFFF; font-size: 16px; font-weight: 600">Try the demo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1540,&quot;height&quot;:2900}}">
+class Component extends DCLogic {
+  renderVals() {
+    const demoLines = [
+      { at: "5:48", name: "Emily", initial: "E", text: "“Grandma, I passed my driving test on Thursday!”" },
+      { at: "6:04", name: "Ken", initial: "K", text: "“She drove us here, actually. Slowly.”" },
+      { at: "6:20", name: "Lisa", initial: "L", text: "“She's been practising in my car since June.”" },
+      { at: "8:31", name: "Someone new", initial: "?", text: "“Hello Mrs Chen — I'm Marcus, Emily's boyfriend.”", unknown: true, flag: "unknown voice", flagBg: "#F0F0EA", flagFg: "#44544A" },
+      { at: "14:07", name: "David", initial: "D", text: "“Don't forget the blood pressure pill at eight, Ma.”", flag: "med note", flagBg: "#FBF1DC", flagFg: "#6A4300" }
+    ].map(l => ({
+      name: l.name,
+      initial: l.initial,
+      text: l.text,
+      flag: l.flag || false,
+      flagBg: l.flagBg || "#F0F0EA",
+      flagFg: l.flagFg || "#44544A",
+      bg: "#FAF8F2",
+      border: l.unknown ? "#44544A" : "#E3EDE2",
+      borderStyle: l.unknown ? "dashed" : "solid",
+      avBg: l.unknown ? "#FFFFFF" : "#E3EDE2",
+      avBorder: l.unknown ? "#44544A" : "#E3EDE2",
+      avStyle: l.unknown ? "dashed" : "solid",
+      nameColor: l.unknown ? "#44544A" : "#1B2A21"
+    }));
+
+    return {
+      demoLines,
+      privacy: [
+        { title: "Voiceprints, not recordings", body: "We keep a mathematical fingerprint of each voice. It cannot be played back or turned into audio.", short: "A fingerprint of each voice — it cannot be played back." },
+        { title: "Everyone agrees for themselves", body: "Each adult consents to their own voiceprint, and can delete it alone — without asking the family.", short: "Each adult consents, and can delete theirs alone." },
+        { title: "Audio retention is off", body: "Off by default, for everyone. If a family turns it on, every adult is asked again before the next call.", short: "Off by default. Turning it on asks everyone again." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

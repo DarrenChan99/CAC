@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #EFEDE6; }
+  @keyframes ct-ring { 0%,100% { box-shadow: 0 0 0 8px rgba(157,191,151,.55); } 50% { box-shadow: 0 0 0 18px rgba(157,191,151,.20); } }
+  a { color: #1E5B3C; }
+  a:hover { color: #14422B; }
+</style>
+</helmet>
+
+<div style="font-family: 'Atkinson Hyperlegible', sans-serif; color: #1B2A21; padding: 48px; display: flex; flex-direction: column; gap: 48px; align-items: flex-start">
+
+  <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+    <div style="font-size: 26px; font-weight: 700">Session 3 — Resident screens</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #44544A">R1 · R2 · R4 · R5 · R6 · R7 — each 1180×820</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 48px">
+
+    <!-- ===== R1 HOME ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R1 · Home</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #FAF8F2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 32px; display: flex; flex-direction: column; gap: 28px">
+        <div style="flex: none; display: flex; align-items: flex-start; gap: 24px">
+          <div>
+            <div style="font-size: 56px; font-weight: 700; line-height: 1.05">Good morning, Mei</div>
+            <div style="font-size: 32px; color: #44544A; margin-top: 12px">Saturday, 14 March · 10:24 in the morning</div>
+          </div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 16px; background: #E3EDE2; border-radius: 16px; padding: 14px 20px; min-height: 72px; box-sizing: border-box">
+            <img src="assets/tile-icon.png" alt="Caretaker" style="height: 48px; width: auto; display: block; flex: none" />
+            <div style="font-size: 28px; font-weight: 700; color: #1E5B3C">Caretaker</div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px">
+          <div style="background: #1E5B3C; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; cursor: pointer; overflow: hidden">
+            <div style="width: 120px; height: 120px; flex: none; border-radius: 999px; background: rgba(255,255,255,.18); display: grid; place-items: center; font-size: 52px; color: #FFFFFF">☏</div>
+            <div style="font-size: 40px; font-weight: 700; color: #FFFFFF; text-align: center; line-height: 1.15">Call family</div>
+          </div>
+          <div style="background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; cursor: pointer; overflow: hidden" style-hover="border-color: #1E5B3C">
+            <div style="width: 120px; height: 120px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 52px; color: #1E5B3C">♡</div>
+            <div style="font-size: 40px; font-weight: 700; text-align: center; line-height: 1.15">My family</div>
+          </div>
+          <div style="background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; cursor: pointer; overflow: hidden" style-hover="border-color: #1E5B3C">
+            <div style="width: 120px; height: 120px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 52px; color: #1E5B3C">✉</div>
+            <div style="font-size: 40px; font-weight: 700; text-align: center; line-height: 1.15">Family news</div>
+          </div>
+          <div style="background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; cursor: pointer; overflow: hidden" style-hover="border-color: #1E5B3C">
+            <div style="width: 120px; height: 120px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 46px; font-weight: 700; color: #1E5B3C">14</div>
+            <div style="font-size: 40px; font-weight: 700; text-align: center; line-height: 1.15">Today</div>
+          </div>
+        </div>
+
+        <div style="flex: none; background: #FFFFFF; border: 2px solid #E3EDE2; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 20px">
+          <div style="width: 72px; height: 72px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 30px; font-weight: 700; color: #1E5B3C">L</div>
+          <div style="font-size: 32px; line-height: 1.3">Lisa visits on Saturday at 2 o'clock.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== R2 INCOMING ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R2 · Incoming call</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #E3EDE2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px">
+        <div style="font-size: 32px; color: #44544A">Your family is calling</div>
+        <div style="display: flex; gap: 24px; align-items: center">
+          <div style="width: 200px; height: 200px; border-radius: 999px; background: #FFFFFF repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); border: 6px solid #FFFFFF; display: grid; place-items: center; font-size: 76px; font-weight: 700; color: #1E5B3C; animation: ct-ring 2.4s ease-in-out infinite">L</div>
+          <div style="width: 140px; height: 140px; border-radius: 999px; background: #FFFFFF repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); border: 5px solid #FFFFFF; display: grid; place-items: center; font-size: 56px; font-weight: 700; color: #1E5B3C">E</div>
+          <div style="width: 140px; height: 140px; border-radius: 999px; background: #FFFFFF repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); border: 5px solid #FFFFFF; display: grid; place-items: center; font-size: 56px; font-weight: 700; color: #1E5B3C">K</div>
+        </div>
+        <div style="text-align: center">
+          <div style="font-size: 56px; font-weight: 700; line-height: 1.1">Lisa, your daughter,<br>is calling</div>
+          <div style="font-size: 32px; color: #44544A; margin-top: 16px">Emily and Ken are with her</div>
+        </div>
+        <div style="display: flex; gap: 32px; align-items: center; margin-top: 8px">
+          <button style="min-height: 132px; padding: 0 72px; border-radius: 16px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 48px; font-weight: 700; cursor: pointer" style-hover="background: #14422B">Answer</button>
+          <button style="min-height: 88px; padding: 0 40px; border-radius: 16px; border: 3px solid #44544A; background: #FFFFFF; color: #1B2A21; font-family: inherit; font-size: 32px; font-weight: 700; cursor: pointer" style-hover="background: #FAF8F2">Not now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== R4 MY FAMILY ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R4 · My family</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #FAF8F2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px">
+        <div style="flex: none; display: flex; align-items: center; gap: 24px">
+          <div style="font-size: 48px; font-weight: 700">Your family</div>
+          <div style="font-size: 28px; color: #44544A">Tap anyone to call them</div>
+          <button style="margin-left: auto; min-height: 72px; padding: 0 32px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 28px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Home</button>
+        </div>
+
+        <div style="flex: 1; min-height: 0; display: flex; gap: 16px">
+
+          <!-- generation rail -->
+          <div style="width: 240px; flex: none; position: relative">
+            <div style="position: absolute; top: 0; right: 0; height: 157px; display: flex; align-items: center; justify-content: flex-end">
+              <div style="background: #E3EDE2; color: #1E5B3C; border-radius: 12px; padding: 8px 16px; font-size: 28px; font-weight: 700; line-height: 1.2; text-align: right; white-space: nowrap">You<br>and Wei</div>
+            </div>
+            <div style="position: absolute; top: 199px; right: 0; height: 121px; display: flex; align-items: center; justify-content: flex-end">
+              <div style="background: #E3EDE2; color: #1E5B3C; border-radius: 12px; padding: 8px 16px; font-size: 28px; font-weight: 700; line-height: 1.2; text-align: right; white-space: nowrap">Your<br>children</div>
+            </div>
+            <div style="position: absolute; top: 360px; right: 0; height: 121px; display: flex; align-items: center; justify-content: flex-end">
+              <div style="background: #E3EDE2; color: #1E5B3C; border-radius: 12px; padding: 8px 16px; font-size: 28px; font-weight: 700; line-height: 1.2; text-align: right; white-space: nowrap">Your<br>grandchildren</div>
+            </div>
+            <div style="position: absolute; top: 521px; right: 0; height: 121px; display: flex; align-items: center; justify-content: flex-end">
+              <div style="background: #E3EDE2; color: #1E5B3C; border-radius: 12px; padding: 8px 16px; font-size: 28px; font-weight: 700; line-height: 1.2; text-align: right; white-space: nowrap">Great-<br>grandchild</div>
+            </div>
+          </div>
+
+          <!-- tree -->
+          <div style="flex: 1; min-width: 0; display: flex; justify-content: center">
+            <div style="display: flex; align-items: flex-start; gap: 24px">
+
+              <!-- Ling, sister of Mei -->
+              <div style="width: 148px; flex: none; position: relative">
+                <div style="position: absolute; top: 88px; left: 148px; width: 162px; border-top: 3px dashed #C9D6C6"></div>
+                <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                  <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">L</div>
+                  <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Ling</div>
+                  <div style="font-size: 28px; color: #44544A; line-height: 1.15; text-align: center">sister</div>
+                </div>
+              </div>
+
+              <!-- Mei's line -->
+              <div style="display: flex; flex-direction: column; align-items: center">
+
+                <!-- Mei + Wei -->
+                <div style="display: flex; gap: 28px; position: relative">
+                  <div style="position: absolute; top: 58px; left: 180px; width: 28px; height: 3px; background: #C9D6C6"></div>
+                  <div style="width: 180px; box-sizing: border-box; background: #1E5B3C; border: 3px solid #1E5B3C; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+                    <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: rgba(255,255,255,.22); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #FFFFFF">M</div>
+                    <div style="font-size: 30px; font-weight: 700; line-height: 1.1; color: #FFFFFF">You</div>
+                    <div style="font-size: 28px; color: #FFFFFF; line-height: 1.15; text-align: center">this is you</div>
+                  </div>
+                  <div style="width: 180px; box-sizing: border-box; background: #E3EDE2; border: 3px dashed #C9D6C6; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+                    <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #FFFFFF; display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">W</div>
+                    <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Wei</div>
+                    <div style="font-size: 28px; color: #44544A; line-height: 1.15; text-align: center">remembered</div>
+                  </div>
+                </div>
+
+                <!-- children of Mei + Wei -->
+                <div style="display: flex; gap: 28px; padding-top: 40px; position: relative">
+                  <div style="position: absolute; top: 0; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                  <div style="position: absolute; top: 24px; left: 156px; right: 162px; height: 3px; background: #C9D6C6"></div>
+
+                  <!-- Lisa and her children -->
+                  <div style="width: 312px; flex: none; display: flex; flex-direction: column; align-items: center; position: relative">
+                    <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                    <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                      <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">L</div>
+                      <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Lisa</div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; padding-top: 40px; position: relative">
+                      <div style="position: absolute; top: 0; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                      <div style="position: absolute; top: 24px; left: 74px; right: 74px; height: 3px; background: #C9D6C6"></div>
+
+                      <!-- Emily and Ava -->
+                      <div style="width: 148px; flex: none; display: flex; flex-direction: column; align-items: center; position: relative">
+                        <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                        <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                          <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">E</div>
+                          <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Emily</div>
+                        </div>
+                        <div style="display: flex; padding-top: 40px; position: relative">
+                          <div style="position: absolute; top: 0; left: 50%; margin-left: -1.5px; width: 3px; height: 40px; background: #C9D6C6"></div>
+                          <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                            <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">A</div>
+                            <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Ava</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Ken -->
+                      <div style="width: 148px; flex: none; position: relative">
+                        <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                        <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                          <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">K</div>
+                          <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Ken</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- David + Karen and their children -->
+                  <div style="width: 324px; flex: none; display: flex; flex-direction: column; align-items: center; position: relative">
+                    <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                    <div style="display: flex; gap: 28px; position: relative">
+                      <div style="position: absolute; top: 58px; left: 148px; width: 28px; height: 3px; background: #C9D6C6"></div>
+                      <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                        <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">D</div>
+                        <div style="font-size: 30px; font-weight: 700; line-height: 1.1">David</div>
+                      </div>
+                      <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                        <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">K</div>
+                        <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Karen</div>
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; padding-top: 40px; position: relative">
+                      <div style="position: absolute; top: 0; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                      <div style="position: absolute; top: 24px; left: 74px; right: 74px; height: 3px; background: #C9D6C6"></div>
+                      <div style="width: 148px; flex: none; position: relative">
+                        <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                        <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                          <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">J</div>
+                          <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Jason</div>
+                        </div>
+                      </div>
+                      <div style="width: 148px; flex: none; position: relative">
+                        <div style="position: absolute; top: -24px; left: 50%; margin-left: -1.5px; width: 3px; height: 24px; background: #C9D6C6"></div>
+                        <div style="width: 148px; box-sizing: border-box; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer" style-hover="border-color: #1E5B3C">
+                          <div style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.08) 0 6px, transparent 6px 12px); display: grid; place-items: center; font-size: 28px; font-weight: 700; color: #1E5B3C">S</div>
+                          <div style="font-size: 30px; font-weight: 700; line-height: 1.1">Sophie</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== R5 PERSON ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R5 · Person page — Emily</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #FAF8F2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px">
+        <div style="flex: none; display: flex; align-items: center; gap: 24px">
+          <button style="min-height: 72px; padding: 0 28px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 28px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Back to family</button>
+          <button style="margin-left: auto; min-height: 72px; padding: 0 32px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 28px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Home</button>
+        </div>
+
+        <div style="flex: 1; min-height: 0; display: flex; gap: 32px">
+          <div style="width: 340px; flex: none; display: flex; flex-direction: column; gap: 24px">
+            <div style="flex: 1; min-height: 0; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); border-radius: 16px; display: grid; place-items: center">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1E5B3C">portrait photo</span>
+            </div>
+            <div style="flex: none">
+              <div style="font-size: 48px; font-weight: 700; line-height: 1.05">Emily</div>
+              <div style="font-size: 32px; color: #44544A; margin-top: 8px">your granddaughter</div>
+            </div>
+            <button style="flex: none; min-height: 96px; border-radius: 16px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 32px; font-weight: 700; cursor: pointer" style-hover="background: #14422B">Call Emily</button>
+          </div>
+
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <div style="flex: none; font-size: 32px; color: #44544A">Things Emily told you</div>
+            <sc-for list="{{ memories }}" as="m" hint-placeholder-count="3">
+              <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; overflow: hidden; display: flex">
+                <div style="width: 180px; flex: none; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); display: grid; place-items: center">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #1E5B3C">photo</span>
+                </div>
+                <div style="flex: 1; min-width: 0; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 8px">
+                  <div style="font-size: 32px; line-height: 1.25">{{ m.text }}</div>
+                  <div style="font-size: 28px; color: #44544A">{{ m.when }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== R6 NEWS ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R6 · Family news</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #FAF8F2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px">
+        <div style="flex: none; display: flex; align-items: center; gap: 24px">
+          <div style="font-size: 48px; font-weight: 700">Family news</div>
+          <div style="font-size: 28px; color: #44544A">Story 2 of 4</div>
+          <button style="margin-left: auto; min-height: 72px; padding: 0 32px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 28px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Home</button>
+        </div>
+
+        <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; overflow: hidden; display: flex">
+          <div style="width: 380px; flex: none; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); display: grid; place-items: center">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1E5B3C">story photo</span>
+          </div>
+          <div style="flex: 1; min-width: 0; padding: 32px 36px; display: flex; flex-direction: column; justify-content: center; gap: 20px">
+            <div style="font-size: 28px; color: #44544A">Gardening · this morning</div>
+            <div style="font-size: 48px; font-weight: 700; line-height: 1.15; text-wrap: pretty">The city rose garden reopens this weekend</div>
+            <div style="font-size: 32px; line-height: 1.4; color: #1B2A21; text-wrap: pretty">After two years of work, the old glasshouse is open again. Volunteers have planted four hundred roses along the main path.</div>
+          </div>
+        </div>
+
+        <div style="flex: none; display: flex; gap: 24px; align-items: center">
+          <button style="min-height: 96px; padding: 0 40px; border-radius: 16px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 32px; font-weight: 700; cursor: pointer" style-hover="background: #14422B">Read to me</button>
+          <button style="margin-left: auto; min-height: 96px; padding: 0 40px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 32px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Previous</button>
+          <button style="min-height: 96px; padding: 0 40px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 32px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== R7 TODAY ===== -->
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">R7 · Today</div>
+      <div style="width: 1180px; height: 820px; box-sizing: border-box; background: #FAF8F2; border: 12px solid #1B2A21; border-radius: 28px; overflow: hidden; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px">
+        <div style="flex: none; display: flex; align-items: flex-start; gap: 24px">
+          <div>
+            <div style="font-size: 56px; font-weight: 700; line-height: 1.05">Today</div>
+            <div style="font-size: 32px; color: #44544A; margin-top: 10px">Saturday, 14 March</div>
+          </div>
+          <button style="margin-left: auto; min-height: 72px; padding: 0 32px; border-radius: 16px; border: 3px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 28px; font-weight: 700; cursor: pointer" style-hover="background: #E3EDE2">Home</button>
+        </div>
+
+        <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 24px">
+          <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+            <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 3px solid #E3EDE2; border-radius: 16px; padding: 24px 28px; display: flex; align-items: center; gap: 28px; overflow: hidden">
+              <div style="width: 150px; flex: none; text-align: center">
+                <div style="font-size: 40px; font-weight: 700; color: #1E5B3C">{{ e.time }}</div>
+                <div style="font-size: 28px; color: #44544A">{{ e.part }}</div>
+              </div>
+              <div style="width: 3px; align-self: stretch; background: #E3EDE2; flex: none"></div>
+              <div style="min-width: 0">
+                <div style="font-size: 40px; font-weight: 700; line-height: 1.15">{{ e.title }}</div>
+                <div style="font-size: 32px; color: #44544A; margin-top: 8px">{{ e.note }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:2500,&quot;height&quot;:2700}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      children: [
+        { name: "Lisa", rel: "your daughter", initial: "L" },
+        { name: "David", rel: "your son", initial: "D" },
+        { name: "Karen", rel: "David's wife", initial: "K" }
+      ],
+      grandchildren: [
+        { name: "Ken", rel: "your grandson", initial: "K" },
+        { name: "Emily", rel: "your granddaughter", initial: "E" },
+        { name: "Jason", rel: "your grandson", initial: "J" },
+        { name: "Sophie", rel: "your granddaughter", initial: "S" }
+      ],
+      memories: [
+        { text: "Emily passed her driving test", when: "last Sunday" },
+        { text: "Emily started her new job at the library", when: "February" },
+        { text: "Emily brought you peonies", when: "January" }
+      ],
+      events: [
+        { time: "2:00", part: "afternoon", title: "Lisa visits", note: "She is bringing Emily" },
+        { time: "5:30", part: "afternoon", title: "Dinner in the dining room", note: "Fish and rice today" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #EFEDE6; }
+  @keyframes ct-level { 0%,100% { transform: scaleX(.42); } 50% { transform: scaleX(.8); } }
+  a { color: #1E5B3C; }
+  a:hover { color: #14422B; }
+</style>
+</helmet>
+
+<div style="font-family: Inter, system-ui, sans-serif; color: #1B2A21; padding: 48px; display: flex; flex-direction: column; gap: 48px; align-items: flex-start">
+
+  <div style="display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap">
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: -.02em">Session 4 — Family screens</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #44544A">F1 Dashboard · F5 Approval queue · F8 Voice enrollment — each 1440×900</div>
+  </div>
+
+  <!-- ===== F1 DASHBOARD ===== -->
+  <section style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F1 · Dashboard</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navDash }}" as="n" hint-placeholder-count="7">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+            <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+          </div>
+        </div>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Grandma Mei</div>
+          <span style="font-size: 13px; color: #44544A">Pine Ridge, room 12 · iPad online</span>
+          <button style="margin-left: auto; min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Start call</button>
+        </header>
+
+        <div style="flex: 1; min-height: 0; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+          <div style="flex: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px">
+            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+              <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px 18px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">{{ s.label }}</div>
+                <div style="font-size: 32px; font-weight: 700; letter-spacing: -.02em; margin-top: 8px">{{ s.value }}</div>
+                <div style="font-size: 13px; color: #44544A; margin-top: 4px">{{ s.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 1.35fr 1fr; gap: 20px">
+
+            <div style="min-height: 0; display: flex; flex-direction: column; gap: 20px">
+              <div style="flex: none; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px 20px">
+                <div style="display: flex; align-items: baseline; gap: 10px">
+                  <div style="font-size: 20px; font-weight: 600">Grandma's week</div>
+                  <div style="font-size: 13px; color: #44544A">who spoke, and for how long</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">
+                  <sc-for list="{{ week }}" as="w" hint-placeholder-count="4">
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C">{{ w.initial }}</div>
+                      <div style="width: 132px; flex: none; font-size: 14px"><span style="font-weight: 600">{{ w.name }}</span> <span style="color: #44544A">{{ w.rel }}</span></div>
+                      <div style="flex: 1; height: 12px; background: #F0F4EE; border-radius: 999px; overflow: hidden">
+                        <div style="height: 100%; width: {{ w.pct }}; background: #1E5B3C; border-radius: 999px"></div>
+                      </div>
+                      <div style="width: 72px; flex: none; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #44544A">{{ w.minutes }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; overflow: hidden">
+                <div style="flex: none; display: flex; align-items: baseline; gap: 10px">
+                  <div style="font-size: 20px; font-weight: 600">Recent memories</div>
+                  <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: none">See all</a>
+                </div>
+                <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px">
+                  <sc-for list="{{ memories }}" as="m" hint-placeholder-count="3">
+                    <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+                      <div style="height: 76px; flex: none; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px); display: grid; place-items: center">
+                        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #1E5B3C">photo</span>
+                      </div>
+                      <div style="padding: 12px 14px">
+                        <div style="font-size: 14px; font-weight: 600; line-height: 1.35">{{ m.text }}</div>
+                        <div style="font-size: 12px; color: #44544A; margin-top: 6px">{{ m.meta }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div style="min-height: 0; display: flex; flex-direction: column; gap: 20px">
+              <div style="flex: 1; min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; overflow: hidden">
+                <div style="flex: none; display: flex; align-items: center; gap: 10px">
+                  <div style="font-size: 20px; font-weight: 600">Waiting for approval</div>
+                  <span style="background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px">3</span>
+                  <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: none">Open queue</a>
+                </div>
+                <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; margin-top: 14px; overflow: hidden">
+                  <sc-for list="{{ queue }}" as="q" hint-placeholder-count="3">
+                    <div style="flex: none; background: {{ q.bg }}; border: 1px {{ q.borderStyle }} {{ q.border }}; border-radius: 12px; padding: 12px 14px">
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: {{ q.kindColor }}">{{ q.kind }}</div>
+                      <div style="font-size: 14px; font-weight: 600; margin-top: 6px; line-height: 1.35; color: {{ q.titleColor }}">{{ q.title }}</div>
+                      <div style="font-size: 12px; color: {{ q.metaColor }}; margin-top: 5px">{{ q.meta }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="flex: none; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 18px 20px">
+                <div style="font-size: 20px; font-weight: 600">Next visit</div>
+                <div style="font-size: 15px; margin-top: 8px; line-height: 1.5">Lisa · Saturday at 2 pm<br><span style="color: #44544A">Shown on Grandma's Today screen</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F5 APPROVAL QUEUE ===== -->
+  <section style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F5 · Approval queue</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; display: flex">
+
+      <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+          <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+          <div style="font-size: 16px; font-weight: 700; letter-spacing: -.01em">Caretaker</div>
+        </div>
+        <sc-for list="{{ navQueue }}" as="n" hint-placeholder-count="7">
+          <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </nav>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+        <header style="height: 64px; flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 16px; padding: 0 24px">
+          <div style="font-size: 20px; font-weight: 600">Approval queue</div>
+          <span style="font-size: 13px; color: #44544A">Nothing reaches Grandma's iPad until someone here approves it</span>
+        </header>
+
+        <div style="flex: 1; min-height: 0; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+
+          <div style="flex: none; display: flex; gap: 8px; align-items: center">
+            <div style="min-height: 36px; display: flex; align-items: center; padding: 0 14px; border-radius: 999px; background: #1E5B3C; color: #FFFFFF; font-size: 13px; font-weight: 600">All 3</div>
+            <div style="min-height: 36px; display: flex; align-items: center; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DCE4D9; color: #44544A; font-size: 13px; font-weight: 600">Med notes 1</div>
+            <div style="min-height: 36px; display: flex; align-items: center; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DCE4D9; color: #44544A; font-size: 13px; font-weight: 600">People 1</div>
+            <div style="min-height: 36px; display: flex; align-items: center; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DCE4D9; color: #44544A; font-size: 13px; font-weight: 600">Tree edits 1</div>
+            <div style="margin-left: auto; font-size: 13px; color: #44544A">Oldest first</div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px">
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #6A4300; background: #FBF1DC; padding: 5px 10px; border-radius: 999px">Med note</span>
+                <span style="font-size: 13px; color: #44544A">Sunday call · 2:31</span>
+              </div>
+              <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Take blood pressure pill at 8 am</div>
+              <div style="border-left: 2px solid #E3EDE2; padding: 4px 0 4px 14px; font-size: 15px; color: #44544A; line-height: 1.5">“Make sure she takes the blood pressure pill at eight in the morning.”</div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C">D</div>
+                <div style="font-size: 13px"><span style="font-weight: 600">David</span> <span style="color: #44544A">son · 2:31</span></div>
+              </div>
+              <div style="background: #FBF1DC; border-radius: 10px; padding: 10px 12px; font-size: 13px; color: #6A4300; line-height: 1.45">Family notes, not medical instructions. Approving files this with the care team — it never shows on Grandma's iPad.</div>
+              <div style="margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap">
+                <button style="min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Approve</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Edit</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Reject</button>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #1E5B3C; background: #E3EDE2; padding: 5px 10px; border-radius: 999px">New person</span>
+                <span style="font-size: 13px; color: #44544A">Sunday call · 2:38</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px">
+                <div style="width: 48px; height: 48px; flex: none; border-radius: 999px; background: #F0F4EE; border: 1px dashed #44544A; display: grid; place-items: center; font-size: 18px; font-weight: 600; color: #44544A">?</div>
+                <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Marcus — Emily's boyfriend?</div>
+              </div>
+              <div style="border-left: 2px solid #E3EDE2; padding: 4px 0 4px 14px; font-size: 15px; color: #44544A; line-height: 1.5">“Grandma, this is Marcus. We've been together since the summer.”</div>
+              <div style="font-size: 13px; color: #44544A; line-height: 1.5">Said by <strong style="color: #1B2A21">Emily</strong>, granddaughter. Until someone confirms, Grandma's screen shows “Someone new” with no name.</div>
+              <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 10px; padding: 10px 12px; font-size: 13px; color: #44544A">Add as: <strong style="color: #1B2A21">Emily's partner</strong> · voice enrollment optional</div>
+              <div style="margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap">
+                <button style="min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Approve</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Edit</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Reject</button>
+              </div>
+            </div>
+
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #1E5B3C; background: #E3EDE2; padding: 5px 10px; border-radius: 999px">Tree edit</span>
+                <span style="font-size: 13px; color: #44544A">Sunday call · 3:02</span>
+              </div>
+              <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Ava is Jason's daughter</div>
+              <div style="border-left: 2px solid #E3EDE2; padding: 4px 0 4px 14px; font-size: 15px; color: #44544A; line-height: 1.5">“Ava turned two last month — Jason sent photos.”</div>
+              <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; font-size: 13px">
+                <span style="padding: 5px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E3EDE2; font-weight: 600">Jason</span>
+                <span style="color: #44544A">→ parent of →</span>
+                <span style="padding: 5px 10px; border-radius: 999px; background: #E3EDE2; color: #1E5B3C; font-weight: 600">Ava, 2</span>
+              </div>
+              <div style="font-size: 13px; color: #44544A; line-height: 1.5">Adds a fourth generation. Grandma's family screen will show Ava under “your great-grandchildren”.</div>
+              <div style="margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap">
+                <button style="min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Approve</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Edit</button>
+                <button style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F8 VOICE ENROLLMENT ===== -->
+  <section style="display: flex; flex-direction: column; gap: 12px">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #44544A">F8 · Voice enrollment — four steps</div>
+    <div style="width: 1440px; height: 900px; box-sizing: border-box; background: #FAF8F2; border: 1px solid #DCE4D9; border-radius: 12px; overflow: hidden; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+
+      <div style="flex: none; display: flex; align-items: center; gap: 16px">
+        <div style="font-size: 24px; font-weight: 600">Set up your voice</div>
+        <div style="font-size: 14px; color: #44544A">So Grandma's screen can show your name and face when you speak</div>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: {{ s.bg }}; border: 1px solid {{ s.border }}">
+              <span style="width: 20px; height: 20px; border-radius: 999px; background: {{ s.dotBg }}; color: {{ s.dotFg }}; font-size: 11px; font-weight: 700; display: grid; place-items: center">{{ s.n }}</span>
+              <span style="font-size: 13px; font-weight: 600; color: {{ s.fg }}">{{ s.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px">
+
+        <!-- step 1 consent -->
+        <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">Step 1 · Consent</div>
+          <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Your voiceprint, your choice</div>
+          <p style="margin: 0; font-size: 15px; color: #44544A; line-height: 1.55">We store a mathematical voiceprint — not recordings. It is used only to label who is speaking during family calls.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="background: #FAF8F2; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.45">Audio retention is <strong>off</strong> by default.</div>
+            <div style="background: #FAF8F2; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.45">Delete your voiceprint at any time in Privacy.</div>
+          </div>
+          <label style="display: flex; gap: 10px; align-items: flex-start; padding: 12px; background: #E3EDE2; border-radius: 10px; cursor: pointer">
+            <input type="checkbox" checked="{{ true }}" style="width: 18px; height: 18px; margin: 2px 0 0; accent-color: #1E5B3C">
+            <span style="font-size: 14px; line-height: 1.45">I agree to a voiceprint being made from my speech.</span>
+          </label>
+          <button style="margin-top: auto; min-height: 44px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Continue</button>
+        </div>
+
+        <!-- step 2 read aloud -->
+        <div style="background: #FFFFFF; border: 1px solid #1E5B3C; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #1E5B3C">Step 2 · Read aloud · 2 of 3</div>
+          <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Read this out in your normal voice</div>
+          <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; font-size: 17px; line-height: 1.5">“The rose garden by the river opens again on Saturday morning.”</div>
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #44544A">
+              <span>Microphone level</span>
+              <span style="font-family: 'IBM Plex Mono', monospace">good</span>
+            </div>
+            <div style="height: 14px; background: #F0F4EE; border-radius: 999px; overflow: hidden; margin-top: 8px">
+              <div style="height: 100%; background: #1E5B3C; border-radius: 999px; transform-origin: left; animation: ct-level 1.6s ease-in-out infinite"></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px">
+            <div style="flex: 1; height: 6px; border-radius: 999px; background: #1E5B3C"></div>
+            <div style="flex: 1; height: 6px; border-radius: 999px; background: #1E5B3C"></div>
+            <div style="flex: 1; height: 6px; border-radius: 999px; background: #E3EDE2"></div>
+          </div>
+          <div style="font-size: 13px; color: #44544A; line-height: 1.5">Two prompts recorded · about 20 seconds so far</div>
+          <div style="margin-top: auto; display: flex; gap: 8px">
+            <button style="flex: 1; min-height: 44px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Next prompt</button>
+            <button style="min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Redo</button>
+          </div>
+        </div>
+
+        <!-- step 3 quality -->
+        <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">Step 3 · Quality check</div>
+          <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Good enough to tell you apart</div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; align-items: center; gap: 10px; background: #FAF8F2; border-radius: 10px; padding: 12px">
+              <span style="width: 10px; height: 10px; border-radius: 999px; background: #1E5B3C; flex: none"></span>
+              <span style="font-size: 14px">32 seconds of clear speech</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; background: #FAF8F2; border-radius: 10px; padding: 12px">
+              <span style="width: 10px; height: 10px; border-radius: 999px; background: #1E5B3C; flex: none"></span>
+              <span style="font-size: 14px">Low background noise</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; background: #FBF1DC; border-radius: 10px; padding: 12px">
+              <span style="width: 10px; height: 10px; border-radius: 999px; background: #6A4300; flex: none"></span>
+              <span style="font-size: 14px; color: #6A4300">Similar to David — add one more prompt to be safe</span>
+            </div>
+          </div>
+          <div style="font-size: 13px; color: #44544A; line-height: 1.5">Quality affects how often the wrong name appears on Grandma's screen.</div>
+          <div style="margin-top: auto; display: flex; gap: 8px">
+            <button style="flex: 1; min-height: 44px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #E3EDE2">Add a prompt</button>
+            <button style="flex: 1; min-height: 44px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Continue</button>
+          </div>
+        </div>
+
+        <!-- step 4 test me -->
+        <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">Step 4 · Test me</div>
+          <div style="font-size: 20px; font-weight: 600; line-height: 1.3">Say anything for five seconds</div>
+          <div style="background: #E3EDE2; border-radius: 12px; padding: 18px; display: flex; align-items: center; gap: 14px">
+            <div style="width: 52px; height: 52px; flex: none; border-radius: 999px; background: #FFFFFF; display: grid; place-items: center; font-size: 20px; font-weight: 700; color: #1E5B3C">K</div>
+            <div>
+              <div style="font-size: 17px; font-weight: 600">We recognise you as Ken</div>
+              <div style="font-size: 14px; color: #44544A; margin-top: 2px">grandson · strong match</div>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #44544A"><span>Match strength</span><span style="font-family: 'IBM Plex Mono', monospace">high</span></div>
+            <div style="height: 12px; background: #F0F4EE; border-radius: 999px; overflow: hidden; margin-top: 8px">
+              <div style="height: 100%; width: 88%; background: #1E5B3C; border-radius: 999px"></div>
+            </div>
+          </div>
+          <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 10px; padding: 12px; font-size: 13px; color: #44544A; line-height: 1.5">On Grandma's screen you will appear as <strong style="color: #1B2A21">Ken, your grandson</strong>.</div>
+          <div style="margin-top: auto; display: flex; gap: 8px">
+            <button style="flex: 1; min-height: 44px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #14422B">Finish</button>
+            <button style="min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer" style-hover="background: #FAF8F2">Test again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1540,&quot;height&quot;:2900}}">
+class Component extends DCLogic {
+  nav(active) {
+    return [
+      { label: "Dashboard" },
+      { label: "In call" },
+      { label: "Approvals", badge: "3" },
+      { label: "Family tree" },
+      { label: "Memories" },
+      { label: "Med notes" },
+      { label: "News" }
+    ].map(n => {
+      const on = n.label === active;
+      return {
+        label: n.label,
+        badge: n.badge || false,
+        bg: on ? "#E3EDE2" : "transparent",
+        fg: on ? "#1E5B3C" : "#44544A",
+        weight: on ? 600 : 400
+      };
+    });
+  }
+
+  renderVals() {
+    const steps = [
+      ["1", "Consent", false],
+      ["2", "Read aloud", true],
+      ["3", "Quality", false],
+      ["4", "Test me", false]
+    ].map(([n, label, on]) => ({
+      n, label,
+      bg: on ? "#1E5B3C" : "#FFFFFF",
+      border: on ? "#1E5B3C" : "#DCE4D9",
+      fg: on ? "#FFFFFF" : "#44544A",
+      dotBg: on ? "#FFFFFF" : "#E3EDE2",
+      dotFg: on ? "#1E5B3C" : "#1E5B3C"
+    }));
+
+    const queue = [
+      { kind: "Med note", title: "Blood pressure pill at 8 am", meta: "David · son · Sunday 2:31", warn: true },
+      { kind: "New person", title: "Marcus — Emily's boyfriend?", meta: "Unknown voice · Sunday 2:38", dashed: true },
+      { kind: "Tree edit", title: "Ava is Jason's daughter", meta: "Emily · granddaughter · Sunday 3:02" }
+    ].map(q => ({
+      ...q,
+      bg: q.warn ? "#FBF1DC" : "#FAF8F2",
+      border: q.warn ? "#EADFC4" : q.dashed ? "#44544A" : "#E3EDE2",
+      borderStyle: q.dashed ? "dashed" : "solid",
+      kindColor: q.warn ? "#6A4300" : "#44544A",
+      titleColor: q.warn ? "#6A4300" : "#1B2A21",
+      metaColor: q.warn ? "#6A4300" : "#44544A"
+    }));
+
+    return {
+      navDash: this.nav("Dashboard"),
+      navQueue: this.nav("Approvals"),
+      steps,
+      queue,
+      stats: [
+        { label: "Calls this week", value: "5", note: "2 more than last week" },
+        { label: "Time together", value: "94 min", note: "longest: Sunday, 31 min" },
+        { label: "People who spoke", value: "6", note: "Lisa, Ken, Emily, David +2" },
+        { label: "Memories saved", value: "11", note: "3 waiting for approval" }
+      ],
+      week: [
+        { name: "Lisa", rel: "daughter", initial: "L", pct: "78%", minutes: "38 min" },
+        { name: "Ken", rel: "grandson", initial: "K", pct: "52%", minutes: "25 min" },
+        { name: "Emily", rel: "granddaughter", initial: "E", pct: "38%", minutes: "18 min" },
+        { name: "David", rel: "son", initial: "D", pct: "27%", minutes: "13 min" }
+      ],
+      memories: [
+        { text: "Emily passed her driving test", meta: "Emily · Sunday" },
+        { text: "Ava took her first steps", meta: "Jason · Friday" },
+        { text: "Ling's garden won the street prize", meta: "Lisa · Tuesday" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

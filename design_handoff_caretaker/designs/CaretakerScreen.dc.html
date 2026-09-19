@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div ref="{{ rootRef }}" style="height: 100%; width: 100%; box-sizing: border-box; background: #FAF8F2; font-family: Inter, system-ui, sans-serif; color: #1B2A21; display: flex; overflow: hidden">
+
+  <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+    <nav style="width: 232px; flex: none; background: #FFFFFF; border-right: 1px solid #E3EDE2; padding: 20px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+        <img src="assets/tile-icon.png" alt="Caretaker" style="height: 34px; width: auto; display: block; flex: none" />
+        <div style="font-size: 16px; font-weight: 700">Caretaker</div>
+      </div>
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+        <div style="min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 10px; font-size: 14px; font-weight: {{ n.weight }}; background: {{ n.bg }}; color: {{ n.fg }}; cursor: pointer">
+          <span>{{ n.label }}</span>
+          <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: auto; background: #FBF1DC; color: #6A4300; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px">{{ n.badge }}</span>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-top: 1px solid #E3EDE2">
+        <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C">K</div>
+        <div>
+          <div style="font-size: 13px; font-weight: 600">Ken Chen</div>
+          <div style="font-size: 12px; color: #44544A">voice enrolled</div>
+        </div>
+      </div>
+    </nav>
+  </sc-if>
+
+  <div style="flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column">
+
+    <header style="flex: none; background: #FFFFFF; border-bottom: 1px solid #E3EDE2; display: flex; align-items: center; gap: 12px; padding: 13px 18px; box-sizing: border-box">
+      <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+        <img src="assets/tile-icon.png" alt="Caretaker" style="height: 26px; width: auto; display: block; flex: none" />
+      </sc-if>
+      <div style="min-width: 0">
+        <div style="font-size: 17px; font-weight: 600; line-height: 1.2">{{ title }}</div>
+        <div style="font-size: 13px; color: #44544A; line-height: 1.3">{{ subtitle }}</div>
+      </div>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <button style="margin-left: auto; min-height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; flex: none">{{ action }}</button>
+      </sc-if>
+    </header>
+
+    <div style="flex: 1; min-height: 0; padding: 14px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; overflow-x: hidden">
+
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(156px, 1fr)); gap: 10px">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+            <div style="background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 3px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #44544A">{{ s.label }}</div>
+              <div style="font-size: 26px; font-weight: 700; line-height: 1.1">{{ s.value }}</div>
+              <div style="font-size: 13px; color: #44544A; line-height: 1.4">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: {{ growFlex }}; min-height: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(286px, 1fr)); gap: 12px; align-items: {{ gridAlign }}">
+          <div style="min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto">
+            <div style="flex: none; font-size: 16px; font-weight: 600">Who spoke this week</div>
+            <sc-for list="{{ week }}" as="w" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 12px">
+                <div style="width: 36px; height: 36px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 14px; font-weight: 600; color: #1E5B3C">{{ w.initial }}</div>
+                <div style="min-width: 0; flex: 1">
+                  <div style="display: flex; align-items: baseline; gap: 8px">
+                    <span style="font-size: 15px; font-weight: 600">{{ w.name }}</span>
+                    <span style="font-size: 12px; color: #44544A">{{ w.rel }}</span>
+                    <span style="margin-left: auto; font-size: 13px; font-weight: 600; color: #1E5B3C">{{ w.minutes }}</span>
+                  </div>
+                  <div style="height: 8px; border-radius: 999px; background: #F0F0EA; margin-top: 6px; overflow: hidden">
+                    <div style="height: 8px; width: {{ w.pct }}; background: #1E5B3C; border-radius: 999px"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto">
+            <div style="flex: none; font-size: 16px; font-weight: 600">Latest memories</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 10px">
+              <sc-for list="{{ memories }}" as="m" hint-placeholder-count="3">
+                <div style="background: #FAF8F2; border: 1px solid #E3EDE2; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+                  <div style="height: 60px; flex: none; background: #E3EDE2 repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px)"></div>
+                  <div style="padding: 10px 12px; display: flex; flex-direction: column; gap: 4px">
+                    <div style="font-size: 14px; font-weight: 600; line-height: 1.35">{{ m.text }}</div>
+                    <div style="font-size: 12px; color: #44544A">{{ m.meta }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCall }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: {{ growFlex }}; min-height: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(292px, 1fr)); gap: 12px; align-items: {{ gridAlign }}">
+          <div style="min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px">
+            <div style="flex: {{ growFlex }}; background: #223026 repeating-linear-gradient(135deg, rgba(157,191,151,.07) 0 12px, transparent 12px 24px); border-radius: 14px; min-height: 216px; padding: 14px; box-sizing: border-box; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between">
+              <div style="align-self: flex-end; display: flex; align-items: center; gap: 8px; background: rgba(27,42,33,.72); border-radius: 999px; padding: 7px 13px">
+                <span style="width: 9px; height: 9px; border-radius: 999px; background: #9DBF97"></span>
+                <span style="font-size: 13px; font-weight: 600; color: #FAF8F2">Emily is talking</span>
+              </div>
+              <div style="background: rgba(250,248,242,.96); border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; gap: 12px; align-self: flex-start">
+                <div style="width: 40px; height: 40px; flex: none; border-radius: 999px; background: #E3EDE2; display: grid; place-items: center; font-size: 16px; font-weight: 700; color: #1E5B3C">E</div>
+                <div>
+                  <div style="font-size: 17px; font-weight: 700; line-height: 1.15">Emily</div>
+                  <div style="font-size: 13px; color: #44544A">granddaughter · high confidence</div>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <button style="flex: {{ ctrlFlex }}; min-height: {{ ctrlH }}; padding: 0 20px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Mute</button>
+              <button style="flex: {{ ctrlFlex }}; min-height: {{ ctrlH }}; padding: 0 20px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Camera off</button>
+              <button style="flex: {{ ctrlFlex }}; min-height: {{ ctrlH }}; padding: 0 20px; border-radius: 12px; border: none; background: #6A4300; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Leave call</button>
+            </div>
+          </div>
+          <div style="min-width: 0; min-height: 0; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto">
+            <div style="flex: none; font-size: 16px; font-weight: 600">Live transcript</div>
+            <sc-for list="{{ lines }}" as="l" hint-placeholder-count="4">
+              <div style="display: flex; gap: 10px; align-items: flex-start">
+                <div style="width: 32px; height: 32px; flex: none; border-radius: 999px; background: {{ l.avBg }}; border: 1px {{ l.avStyle }} {{ l.avBorder }}; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: #1E5B3C">{{ l.initial }}</div>
+                <div style="flex: 1; min-width: 0; background: #FAF8F2; border: 1px {{ l.borderStyle }} {{ l.border }}; border-radius: 12px; padding: 10px 12px">
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px">
+                    <span style="font-size: 13px; font-weight: 600; color: {{ l.nameColor }}">{{ l.name }}</span>
+                    <sc-if value="{{ l.flag }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: {{ l.flagBg }}; color: {{ l.flagFg }}">{{ l.flag }}</span>
+                    </sc-if>
+                  </div>
+                  <div style="font-size: 14px; line-height: 1.5">{{ l.text }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: {{ growFlex }}; min-height: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="flex: none; background: #FFFFFF; border: 1px solid #E3EDE2; border-radius: 12px; padding: 13px 15px; font-size: 13px; color: #44544A; line-height: 1.5">Nothing reaches Grandma's iPad until you decide. <strong style="color: #1B2A21">3 waiting.</strong></div>
+          <sc-for list="{{ queue }}" as="q" hint-placeholder-count="3">
+            <div style="background: {{ q.bg }}; border: 1px {{ q.borderStyle }} {{ q.border }}; flex: {{ cardFlex }}; min-height: 0; border-radius: 12px; padding: 15px 16px; display: flex; flex-direction: column; gap: 9px">
+              <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: {{ q.kindColor }}">{{ q.kind }}</span>
+                <span style="font-size: 12px; color: {{ q.metaColor }}">{{ q.meta }}</span>
+              </div>
+              <div style="font-size: 17px; font-weight: 600; line-height: 1.3; color: {{ q.titleColor }}">{{ q.title }}</div>
+              <div style="border-left: 2px solid #E3EDE2; padding: 3px 0 3px 13px; font-size: 14px; color: {{ q.metaColor }}; line-height: 1.5">{{ q.quote }}</div>
+              <div style="margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap">
+                <button style="flex: {{ approveFlex }}; min-height: {{ approveH }}; padding: 0 22px; border-radius: 12px; border: none; background: #1E5B3C; color: #FFFFFF; font-family: inherit; font-size: {{ approveSize }}; font-weight: 600; cursor: pointer">Approve</button>
+                <button style="flex: {{ ctrlFlex }}; min-height: {{ ctrlH }}; padding: 0 18px; border-radius: 12px; border: 1px solid #1E5B3C; background: #FFFFFF; color: #1E5B3C; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Edit first</button>
+                <button style="flex: {{ ctrlFlex }}; min-height: {{ ctrlH }}; padding: 0 18px; border-radius: 12px; border: 1px solid #E3EDE2; background: #FFFFFF; color: #44544A; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Not now</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+      <div style="flex: none; background: #FFFFFF; border-top: 1px solid #E3EDE2; padding: 8px 8px 20px; display: flex; gap: 4px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <div style="flex: 1; min-height: 52px; border-radius: 10px; background: {{ t.bg }}; color: {{ t.fg }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12px; font-weight: {{ t.weight }}; cursor: pointer; position: relative">
+            <span>{{ t.label }}</span>
+            <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="position: absolute; top: 5px; right: 12px; min-width: 18px; height: 18px; border-radius: 999px; background: #FBF1DC; color: #6A4300; font-size: 11px; font-weight: 700; display: grid; place-items: center">{{ t.badge }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1208,&quot;height&quot;:836},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dashboard&quot;,&quot;call&quot;,&quot;queue&quot;],&quot;default&quot;:&quot;dashboard&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;assumeWidth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1208,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { w: 0 };
+
+  componentDidMount() {
+    const el = this.el;
+    if (!el) return;
+    const ro = new ResizeObserver(es => {
+      const w = Math.round(es[0].contentRect.width);
+      if (w && w !== this.state.w) this.setState({ w });
+    });
+    ro.observe(el);
+    this._ro = ro;
+  }
+
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); }
+
+  renderVals() {
+    const screen = this.props.screen || "dashboard";
+    const w = this.state.w || this.props.assumeWidth || 1208;
+    const wide = w >= 720;
+
+    const active = { dashboard: "Dashboard", call: "In call", queue: "Approvals" }[screen];
+    const nav = ["Dashboard", "In call", "Calls", "Approvals", "Family tree", "Memories"].map(label => {
+      const on = label === active;
+      return {
+        label,
+        badge: label === "Approvals" ? "3" : false,
+        bg: on ? "#E3EDE2" : "transparent",
+        fg: on ? "#1E5B3C" : "#44544A",
+        weight: on ? 600 : 400
+      };
+    });
+
+    const tabs = [
+      { label: "Home", key: "dashboard" },
+      { label: "Call", key: "call" },
+      { label: "Approvals", key: "queue", badge: "3" },
+      { label: "Family", key: "tree" }
+    ].map(t => {
+      const on = t.key === screen;
+      return {
+        label: t.label,
+        badge: t.badge || false,
+        bg: on ? "#E3EDE2" : "transparent",
+        fg: on ? "#1E5B3C" : "#44544A",
+        weight: on ? 600 : 500
+      };
+    });
+
+    const head = {
+      dashboard: { title: "Grandma Mei", subtitle: wide ? "Pine Ridge, room 12 · iPad online" : "iPad online", action: "Start call" },
+      call: { title: "Sunday 2:14 pm", subtitle: wide ? "5 people · 31 minutes · recording off" : "5 people · 31 min", action: "Invite" },
+      queue: { title: "Approvals", subtitle: wide ? "3 waiting · oldest from Sunday" : "3 waiting", action: "Approve all safe" }
+    }[screen];
+
+    const lines = [
+      { name: "Emily", initial: "E", text: "“Grandma, I passed my driving test on Thursday!”" },
+      { name: "Ken", initial: "K", text: "“She drove us here, actually. Slowly.”" },
+      { name: "Someone new", initial: "?", text: "“Hello Mrs Chen — I'm Marcus, Emily's boyfriend.”", unknown: true, flag: "unknown voice", flagBg: "#F0F0EA", flagFg: "#44544A" },
+      { name: "David", initial: "D", text: "“Don't forget the blood pressure pill at eight, Ma.”", flag: "med note", flagBg: "#FBF1DC", flagFg: "#6A4300" }
+    ].map(l => ({
+      name: l.name, initial: l.initial, text: l.text,
+      flag: l.flag || false,
+      flagBg: l.flagBg || "#F0F0EA",
+      flagFg: l.flagFg || "#44544A",
+      border: l.unknown ? "#44544A" : "#E3EDE2",
+      borderStyle: l.unknown ? "dashed" : "solid",
+      avBg: l.unknown ? "#FFFFFF" : "#E3EDE2",
+      avBorder: l.unknown ? "#44544A" : "#E3EDE2",
+      avStyle: l.unknown ? "dashed" : "solid",
+      nameColor: l.unknown ? "#44544A" : "#1B2A21"
+    }));
+
+    const queue = [
+      { kind: "Med note", title: "Blood pressure pill at 8 am", meta: "David · son · Sunday 14:07", quote: "“Don't forget the blood pressure pill at eight, Ma.”", warn: true },
+      { kind: "New person", title: "Marcus — Emily's boyfriend?", meta: "Unknown voice · Sunday 8:31", quote: "“Grandma, this is Marcus. We've been together since the summer.”", dashed: true },
+      { kind: "Tree edit", title: "Ava is Jason's daughter", meta: "Emily · granddaughter · Sunday 24:40", quote: "“Ava turned two last month — Jason sent photos.”" }
+    ].map(q => ({
+      ...q,
+      bg: q.warn ? "#FBF1DC" : "#FFFFFF",
+      border: q.warn ? "#EADFC4" : q.dashed ? "#44544A" : "#E3EDE2",
+      borderStyle: q.dashed ? "dashed" : "solid",
+      kindColor: q.warn ? "#6A4300" : "#44544A",
+      titleColor: q.warn ? "#6A4300" : "#1B2A21",
+      metaColor: q.warn ? "#6A4300" : "#44544A"
+    }));
+
+    return {
+      rootRef: el => { this.el = el; },
+      wide, narrow: !wide,
+      growFlex: wide ? "1 1 0%" : "0 0 auto",
+      gridAlign: wide ? "stretch" : "start",
+      cardFlex: wide ? "1 1 0%" : "0 0 auto",
+      ctrlFlex: wide ? "0 0 auto" : "1 1 124px",
+      ctrlH: wide ? "44px" : "48px",
+      approveFlex: wide ? "0 0 auto" : "1 1 100%",
+      approveH: wide ? "44px" : "52px",
+      approveSize: wide ? "15px" : "16px",
+      isDash: screen === "dashboard",
+      isCall: screen === "call",
+      isQueue: screen === "queue",
+      nav, tabs, lines, queue,
+      title: head.title, subtitle: head.subtitle, action: head.action,
+      stats: [
+        { label: "Calls this week", value: "5", note: "2 more than last week" },
+        { label: "Time together", value: "94 min", note: "longest: Sunday, 31 min" },
+        { label: "People who spoke", value: "6", note: "Lisa, Ken, Emily, David +2" },
+        { label: "Memories saved", value: "11", note: "3 waiting for approval" }
+      ],
+      week: [
+        { name: "Lisa", rel: "daughter", initial: "L", pct: "78%", minutes: "38 min" },
+        { name: "Ken", rel: "grandson", initial: "K", pct: "52%", minutes: "25 min" },
+        { name: "Emily", rel: "granddaughter", initial: "E", pct: "38%", minutes: "18 min" },
+        { name: "David", rel: "son", initial: "D", pct: "27%", minutes: "13 min" }
+      ],
+      memories: [
+        { text: "Emily passed her driving test", meta: "Emily · Sunday" },
+        { text: "Ava took her first steps", meta: "Jason · Friday" },
+        { text: "Ling's garden won the prize", meta: "Lisa · Tuesday" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
