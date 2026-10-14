@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/Button";
 import { PersonAvatar } from "@/components/PersonAvatar";
+import { useDemo } from "@/lib/demo-store";
 import { family, RESIDENT_ID, byId, type Person } from "@/lib/mocks/family";
 import { relationship, generation, GENERATION_LABELS } from "@/lib/relationships";
 
@@ -14,7 +14,6 @@ import { relationship, generation, GENERATION_LABELS } from "@/lib/relationships
  */
 export default function FamilyTree() {
   const [selectedId, setSelectedId] = useState<string>(RESIDENT_ID);
-  const [addOpen, setAddOpen] = useState(false);
   const selected = byId(selectedId)!;
 
   const rows = GENERATION_LABELS.map((label, gen) => ({
@@ -28,12 +27,6 @@ export default function FamilyTree() {
         <div>
           <h1 className="text-f-h1">Family tree</h1>
           <p className="text-f-small text-muted">{family.length} people · {rows.length} generations</p>
-        </div>
-        <div className="ml-auto flex gap-2">
-          <Button variant="secondary" onClick={() => setAddOpen(true)}>
-            Add relationship
-          </Button>
-          <Button variant="primary">Add person</Button>
         </div>
       </header>
 
@@ -66,10 +59,8 @@ export default function FamilyTree() {
           </div>
         </div>
 
-        <Inspector person={selected} onAddRelationship={() => setAddOpen(true)} />
+        <Inspector person={selected} />
       </div>
-
-      {addOpen && <AddRelationshipModal onClose={() => setAddOpen(false)} />}
     </div>
   );
 }
@@ -113,13 +104,8 @@ function Node({
   );
 }
 
-function Inspector({
-  person,
-  onAddRelationship,
-}: {
-  person: Person;
-  onAddRelationship: () => void;
-}) {
+function Inspector({ person }: { person: Person }) {
+  const { resolved } = useDemo();
   const links = [
     ...(person.parentIds ?? []).map((id) => `Child of ${byId(id)?.name}`),
     ...(person.spouseOf ? [`Married to ${byId(person.spouseOf)?.name}`] : []),
@@ -128,7 +114,10 @@ function Inspector({
 
   return (
     <aside className="flex flex-col gap-4">
-      <div className="rounded-[12px] border border-tint bg-surface p-4">
+      <Link
+        href={`/family/tree/${person.id}`}
+        className="rounded-[12px] border border-tint bg-surface p-4 transition-colors hover:border-primary"
+      >
         <div className="flex items-center gap-3">
           <PersonAvatar initial={person.initial} size="family" deceased={person.deceased} />
           <div>
@@ -138,141 +127,27 @@ function Inspector({
             </div>
           </div>
         </div>
-        <div className="mt-3 flex gap-2">
-          <Button variant="secondary" className="flex-1">
-            Upload photo
-          </Button>
-          <Link href={`/family/tree/${person.id}`} className="flex-1">
-            <Button variant="secondary" className="w-full">
-              Open full profile
-            </Button>
-          </Link>
-        </div>
-      </div>
+      </Link>
 
       {links.length > 0 && (
         <div className="rounded-[12px] border border-tint bg-surface p-4">
-          <div className="mb-2 text-f-h3">Links</div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 text-f-small">
             {links.map((l) => (
-              <div key={l} className="flex items-center justify-between text-f-small">
-                {l}
-                <button className="text-primary underline">Remove</button>
-              </div>
+              <div key={l}>{l}</div>
             ))}
           </div>
-          <p className="mt-2 text-f-small text-muted">
-            &ldquo;{relationship(person.id) || "Relationship"}&rdquo; is worked out from these links — there is
-            nothing to type.
-          </p>
         </div>
       )}
 
-      <div className="rounded-[12px] border border-tint bg-surface p-4">
-        <div className="mb-2 text-f-h3">Who is the resident?</div>
-        <div className="flex items-center gap-2 rounded-[12px] bg-tint p-2 text-f-small font-medium text-primary">
-          <PersonAvatar initial="M" size="small" /> Mei Chen
-        </div>
-        <Button variant="quiet" className="mt-2 w-full">
-          Make Emily the resident instead
-        </Button>
-        <p className="mt-2 text-f-small text-warn">
-          Changing this rebuilds every relationship label on the resident&apos;s iPad.
-        </p>
-      </div>
-
-      <div className="rounded-[12px] border border-[#EADFC4] bg-warn-bg p-4">
-        <div className="font-mono text-f-label uppercase text-warn">Pending from a call</div>
-        <div className="mt-1 text-f-body font-medium text-warn">Marcus — Emily&apos;s partner?</div>
-        <p className="mt-1 text-f-small text-warn">
-          Heard Sunday 8:31. Appears on the tree once approved.
-        </p>
-        <Link href="/family/approvals" className="mt-2 inline-block text-f-small font-medium text-warn underline">
-          Review in approvals
+      {!resolved.a2 && (
+        <Link
+          href="/family/approvals"
+          className="rounded-[12px] border border-[#EADFC4] bg-warn-bg p-4"
+        >
+          <div className="font-mono text-f-label uppercase text-warn">Pending from a call</div>
+          <div className="mt-1 text-f-body font-medium text-warn">Marcus — Emily&apos;s partner?</div>
         </Link>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Button variant="quiet" className="flex-1" onClick={onAddRelationship}>
-          − zoom
-        </Button>
-        <span className="font-mono text-f-small text-muted">100%</span>
-        <Button variant="quiet" className="flex-1" onClick={onAddRelationship}>
-          + zoom
-        </Button>
-      </div>
+      )}
     </aside>
-  );
-}
-
-function AddRelationshipModal({ onClose }: { onClose: () => void }) {
-  const [linkType, setLinkType] = useState<"parent" | "spouse" | "sibling">("parent");
-
-  return (
-    <div
-      className="fixed inset-0 z-10 flex items-center justify-center bg-[rgba(27,42,33,0.34)] p-4"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-[616px] rounded-[12px] border border-[#DCE4D9] bg-surface p-7 shadow-[0_8px_32px_rgba(27,42,33,0.18)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-f-h2">Add a relationship</h2>
-        <p className="mt-1 text-f-small text-muted">
-          Pick two people and how they are linked. Labels like &ldquo;great-aunt&rdquo; are worked out
-          from the structure.
-        </p>
-
-        <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <div className="rounded-[12px] bg-bg p-3">
-            <PersonAvatar initial="J" size="small" />
-            <div className="mt-2 text-f-body font-semibold">Jason</div>
-            <div className="text-f-small text-muted">grandson</div>
-          </div>
-          <div className="text-f-small text-muted">is the</div>
-          <div className="rounded-[12px] bg-bg p-3">
-            <PersonAvatar initial="A" size="small" />
-            <div className="mt-2 text-f-body font-semibold">Ava</div>
-            <div className="text-f-small text-muted">great-granddaughter</div>
-          </div>
-        </div>
-
-        <div className="mt-5">
-          <div className="mb-2 text-f-small font-medium">Link type</div>
-          <div className="grid grid-cols-3 gap-2">
-            {(["parent", "spouse", "sibling"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setLinkType(t)}
-                className={`min-h-[44px] rounded-[12px] px-3 text-f-small capitalize transition-colors ${
-                  linkType === t ? "border-2 border-primary bg-tint" : "border border-tint"
-                }`}
-              >
-                {t} of
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-5 rounded-[12px] bg-tint p-4">
-          <div className="text-f-small font-medium text-muted">What Grandma will hear</div>
-          <p className="mt-1 text-f-body font-semibold">
-            Ava is your great-granddaughter — Jason&apos;s daughter.
-          </p>
-          <p className="mt-1 text-f-small text-muted">
-            Derived from Mei → David → Jason → Ava. No label was typed.
-          </p>
-        </div>
-
-        <div className="mt-6 flex justify-end gap-2">
-          <Button variant="quiet" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={onClose}>
-            Add relationship
-          </Button>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -1,15 +1,19 @@
+import Image from "next/image";
+import Link from "next/link";
+import { Mail, Phone, Users } from "lucide-react";
 import { Tile } from "@/components/ui";
 import { events } from "@/lib/mocks/content";
 
 /**
- * R1 Home. Four primary actions, which is the documented ceiling. Every tile
- * carries a text label next to its icon.
+ * R1 Home. Three primary actions and what is on today. Every tile carries a
+ * text label next to its icon.
  */
 export default function ResidentHome() {
   const next = events[0];
+  const icon = (I: typeof Phone) => <I size={72} strokeWidth={1.75} />;
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[1180px] flex-col gap-12 p-12">
+    <div className="mx-auto flex min-h-[calc(100dvh-7rem)] max-w-[1180px] flex-col gap-10 p-12">
       <header className="flex items-start gap-8">
         <div className="flex-1">
           <h1 className="text-r-display">Good morning, Mei</h1>
@@ -17,27 +21,24 @@ export default function ResidentHome() {
             Saturday, 14 March · 10:24 in the morning
           </p>
         </div>
-        <div className="flex flex-none items-center gap-3 pt-3">
-          <span className="h-8 w-8 rounded-[10px] bg-primary" aria-hidden />
-          <span className="text-r-lead font-bold">Caretaker</span>
-        </div>
+        <Image src="/tile.png" alt="Caretaker" width={64} height={73} className="mt-3 flex-none" />
       </header>
 
-      <div className="grid flex-1 grid-cols-2 gap-8">
-        <Tile icon="☏" label="Call family" href="/resident/call" />
-        <Tile icon="♡" label="My family" href="/resident/family" />
-        <Tile icon="✉" label="Family news" href="/resident/news" />
-        <Tile icon="☀" label="Today" href="/resident/today" />
+      <div className="grid flex-1 grid-cols-3 gap-8">
+        <Tile icon={icon(Phone)} label="Call family" href="/resident/call" />
+        <Tile icon={icon(Users)} label="My family" href="/resident/family" />
+        <Tile icon={icon(Mail)} label="Family news" href="/resident/news" />
       </div>
 
-      <div className="rounded-[16px] border border-tint bg-surface p-8">
-        <div className="font-mono text-r-body uppercase tracking-widest text-muted">
-          Today
-        </div>
+      <Link
+        href="/resident/today"
+        className="block rounded-[16px] border border-tint bg-surface p-8"
+      >
+        <div className="font-mono text-r-body uppercase tracking-widest text-muted">Today</div>
         <div className="mt-3 text-r-h2">
           {next.title} at {next.time} this {next.part}.
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

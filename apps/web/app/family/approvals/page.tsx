@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Check, X } from "lucide-react";
 import { Button } from "@/components/Button";
 import { EmptyState } from "@/components/ui";
 import { approvals, FILTERS, type ApprovalItem } from "@/lib/mocks/approvals";
+import { useDemo } from "@/lib/demo-store";
 import { spring, springQuick } from "@/lib/motion";
 
 /**
- * F5 Approval queue. Nothing reaches the resident's iPad until someone here
- * approves it, so every card shows the source quote and says plainly what
- * approving will do before the buttons appear.
+ * F5 Approvals. Nothing reaches the resident's iPad until someone here
+ * approves it, so every card carries the source quote it came from.
  */
 export default function ApprovalQueue() {
   const [filter, setFilter] = useState<string>("all");
-  const [resolved, setResolved] = useState<Record<string, "approved" | "rejected">>({});
+  const { resolved, resolve } = useDemo();
 
   const active = FILTERS.find((f) => f.id === filter)!;
   const visible = approvals.filter(
@@ -31,10 +32,7 @@ export default function ApprovalQueue() {
   return (
     <div className="mx-auto max-w-[900px] p-8">
       <header className="mb-6">
-        <h1 className="text-f-h1">Approval queue</h1>
-        <p className="text-f-small text-muted">
-          Nothing reaches Grandma&apos;s iPad until someone here approves it
-        </p>
+        <h1 className="text-f-h1">Approvals</h1>
       </header>
 
       <div className="mb-6 flex flex-wrap items-center gap-2">
@@ -60,9 +58,6 @@ export default function ApprovalQueue() {
             </button>
           );
         })}
-        <span className="ml-auto font-mono text-f-label uppercase text-muted">
-          Oldest first
-        </span>
       </div>
 
       {/* layout on the list is what closes the gap when a card leaves. */}
@@ -72,7 +67,7 @@ export default function ApprovalQueue() {
             <Card
               key={item.id}
               item={item}
-              onResolve={(how) => setResolved((r) => ({ ...r, [item.id]: how }))}
+              onResolve={(how) => resolve(item.id, how)}
             />
           ))}
         </AnimatePresence>
@@ -80,8 +75,8 @@ export default function ApprovalQueue() {
         {visible.length === 0 && (
           <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <EmptyState
-              title="Nothing waiting for approval"
-              note="Items captured from calls will appear here first."
+              title="All caught up"
+              note="New items from calls land here."
             />
           </motion.div>
         )}
@@ -148,17 +143,12 @@ function Card({
         <div className="mt-3 rounded-[12px] bg-bg px-3 py-2 text-f-small">{item.detail}</div>
       )}
 
-      <p className={`mt-3 text-f-small ${warn ? "text-warn" : "text-muted"}`}>
-        {item.consequence}
-      </p>
-
       <div className="mt-4 flex flex-wrap gap-2">
         <Button variant="primary" onClick={() => onResolve("approved")}>
-          Approve
+          <Check size={18} aria-hidden /> Approve
         </Button>
-        <Button variant="secondary">Edit</Button>
         <Button variant="quiet" onClick={() => onResolve("rejected")}>
-          Reject
+          <X size={18} aria-hidden /> Reject
         </Button>
       </div>
     </motion.article>

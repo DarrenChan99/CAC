@@ -154,7 +154,7 @@ export function Tile({
   label,
   href,
 }: {
-  icon: string;
+  icon: ReactNode;
   label: string;
   href: string;
 }) {
@@ -162,9 +162,9 @@ export function Tile({
     <motion.div whileTap={pressResident} transition={pressTransition} className="flex">
       <Link
         href={href}
-        className="flex min-h-[180px] flex-1 flex-col items-center justify-center gap-4 rounded-[16px] border border-tint bg-surface p-8 text-center"
+        className="flex min-h-[260px] flex-1 flex-col items-center justify-center gap-4 rounded-[16px] border border-tint bg-surface p-8 text-center"
       >
-        <span className="text-[56px] leading-none text-primary" aria-hidden>
+        <span className="text-primary" aria-hidden>
           {icon}
         </span>
         <span className="text-r-h2">{label}</span>

@@ -7,7 +7,8 @@ import { Button } from "@/components/Button";
 import { ResidentHeader } from "@/components/ResidentHeader";
 import { MemoryCard, PhotoSlot } from "@/components/ui";
 import { byId } from "@/lib/mocks/family";
-import { memoriesFor } from "@/lib/mocks/content";
+import { useDemo } from "@/lib/demo-store";
+import { residentFeed } from "@/lib/residentFeed";
 import { relationshipToResident } from "@/lib/relationships";
 import { spring } from "@/lib/motion";
 
@@ -17,13 +18,14 @@ import { spring } from "@/lib/motion";
  */
 export default function PersonPage({ params }: PageProps<"/resident/family/[id]">) {
   const { id } = use(params);
+  const { resolved } = useDemo();
   const person = byId(id);
   if (!person) notFound();
 
-  const memories = memoriesFor(id);
+  const memories = residentFeed(resolved).memories.filter((m) => m.personId === id);
 
   return (
-    <div className="mx-auto min-h-dvh max-w-[1180px] p-12">
+    <div className="mx-auto min-h-[calc(100dvh-7rem)] max-w-[1180px] p-12">
       <ResidentHeader
         title={person.name}
         back={{ href: "/resident/family", label: "Back to family" }}
@@ -38,7 +40,7 @@ export default function PersonPage({ params }: PageProps<"/resident/family/[id]"
           transition={spring}
           className="flex-none"
         >
-          <PhotoSlot label="portrait photo" scale="resident" className="h-[320px] w-[280px]" />
+          <PhotoSlot label="photo" scale="resident" className="h-[320px] w-[280px]" />
         </motion.div>
 
         <div className="min-w-0 flex-1">
@@ -66,9 +68,7 @@ export default function PersonPage({ params }: PageProps<"/resident/family/[id]"
               ))}
             </div>
           ) : (
-            <p className="text-r-lead text-muted">
-              Nothing saved yet. Things {person.name} says on your calls will appear here.
-            </p>
+            <p className="text-r-lead text-muted">Nothing yet.</p>
           )}
         </div>
       </div>

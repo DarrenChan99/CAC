@@ -8,7 +8,7 @@ import { events } from "@/lib/mocks/content";
  */
 export default function Today() {
   return (
-    <div className="mx-auto min-h-dvh max-w-[1180px] p-12">
+    <div className="mx-auto min-h-[calc(100dvh-7rem)] max-w-[1180px] p-12">
       <ResidentHeader title="Today" note="Saturday, 14 March" />
 
       {events.length > 0 ? (

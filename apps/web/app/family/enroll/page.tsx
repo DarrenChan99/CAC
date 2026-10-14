@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Trash2 } from "lucide-react";
 import { Button } from "@/components/Button";
 import { Banner, ConsentBlock } from "@/components/ui";
 import { spring } from "@/lib/motion";
@@ -24,6 +25,7 @@ export default function VoiceEnrollment() {
   const [direction, setDirection] = useState(1);
   const [consented, setConsented] = useState(false);
   const [recorded, setRecorded] = useState(0);
+  const [done, setDone] = useState(false);
 
   function go(next: number) {
     setDirection(next > step ? 1 : -1);
@@ -34,9 +36,6 @@ export default function VoiceEnrollment() {
     <div className="mx-auto max-w-[720px] p-8">
       <header className="mb-6">
         <h1 className="text-f-h1">Set up your voice</h1>
-        <p className="text-f-small text-muted">
-          So Grandma&apos;s screen can show your name and face when you speak
-        </p>
       </header>
 
       {/* Stepper — the marker slides between steps rather than redrawing. */}
@@ -92,12 +91,10 @@ export default function VoiceEnrollment() {
                   onChange={setConsented}
                 />
                 <Banner tone="info">Audio retention is off by default.</Banner>
-                <Banner tone="info">Delete your voiceprint at any time in Privacy.</Banner>
                 <div className="flex gap-2">
                   <Button variant="primary" disabled={!consented} onClick={() => go(1)}>
                     Continue
                   </Button>
-                  <Button variant="quiet">Not now</Button>
                 </div>
               </div>
             )}
@@ -199,20 +196,22 @@ export default function VoiceEnrollment() {
                     </span>
                     <div>
                       <div className="text-f-body font-semibold">Ken Chen</div>
-                      <div className="text-f-small text-muted">
-                        matched · this is the name Grandma will see
-                      </div>
+                      <div className="font-mono text-f-label text-muted">matched</div>
                     </div>
                   </div>
                 </div>
-                <Banner tone="info">
-                  You can delete your voiceprint at any time in Privacy.
-                </Banner>
                 <div className="flex gap-2">
-                  <Button variant="primary">Finish setup</Button>
+                  <Button variant="primary" onClick={() => setDone(true)} disabled={done}>
+                    {done ? "Done" : "Finish setup"}
+                  </Button>
                   <Button variant="quiet" onClick={() => go(2)}>
                     Back
                   </Button>
+                  {done && (
+                    <Button variant="quiet" onClick={() => { setDone(false); setConsented(false); setRecorded(0); go(0); }}>
+                      <Trash2 size={18} aria-hidden /> Delete voiceprint
+                    </Button>
+                  )}
                 </div>
               </div>
             )}

@@ -15,7 +15,6 @@ export default function NewsSettings() {
     <div className="mx-auto max-w-[1200px] p-8">
       <header className="mb-6">
         <h1 className="text-f-h1">News</h1>
-        <p className="text-f-small text-muted">what reaches Grandma&apos;s iPad</p>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_396px]">
@@ -23,10 +22,7 @@ export default function NewsSettings() {
           <div className="rounded-[12px] border-2 border-primary bg-surface p-5">
             <label className="flex min-h-[44px] cursor-pointer items-center justify-between">
               <div>
-                <div className="text-f-body font-semibold">Show Family News on Grandma&apos;s iPad</div>
-                <div className="text-f-small text-muted">
-                  When off, the news tile disappears from her home screen entirely.
-                </div>
+                <div className="text-f-body font-semibold">Show news on Grandma&apos;s iPad</div>
               </div>
               <Toggle checked={masterOn} onChange={setMasterOn} />
             </label>
@@ -34,9 +30,6 @@ export default function NewsSettings() {
 
           <section className="rounded-[12px] border border-tint bg-surface p-5">
             <div className="mb-1 text-f-h3">Feeds</div>
-            <p className="mb-3 text-f-small text-muted">
-              Three stories a day, chosen from the feeds you turn on.
-            </p>
             <div className="flex flex-col gap-2">
               {feeds.map((f) => (
                 <label
@@ -55,16 +48,12 @@ export default function NewsSettings() {
 
           <div className="rounded-[12px] border border-tint bg-surface p-5">
             <div className="text-f-h3">Keep it gentle</div>
-            <p className="mt-1 text-f-small text-muted">
-              Filters out violence, disasters, and death before anything reaches her screen. About
-              one story in four is held back.
-            </p>
           </div>
         </div>
 
         <aside className="flex flex-col gap-4">
           <div className="rounded-[12px] border border-tint bg-surface p-4">
-            <div className="mb-2 text-f-h3">Today on her iPad</div>
+            <div className="mb-2 text-f-h3">On her iPad today</div>
             <div className="flex flex-col gap-2">
               {todayStories.map((s) => (
                 <div key={s.headline} className="rounded-[12px] bg-bg p-2.5">

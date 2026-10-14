@@ -23,7 +23,7 @@ export default function IncomingCall() {
         transition={spring}
         className="font-mono text-r-body uppercase tracking-widest text-muted"
       >
-        Your family is calling
+        Incoming call
       </motion.div>
 
       <div className="flex items-center gap-6">

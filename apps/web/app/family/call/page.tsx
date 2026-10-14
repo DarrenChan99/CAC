@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
+import { Camera, CameraOff, Check, Mic, MicOff, Pause, PhoneOff, Play, X } from "lucide-react";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { TranscriptBubble } from "@/components/TranscriptBubble";
-import { Button } from "@/components/Button";
+import { useDemo } from "@/lib/demo-store";
 import {
   CALL_END,
   CALL_START,
@@ -18,15 +19,21 @@ import { relationship } from "@/lib/relationships";
 import { useReplay } from "@/lib/useReplay";
 import { spring } from "@/lib/motion";
 
+const everyone = [...participantIds, ...remoteParticipantIds];
+const candidates = everyone.map((id) => ({ id, name: get(id).name }));
+
 /**
- * F3 In call, family side. The full named transcript, and a live panel of what
- * the call is producing — none of which reaches Grandma until it is approved.
+ * F3 Live call, family side. The named transcript, and what the call is
+ * producing — none of it reaches Grandma until it is approved.
  */
 export default function FamilyCall() {
   const router = useRouter();
+  const { resolved, resolve, speakers, fixSpeaker } = useDemo();
   const { t, playing, activeSpeakerId, activeIsUnknown, bubbles, captured, toggle, seek } =
     useReplay();
   const threadRef = useRef<HTMLDivElement>(null);
+  const [mic, setMic] = useState(true);
+  const [cam, setCam] = useState(true);
 
   // Follow the conversation, the way a chat does.
   useEffect(() => {
@@ -50,13 +57,12 @@ export default function FamilyCall() {
       >
         <span className="flex items-center gap-2 text-f-body font-semibold">
           <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
-          Live with Grandma Mei
+          Grandma Mei
         </span>
         <span className="font-mono text-f-label text-muted">{formatCallTime(t)}</span>
 
-        <span className="ml-4 text-f-small text-muted">On this call</span>
         <div className="flex -space-x-2">
-          {[...participantIds, ...remoteParticipantIds].map((id) => (
+          {everyone.map((id) => (
             <PersonAvatar
               key={id}
               initial={get(id).initial}
@@ -66,15 +72,15 @@ export default function FamilyCall() {
           ))}
         </div>
 
-        {/* Replay transport — this is a scripted call, and the UI says so
-            rather than pretending to be live. */}
-        <div className="ml-auto flex items-center gap-2">
-          <span className="font-mono text-f-label uppercase text-muted">replay</span>
+        {/* The call is scripted, and the transport says so quietly. */}
+        <div className="ml-auto flex items-center gap-2 rounded-full border border-tint px-2 py-1">
+          <span className="pl-1 font-mono text-f-label uppercase text-muted">Demo call</span>
           <button
             onClick={toggle}
-            className="min-h-[44px] rounded-[12px] border border-tint px-3 text-f-small text-primary transition-colors hover:bg-tint"
+            aria-label={playing ? "Pause" : "Play"}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-primary transition-colors hover:bg-tint"
           >
-            {playing ? "Pause" : "Play"}
+            {playing ? <Pause size={18} aria-hidden /> : <Play size={18} aria-hidden />}
           </button>
           <input
             type="range"
@@ -92,37 +98,38 @@ export default function FamilyCall() {
       <div className="grid min-h-0 flex-1 gap-4 p-4 lg:grid-cols-[1.1fr_1fr_0.8fr]">
         {/* ---- Video ---- */}
         <section className="flex min-h-0 flex-col gap-3">
-          <div className="flex flex-1 items-center justify-center rounded-[12px] bg-[#2A3A30] text-f-small text-white/45">
-            grandma&apos;s feed
-          </div>
-          <div className="text-f-small text-muted">
-            Living room laptop · Lisa, Emily, Ken
+          <div className="relative flex flex-1 items-center justify-center gap-6 overflow-hidden rounded-[12px] bg-[#2A3A30]">
+            {["lisa", "emily", "ken"].map((id) => (
+              <PersonAvatar
+                key={id}
+                initial={get(id).initial}
+                size="family"
+                className="!h-24 !w-24 !text-4xl opacity-30 blur-[2px]"
+              />
+            ))}
           </div>
           <div className="flex gap-2">
-            <Button variant="quiet">Mute</Button>
-            <Button variant="quiet">Camera</Button>
-            <Button variant="quiet" onClick={() => router.push("/family")}>
-              Leave call
-            </Button>
+            <CallButton label={mic ? "Mute" : "Unmute"} onClick={() => setMic((m) => !m)} off={!mic}>
+              {mic ? <Mic size={20} aria-hidden /> : <MicOff size={20} aria-hidden />}
+            </CallButton>
+            <CallButton label={cam ? "Camera off" : "Camera on"} onClick={() => setCam((c) => !c)} off={!cam}>
+              {cam ? <Camera size={20} aria-hidden /> : <CameraOff size={20} aria-hidden />}
+            </CallButton>
+            <CallButton label="Leave call" onClick={() => router.push("/family")} danger>
+              <PhoneOff size={20} aria-hidden />
+            </CallButton>
           </div>
         </section>
 
         {/* ---- Transcript ---- */}
         <section className="flex min-h-0 flex-col rounded-[12px] border border-tint bg-surface">
-          <div className="border-b border-tint p-4">
-            <div className="text-f-h3">Transcript</div>
-            <div className="text-f-small text-muted">
-              Grandma sees the newest line, large
-            </div>
-            <button className="mt-2 min-h-[44px] rounded-[12px] border border-tint px-3 text-f-small text-primary transition-colors hover:bg-tint">
-              Wrong speaker? Fix it
-            </button>
-          </div>
+          <div className="border-b border-tint p-4 text-f-h3">Transcript</div>
 
           <div ref={threadRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
             <AnimatePresence initial={false}>
               {bubbles.map((b) => {
-                const person = b.speakerId ? get(b.speakerId) : null;
+                const speakerId = b.id in speakers ? speakers[b.id] : b.speakerId;
+                const person = speakerId ? get(speakerId) : null;
                 return (
                   <TranscriptBubble
                     key={b.id}
@@ -138,7 +145,9 @@ export default function FamilyCall() {
                     lowConfidence={b.lowConfidence}
                     uncertainWord={b.uncertainWord}
                     unknown={!person}
-                    onIdentify={() => router.push("/family/approvals")}
+                    score={b.transcribing ? undefined : b.speakerScore}
+                    candidates={candidates}
+                    onReassign={(id) => fixSpeaker(b.id, id)}
                   />
                 );
               })}
@@ -147,9 +156,7 @@ export default function FamilyCall() {
             {/* Who is talking right now, mirrored from the resident view. */}
             {(activeSpeakerId || activeIsUnknown) && (
               <div className="pt-1 font-mono text-f-label uppercase text-muted">
-                {activeIsUnknown
-                  ? "unknown voice speaking"
-                  : `${get(activeSpeakerId!).name} speaking`}
+                {activeIsUnknown ? "unknown voice" : get(activeSpeakerId!).name}
               </div>
             )}
           </div>
@@ -157,46 +164,108 @@ export default function FamilyCall() {
 
         {/* ---- Captured ---- */}
         <section className="flex min-h-0 flex-col rounded-[12px] border border-tint bg-surface">
-          <div className="border-b border-tint p-4">
-            <div className="text-f-h3">Captured from this call</div>
-            <div className="text-f-small text-muted">
-              Nothing is saved or shown to Grandma until a family member approves it.
-            </div>
-          </div>
+          <div className="border-b border-tint p-4 text-f-h3">Captured</div>
 
           <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-4">
             <AnimatePresence initial={false}>
-              {captured.map((c) => (
-                <motion.div
-                  key={c.id}
-                  layout
-                  initial={{ opacity: 0, x: 16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={spring}
-                  className={`rounded-[12px] border p-3 ${
-                    c.warn ? "border-[#EADFC4] bg-warn-bg" : "border-tint bg-bg"
-                  }`}
-                >
-                  <div
-                    className={`font-mono text-f-label uppercase ${
-                      c.warn ? "text-warn" : "text-muted"
+              {captured.map((c) => {
+                const state = resolved[c.id];
+                return (
+                  <motion.div
+                    key={c.id}
+                    layout
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: state === "rejected" ? 0.45 : 1, x: 0 }}
+                    transition={spring}
+                    className={`flex items-center gap-2 rounded-[12px] border p-3 ${
+                      c.warn ? "border-[#EADFC4] bg-warn-bg" : "border-tint bg-bg"
                     }`}
                   >
-                    {c.kind}
-                  </div>
-                  <div className={`text-f-body ${c.warn ? "text-warn" : "text-text"}`}>
-                    {c.title}
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="min-w-0 flex-1">
+                      <div
+                        className={`font-mono text-f-label uppercase ${
+                          c.warn ? "text-warn" : "text-muted"
+                        }`}
+                      >
+                        {c.kind}
+                      </div>
+                      <div className={`text-f-body ${c.warn ? "text-warn" : "text-text"}`}>
+                        {c.title}
+                      </div>
+                    </div>
+                    {state ? (
+                      state === "approved" && <Check size={20} className="text-primary" aria-label="Approved" />
+                    ) : (
+                      <>
+                        <MiniButton label={`Approve ${c.title}`} onClick={() => resolve(c.id, "approved")}>
+                          <Check size={18} aria-hidden />
+                        </MiniButton>
+                        <MiniButton label={`Reject ${c.title}`} onClick={() => resolve(c.id, "rejected")}>
+                          <X size={18} aria-hidden />
+                        </MiniButton>
+                      </>
+                    )}
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
-
-            {captured.length === 0 && (
-              <div className="text-f-small text-muted">Nothing captured yet.</div>
-            )}
           </div>
         </section>
       </div>
     </div>
+  );
+}
+
+function CallButton({
+  label,
+  onClick,
+  off,
+  danger,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  off?: boolean;
+  danger?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.94 }}
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
+        danger
+          ? "border-transparent bg-[#7A2E22] text-white"
+          : off
+            ? "border-transparent bg-text text-white"
+            : "border-tint bg-surface text-text hover:bg-tint"
+      }`}
+    >
+      {children}
+    </motion.button>
+  );
+}
+
+function MiniButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.92 }}
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="flex h-10 w-10 flex-none items-center justify-center rounded-[10px] border border-tint bg-surface text-primary transition-colors hover:bg-tint"
+    >
+      {children}
+    </motion.button>
   );
 }

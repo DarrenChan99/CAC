@@ -14,6 +14,12 @@ export interface CapturedItem {
   warn?: boolean;
 }
 
+/**
+ * One diarized utterance. This is the contract the diarization service emits:
+ * who spoke (or null for an unenrolled voice), when, what was said, and how
+ * close the voice matched the enrolled voiceprint. `useReplay` is the only
+ * place that produces these — a live source replaces its internals, not this.
+ */
 export interface Utterance {
   id: string;
   /** Seconds into the call when this person starts speaking. */
@@ -22,12 +28,14 @@ export interface Utterance {
   speakFor: number;
   /** null means an unenrolled voice. It is never given a guessed name. */
   speakerId: string | null;
+  /** Cosine match (0–1) against the enrolled voiceprint. Low when speakerId is null. */
+  speakerScore: number;
   text: string;
   /** ASR was not confident. Rendered with the warn treatment, never hidden. */
   lowConfidence?: boolean;
   /** The specific word we are unsure about. */
   uncertainWord?: string;
-  /** Lands in the "Captured from this call" panel once the text resolves. */
+  /** Lands in the "Captured" panel once the text resolves. `id` is the approval id. */
   captured?: CapturedItem;
 }
 
@@ -53,6 +61,7 @@ export const timeline: Utterance[] = [
     at: 124,
     speakFor: 3,
     speakerId: "lisa",
+    speakerScore: 0.94,
     text: "Mum, we're all here — Emily and Ken came over too.",
   },
   {
@@ -60,32 +69,36 @@ export const timeline: Utterance[] = [
     at: 134,
     speakFor: 3,
     speakerId: "emily",
+    speakerScore: 0.91,
     text: "I passed my driving test on the first try, Grandma.",
-    captured: { id: "c1", kind: "Memory", title: "Emily passed her driving test" },
+    captured: { id: "a4", kind: "Memory", title: "Emily passed her driving test" },
   },
   {
     id: "u3",
     at: 151,
     speakFor: 3,
     speakerId: "david",
+    speakerScore: 0.88,
     text: "Make sure she takes the blood pressure pill at eight in the morning.",
     lowConfidence: true,
     uncertainWord: "eight",
-    captured: { id: "c2", kind: "Med note", title: "Blood pressure pill at 8 am", warn: true },
+    captured: { id: "a1", kind: "Med note", title: "Blood pressure pill at 8 am", warn: true },
   },
   {
     id: "u4",
     at: 158,
     speakFor: 2.5,
     speakerId: null,
+    speakerScore: 0.41,
     text: "Hi Mei, it's nice to finally meet you.",
-    captured: { id: "c3", kind: "New person", title: "Marcus — Emily's boyfriend?" },
+    captured: { id: "a2", kind: "New person", title: "Marcus — Emily's boyfriend?" },
   },
   {
     id: "u5",
     at: 164,
     speakFor: 3,
     speakerId: "ken",
+    speakerScore: 0.96,
     text: "We'll call again on Sunday, Grandma. Look after yourself.",
   },
 ];

@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { Wrench } from "lucide-react";
 import { PersonAvatar } from "./PersonAvatar";
-import { spring } from "@/lib/motion";
+import { spring, springQuick } from "@/lib/motion";
 
 interface TranscriptBubbleProps {
   name: string;
@@ -13,7 +15,11 @@ interface TranscriptBubbleProps {
   lowConfidence?: boolean;
   uncertainWord?: string;
   unknown?: boolean;
-  onIdentify?: () => void;
+  /** Voiceprint match, 0–1. Shown as a bare mono number. */
+  score?: number;
+  /** Who this line can be reassigned to. null in onReassign means "Someone new". */
+  candidates?: { id: string; name: string }[];
+  onReassign?: (personId: string | null) => void;
 }
 
 /** Three dots while the words are still arriving. */
@@ -54,24 +60,87 @@ export function TranscriptBubble({
   lowConfidence = false,
   uncertainWord,
   unknown = false,
-  onIdentify,
+  score,
+  candidates = [],
+  onReassign,
 }: TranscriptBubbleProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={spring}
-      className="flex gap-3"
+      className="group flex gap-3"
     >
       <PersonAvatar initial={initial} size="small" unknown={unknown} />
 
       <div className="min-w-0 flex-1">
         <div className="mb-1 flex items-baseline gap-2">
-          <span className="text-f-body font-semibold">
+          <motion.span
+            key={unknown ? "?" : name}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={spring}
+            className="text-f-body font-semibold"
+          >
             {unknown ? "Unknown speaker" : name}
-          </span>
+          </motion.span>
           <span className="font-mono text-f-label text-muted">{meta}</span>
+          {score !== undefined && (
+            <span className={`font-mono text-f-label ${score < 0.6 ? "text-warn" : "text-muted"}`}>
+              {score.toFixed(2)}
+            </span>
+          )}
+          {onReassign && (
+            <span className="relative">
+              <button
+                onClick={() => setOpen((o) => !o)}
+                aria-label="Fix speaker"
+                title="Fix speaker"
+                className={`flex h-8 w-8 items-center justify-center rounded-[10px] text-muted transition-opacity hover:bg-tint focus-visible:opacity-100 group-hover:opacity-100 ${
+                  unknown || open ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Wrench size={16} aria-hidden />
+              </button>
+              <AnimatePresence>
+                {open && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, transition: springQuick }}
+                    transition={springQuick}
+                    style={{ transformOrigin: "top left" }}
+                    className="absolute left-0 top-9 z-20 flex w-44 flex-col rounded-[12px] border border-tint bg-surface p-1 shadow-lg"
+                  >
+                    {candidates.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => {
+                          onReassign(c.id);
+                          setOpen(false);
+                        }}
+                        className="min-h-[36px] rounded-[8px] px-3 text-left text-f-small hover:bg-tint"
+                      >
+                        {c.name}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => {
+                        onReassign(null);
+                        setOpen(false);
+                      }}
+                      className="min-h-[36px] rounded-[8px] border-t border-tint px-3 text-left text-f-small text-muted hover:bg-tint"
+                    >
+                      Someone new
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </span>
+          )}
         </div>
 
         <div
@@ -87,15 +156,6 @@ export function TranscriptBubble({
             <span className="h-1.5 w-1.5 rounded-full bg-warn" aria-hidden />
             Not sure we heard this right
           </div>
-        )}
-
-        {unknown && !transcribing && onIdentify && (
-          <button
-            onClick={onIdentify}
-            className="mt-2 min-h-[44px] rounded-[12px] border border-tint px-3 text-f-small text-primary transition-colors hover:bg-tint"
-          >
-            Who is this?
-          </button>
         )}
       </div>
     </motion.div>

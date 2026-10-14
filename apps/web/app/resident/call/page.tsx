@@ -7,6 +7,7 @@ import { Button } from "@/components/Button";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { ResidentNavButton } from "@/components/ResidentHeader";
 import { SpeakerCard } from "@/components/SpeakerCard";
+import { useDemo } from "@/lib/demo-store";
 import { participantIds, formatCallTime } from "@/lib/mocks/call-timeline";
 import { get } from "@/lib/mocks/family";
 import { relationshipToResident } from "@/lib/relationships";
@@ -21,10 +22,12 @@ import { spring, springSheet } from "@/lib/motion";
 export default function ResidentCall() {
   const router = useRouter();
   const { activeSpeakerId, activeIsUnknown, bubbles } = useReplay();
+  const { speakers } = useDemo();
   const [expanded, setExpanded] = useState(false);
 
   const newest = bubbles[bubbles.length - 1];
-  const newestSpeaker = newest?.speakerId ? get(newest.speakerId) : null;
+  const newestSpeakerId = newest ? (newest.id in speakers ? speakers[newest.id] : newest.speakerId) : null;
+  const newestSpeaker = newestSpeakerId ? get(newestSpeakerId) : null;
 
   // Whoever is talking but has no standing card.
   const guest = activeIsUnknown
@@ -39,20 +42,23 @@ export default function ResidentCall() {
       : null;
 
   return (
-    <div className="mx-auto flex h-dvh max-w-[1180px] flex-col gap-6 p-8">
+    <div className="mx-auto flex h-[calc(100dvh-7rem)] max-w-[1180px] flex-col gap-6 p-8">
       {/* ---- Video ---- */}
       <div className="relative flex min-h-0 flex-[3] gap-4">
-        <div className="flex flex-1 items-center justify-center rounded-[16px] bg-[#2A3A30] text-r-body text-white/45">
-          live video
-        </div>
-        <div className="flex flex-[1.6] items-center justify-center rounded-[16px] bg-[#334339] text-center text-r-body leading-snug text-white/45">
-          three people,
-          <br />
-          one laptop
-        </div>
-        <div className="flex flex-1 items-center justify-center rounded-[16px] bg-[#2A3A30] text-r-body text-white/45">
-          live video
-        </div>
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className={`flex items-center justify-center rounded-[16px] ${
+              i === 1 ? "flex-[1.6] bg-[#334339]" : "flex-1 bg-[#2A3A30]"
+            }`}
+          >
+            <PersonAvatar
+              initial={get(participantIds[i]).initial}
+              size="resident"
+              className="opacity-30 blur-[2px]"
+            />
+          </div>
+        ))}
 
         <div className="absolute right-4 top-4">
           <ResidentNavButton href="/resident" label="Home" />
@@ -100,22 +106,17 @@ export default function ResidentCall() {
 
       {/* ---- Newest line + actions ---- */}
       <div className="flex flex-none items-center gap-6 rounded-[16px] border border-tint bg-surface p-6">
-        <PersonAvatar
-          initial={newestSpeaker?.initial ?? "?"}
-          size="resident"
-          unknown={!newestSpeaker}
-          className="!h-20 !w-20 !text-3xl"
-        />
-        <div className="min-w-0 flex-1">
-          <div className="text-r-body text-muted">
-            {newestSpeaker
-              ? `${newestSpeaker.name} · ${relationshipToResident(newestSpeaker.id)}`
-              : "a voice we don't know"}
-            {newest && ` · ${formatCallTime(newest.at)}`}
-          </div>
-          <div className="mt-1 text-r-lead">
-            {newest ? (newest.transcribing ? "…" : newest.text) : "Nobody is talking."}
-          </div>
+        <div className="min-w-0 flex-1 text-r-lead">
+          {newest ? (
+            <>
+              <span className="font-bold text-primary">
+                {newestSpeaker ? newestSpeaker.name : "Someone new"}
+              </span>{" "}
+              {newest.transcribing ? "…" : newest.text}
+            </>
+          ) : (
+            <span className="text-muted">Nobody is talking.</span>
+          )}
         </div>
 
         <Button scale="resident" variant="secondary" onClick={() => setExpanded(true)}>
@@ -160,7 +161,8 @@ export default function ResidentCall() {
 
               <div className="flex flex-col gap-6">
                 {bubbles.map((b) => {
-                  const person = b.speakerId ? get(b.speakerId) : null;
+                  const sid = b.id in speakers ? speakers[b.id] : b.speakerId;
+                  const person = sid ? get(sid) : null;
                   return (
                     <div key={b.id} className="flex items-start gap-5">
                       <PersonAvatar
@@ -171,7 +173,7 @@ export default function ResidentCall() {
                       />
                       <div>
                         <div className="text-r-body text-muted">
-                          {person ? person.name : "a voice we don't know"} ·{" "}
+                          {person ? person.name : "Someone new"} ·{" "}
                           {formatCallTime(b.at)}
                         </div>
                         <div className="text-r-lead">

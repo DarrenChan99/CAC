@@ -14,15 +14,23 @@ a family tree the family keeps. Congressional App Challenge 2026.
 Spec §12.1 expects `SPEC.md` at the repo root. It could not be copied in
 automatically (macOS blocks terminal access to `~/Downloads`); copy it manually.
 
-## Current state — UI shell only
+## Current state — judge-ready UI shell
 
-The front end of 12 screens is built against mock data. There is **no backend**:
-no API routes, no database, no LiveKit, no auth, no ML. Everything the UI shows
-comes from `apps/web/lib/mocks/`.
+The front end is built against mock data. There is **no backend**: no API
+routes, no database, no LiveKit, no auth, no ML. Mock data lives in
+`apps/web/lib/mocks/`; the demo's shared state (resolved approvals, corrected
+speaker labels) is `lib/demo-store.ts`, persisted to sessionStorage.
 
-Built: P1 landing, R1–R7 (resident), F1/F3/F5/F8 (family).
-Not built: F2, F4, F6, F7, F9–F13 — they have no mock yet and render as
-disabled "soon" entries in the family sidebar.
+One story: landing → family Home → Live call (named transcript, wrench to fix a
+speaker, approve what was captured) → Grandma's News shows it.
+
+- Family: Home, Live call, Approvals, Family tree (+ person), News settings, Enroll.
+- Resident: R1–R7 (Home has 3 tiles + Today card).
+- `Utterance` in `lib/mocks/call-timeline.ts` is the contract the diarization
+  service will emit; `useReplay` is the single seam a live source replaces.
+- `lib/residentFeed.ts` is the only path from a call to the resident, and it
+  admits approved memories only (med notes are excluded; tested).
+- The 家 tile mascot (`components/Mascot.tsx`) links the two views.
 
 ## The rules that are not negotiable
 

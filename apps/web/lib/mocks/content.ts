@@ -9,7 +9,6 @@ export interface Memory {
 }
 
 export const memories: Memory[] = [
-  { id: "m1", personId: "emily", text: "Emily passed her driving test", when: "last Sunday", hasPhoto: true },
   { id: "m2", personId: "emily", text: "Emily started her new job at the library", when: "February", hasPhoto: true },
   { id: "m3", personId: "emily", text: "Emily brought you peonies", when: "January", hasPhoto: true },
   { id: "m4", personId: "ken", text: "Ken is learning to make dumplings from your recipe", when: "February", hasPhoto: true },

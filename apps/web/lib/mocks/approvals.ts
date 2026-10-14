@@ -1,9 +1,9 @@
 /**
  * The approval queue — SPEC §8. Nothing reaches the resident's iPad until a
- * family member approves it here.
+ * family member approves it here. Ids are shared with the call's captured items.
  */
 
-export type ApprovalKind = "med" | "person" | "tree";
+export type ApprovalKind = "memory" | "med" | "person" | "tree";
 
 export interface ApprovalItem {
   id: string;
@@ -16,13 +16,24 @@ export interface ApprovalItem {
   quote: string;
   quoteBy: string;
   quoteMeta: string;
-  /** What approving actually does — shown before the buttons, not after. */
-  consequence: string;
+  /** For memories: who it is about, so it can land on their page. */
+  personId?: string;
   /** Extra detail line, where the mock has one. */
   detail?: string;
 }
 
 export const approvals: ApprovalItem[] = [
+  {
+    id: "a4",
+    kind: "memory",
+    kindLabel: "Memory",
+    personId: "emily",
+    source: "Sunday call · 2:14",
+    title: "Emily passed her driving test",
+    quote: "I passed my driving test on the first try, Grandma.",
+    quoteBy: "Emily",
+    quoteMeta: "granddaughter · 2:14",
+  },
   {
     id: "a1",
     kind: "med",
@@ -32,8 +43,6 @@ export const approvals: ApprovalItem[] = [
     quote: "Make sure she takes the blood pressure pill at eight in the morning.",
     quoteBy: "David",
     quoteMeta: "son · 2:31",
-    consequence:
-      "Family notes, not medical instructions. Approving files this with the care team — it never shows on Grandma's iPad.",
   },
   {
     id: "a2",
@@ -44,8 +53,6 @@ export const approvals: ApprovalItem[] = [
     quote: "Hi Mei, it's nice to finally meet you.",
     quoteBy: "Unknown speaker",
     quoteMeta: "· 2:38",
-    consequence:
-      "Said by Emily, granddaughter. Until someone confirms, Grandma's screen shows “Someone new” with no name.",
     detail: "Add as: Emily's partner · voice enrollment optional",
   },
   {
@@ -57,14 +64,13 @@ export const approvals: ApprovalItem[] = [
     quote: "Jason brought Ava round on Saturday — she's getting so big.",
     quoteBy: "Emily",
     quoteMeta: "granddaughter · 3:02",
-    consequence:
-      "Adds a fourth generation. Grandma's family screen will show Ava under “your great-grandchildren”.",
     detail: "Jason → Ava, 2",
   },
 ];
 
 export const FILTERS = [
   { id: "all", label: "All", kinds: null },
+  { id: "memory", label: "Memories", kinds: ["memory"] },
   { id: "med", label: "Med notes", kinds: ["med"] },
   { id: "person", label: "People", kinds: ["person"] },
   { id: "tree", label: "Tree edits", kinds: ["tree"] },

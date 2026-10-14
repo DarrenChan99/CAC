@@ -20,8 +20,8 @@ export default function MyFamily() {
   }));
 
   return (
-    <div className="mx-auto min-h-dvh max-w-[1180px] p-12">
-      <ResidentHeader title="Your family" note="Tap anyone to call them" />
+    <div className="mx-auto min-h-[calc(100dvh-7rem)] max-w-[1180px] p-12">
+      <ResidentHeader title="Your family" />
 
       <div className="flex flex-col gap-10">
         {rows.map((row) => (

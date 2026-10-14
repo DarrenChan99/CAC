@@ -1,466 +1,1999 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Caretaker — Design Handoff Reference</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #FAF8F2; --surface: #FFFFFF; --primary: #1E5B3C; --primary-dark: #14422B;
-    --text: #1B2A21; --muted: #44544A; --tint: #E3EDE2; --line: #DCE4D9;
-    --accent: #9DBF97; --warn: #6A4300; --warn-bg: #FBF1DC;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.6; }
-  .wrap { max-width: 1000px; margin: 0 auto; padding: 56px 28px 120px; }
-  h1 { font-size: 34px; letter-spacing: -.02em; margin: 0 0 8px; }
-  h2 { font-size: 22px; letter-spacing: -.01em; margin: 56px 0 4px; padding-top: 24px; border-top: 1px solid var(--line); }
-  h3 { font-size: 17px; margin: 32px 0 4px; }
-  h4 { font-size: 14px; margin: 18px 0 2px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
-  p, li { text-wrap: pretty; }
-  p { margin: 8px 0; }
-  ul { margin: 8px 0; padding-left: 22px; }
-  li { margin: 3px 0; }
-  code, .mono { font-family: 'IBM Plex Mono', monospace; font-size: .92em; }
-  code { background: var(--tint); color: var(--primary-dark); padding: 1px 5px; border-radius: 4px; }
-  a { color: var(--primary); }
-  a:hover { color: var(--primary-dark); }
-  .lede { font-size: 17px; color: var(--muted); max-width: 70ch; }
-  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px; margin: 20px 0; }
-  .note { background: var(--warn-bg); border: 1px solid #EADFC4; border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
-  .note strong { color: var(--warn); }
-  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
-  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  .sw { display: inline-block; width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--line); vertical-align: -3px; margin-right: 8px; }
-  .screen { border-left: 3px solid var(--tint); padding-left: 18px; margin: 28px 0; }
-  .screen h3 { margin-top: 0; }
-  .tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: var(--tint); color: var(--primary); margin-right: 6px; }
-  .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 4px 20px; }
-</style>
-</head>
-<body>
-<div class="wrap">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Caretaker — Design Handoff Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #faf8f2;
+        --surface: #ffffff;
+        --primary: #1e5b3c;
+        --primary-dark: #14422b;
+        --text: #1b2a21;
+        --muted: #44544a;
+        --tint: #e3ede2;
+        --line: #dce4d9;
+        --accent: #9dbf97;
+        --warn: #6a4300;
+        --warn-bg: #fbf1dc;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 56px 28px 120px;
+      }
+      h1 {
+        font-size: 34px;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px;
+      }
+      h2 {
+        font-size: 22px;
+        letter-spacing: -0.01em;
+        margin: 56px 0 4px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      h3 {
+        font-size: 17px;
+        margin: 32px 0 4px;
+      }
+      h4 {
+        font-size: 14px;
+        margin: 18px 0 2px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 500;
+      }
+      p,
+      li {
+        text-wrap: pretty;
+      }
+      p {
+        margin: 8px 0;
+      }
+      ul {
+        margin: 8px 0;
+        padding-left: 22px;
+      }
+      li {
+        margin: 3px 0;
+      }
+      code,
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.92em;
+      }
+      code {
+        background: var(--tint);
+        color: var(--primary-dark);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      a {
+        color: var(--primary);
+      }
+      a:hover {
+        color: var(--primary-dark);
+      }
+      .lede {
+        font-size: 17px;
+        color: var(--muted);
+        max-width: 70ch;
+      }
+      .kicker {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 20px 0;
+      }
+      .note {
+        background: var(--warn-bg);
+        border: 1px solid #eadfc4;
+        border-radius: 12px;
+        padding: 18px 22px;
+        margin: 20px 0;
+      }
+      .note strong {
+        color: var(--warn);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .sw {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        border: 1px solid var(--line);
+        vertical-align: -3px;
+        margin-right: 8px;
+      }
+      .screen {
+        border-left: 3px solid var(--tint);
+        padding-left: 18px;
+        margin: 28px 0;
+      }
+      .screen h3 {
+        margin-top: 0;
+      }
+      .tag {
+        display: inline-block;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--tint);
+        color: var(--primary);
+        margin-right: 6px;
+      }
+      .toc {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 4px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="kicker">Design handoff · September 2026</div>
+      <h1>Caretaker</h1>
+      <p class="lede">
+        Video calls for people who forget faces. As each family member speaks, the resident's iPad says who they are and how they're related. Two front ends, deliberately unalike: a resident iPad app for ten-foot reading and one tap, and a family web app for review and control. This file is the
+        single reference for implementing the design in a real codebase.
+      </p>
 
-<div class="kicker">Design handoff · September 2026</div>
-<h1>Caretaker</h1>
-<p class="lede">Video calls for people who forget faces. As each family member speaks, the resident's iPad says who they are and how they're related. Two front ends, deliberately unalike: a resident iPad app for ten-foot reading and one tap, and a family web app for review and control. This file is the single reference for implementing the design in a real codebase.</p>
+      <div class="note">
+        <p>
+          <strong>Read this first.</strong>
+          Everything in
+          <code>designs/</code>
+          is a
+          <em>design reference written in HTML</em>
+          — prototypes that show intended look, copy, and behavior. They are not production code to lift. The job is to
+          <strong>recreate these screens inside the target codebase</strong>
+          , using its existing framework, component library, routing, and state conventions. If no app environment exists yet, choose the appropriate stack (React + TypeScript is a safe default for the family web app; SwiftUI or React Native for the resident tablet app) and build the designs there.
+        </p>
+        <p>
+          The prototype files use a small in-house template runtime (
+          <code>support.js</code>
+          ,
+          <code>&lt;x-dc&gt;</code>
+          ,
+          <code>&lt;sc-for&gt;</code>
+          ,
+          <code>style-hover</code>
+          ).
+          <strong>Ignore that runtime entirely</strong>
+          — it is a preview harness. Read the markup for structure, the inline styles for exact values, and the logic class for data shape and copy.
+        </p>
+      </div>
 
-<div class="note">
-  <p><strong>Read this first.</strong> Everything in <code>designs/</code> is a <em>design reference written in HTML</em> — prototypes that show intended look, copy, and behavior. They are not production code to lift. The job is to <strong>recreate these screens inside the target codebase</strong>, using its existing framework, component library, routing, and state conventions. If no app environment exists yet, choose the appropriate stack (React + TypeScript is a safe default for the family web app; SwiftUI or React Native for the resident tablet app) and build the designs there.</p>
-  <p>The prototype files use a small in-house template runtime (<code>support.js</code>, <code>&lt;x-dc&gt;</code>, <code>&lt;sc-for&gt;</code>, <code>style-hover</code>). <strong>Ignore that runtime entirely</strong> — it is a preview harness. Read the markup for structure, the inline styles for exact values, and the logic class for data shape and copy.</p>
-</div>
+      <h2>Fidelity</h2>
+      <p>
+        <strong>High fidelity.</strong>
+        Colors, type sizes, spacing, radii, and copy are final — recreate them exactly. Every screen frame in the prototypes is drawn at a fixed canvas size (
+        <code>1440×900</code>
+        family,
+        <code>1180×820</code>
+        resident,
+        <code>390×844</code>
+        phone,
+        <code>708×420/440</code>
+        for isolated empty states) sitting on a
+        <code>#EFEDE6</code>
+        desk background; those frames are presentation devices, not app chrome. Two areas need judgement rather than copying: photography (all photos are hatched placeholders) and family-tree canvas geometry (hand-positioned in the mock with absolutely-placed 2px connector lines; a real layout
+        algorithm is expected).
+      </p>
 
-<h2>Fidelity</h2>
-<p><strong>High fidelity.</strong> Colors, type sizes, spacing, radii, and copy are final — recreate them exactly. Every screen frame in the prototypes is drawn at a fixed canvas size (<code>1440×900</code> family, <code>1180×820</code> resident, <code>390×844</code> phone, <code>708×420/440</code> for isolated empty states) sitting on a <code>#EFEDE6</code> desk background; those frames are presentation devices, not app chrome. Two areas need judgement rather than copying: photography (all photos are hatched placeholders) and family-tree canvas geometry (hand-positioned in the mock with absolutely-placed 2px connector lines; a real layout algorithm is expected).</p>
+      <h2>Cast &amp; fixture data</h2>
+      <p>The prototypes use one consistent family. Reuse these names when building — the copy depends on them.</p>
+      <ul>
+        <li>
+          <strong>Mei Chen</strong>
+          — the resident ("Grandma Mei"). Pine Ridge, room 12. Wife of
+          <strong>Wei Chen</strong>
+          (1938–2019, shown as remembered/deceased). Sister:
+          <strong>Ling</strong>
+          ("Great-aunt Ling", tablet at home, voice not enrolled).
+        </li>
+        <li>
+          <strong>Lisa Chen</strong>
+          — daughter, enrolled. Children:
+          <strong>Emily Chen</strong>
+          (granddaughter, voiceprint needs re-enrolment) and
+          <strong>Ken Chen</strong>
+          (grandson —
+          <em>the signed-in family user</em>
+          , "voice enrolled").
+        </li>
+        <li>
+          <strong>David Chen</strong>
+          — son, enrolled. Wife
+          <strong>Karen Chen</strong>
+          (not enrolled). Children:
+          <strong>Jason Chen</strong>
+          and
+          <strong>Sophie Chen</strong>
+          . Jason's daughter
+          <strong>Ava Chen</strong>
+          , age 2 — the fourth generation.
+        </li>
+        <li>
+          <strong>Marcus</strong>
+          — unidentified voice from Sunday's call, proposed as Emily's partner; pending in approvals. Until confirmed, the resident sees "Someone new" with no name.
+        </li>
+      </ul>
 
-<h2>Cast &amp; fixture data</h2>
-<p>The prototypes use one consistent family. Reuse these names when building — the copy depends on them.</p>
-<ul>
-  <li><strong>Mei Chen</strong> — the resident ("Grandma Mei"). Pine Ridge, room 12. Wife of <strong>Wei Chen</strong> (1938–2019, shown as remembered/deceased). Sister: <strong>Ling</strong> ("Great-aunt Ling", tablet at home, voice not enrolled).</li>
-  <li><strong>Lisa Chen</strong> — daughter, enrolled. Children: <strong>Emily Chen</strong> (granddaughter, voiceprint needs re-enrolment) and <strong>Ken Chen</strong> (grandson — <em>the signed-in family user</em>, "voice enrolled").</li>
-  <li><strong>David Chen</strong> — son, enrolled. Wife <strong>Karen Chen</strong> (not enrolled). Children: <strong>Jason Chen</strong> and <strong>Sophie Chen</strong>. Jason's daughter <strong>Ava Chen</strong>, age 2 — the fourth generation.</li>
-  <li><strong>Marcus</strong> — unidentified voice from Sunday's call, proposed as Emily's partner; pending in approvals. Until confirmed, the resident sees "Someone new" with no name.</li>
-</ul>
+      <h2>Contents</h2>
+      <div class="card toc">
+        <div><a href="#tokens">Design tokens</a></div>
+        <div><a href="#type">Type scales</a></div>
+        <div><a href="#components">Component rules</a></div>
+        <div><a href="#resident">Resident screens (R1–R7)</a></div>
+        <div><a href="#family">Family screens (F1–F13)</a></div>
+        <div><a href="#public">Public site (P1)</a></div>
+        <div><a href="#responsive">Responsive behavior</a></div>
+        <div><a href="#state">State &amp; data</a></div>
+        <div><a href="#a11y">Accessibility contract</a></div>
+        <div><a href="#assets">Assets</a></div>
+        <div><a href="#files">File map</a></div>
+      </div>
 
-<h2>Contents</h2>
-<div class="card toc">
-  <div><a href="#tokens">Design tokens</a></div>
-  <div><a href="#type">Type scales</a></div>
-  <div><a href="#components">Component rules</a></div>
-  <div><a href="#resident">Resident screens (R1–R7)</a></div>
-  <div><a href="#family">Family screens (F1–F13)</a></div>
-  <div><a href="#public">Public site (P1)</a></div>
-  <div><a href="#responsive">Responsive behavior</a></div>
-  <div><a href="#state">State &amp; data</a></div>
-  <div><a href="#a11y">Accessibility contract</a></div>
-  <div><a href="#assets">Assets</a></div>
-  <div><a href="#files">File map</a></div>
-</div>
+      <h2 id="tokens">Design tokens</h2>
+      <p class="kicker">Palette — “Forest &amp; Paper”</p>
+      <table>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Use</th>
+        </tr>
+        <tr>
+          <td class="mono">bg</td>
+          <td class="mono">
+            <span class="sw" style="background: #faf8f2"></span>
+            #FAF8F2
+          </td>
+          <td>App background, warm paper. Never pure white as a page ground.</td>
+        </tr>
+        <tr>
+          <td class="mono">surface</td>
+          <td class="mono">
+            <span class="sw" style="background: #ffffff"></span>
+            #FFFFFF
+          </td>
+          <td>Cards, rows, panels, nav rail, headers.</td>
+        </tr>
+        <tr>
+          <td class="mono">primary</td>
+          <td class="mono">
+            <span class="sw" style="background: #1e5b3c"></span>
+            #1E5B3C
+          </td>
+          <td>Primary buttons, links, active nav, resident's own speaker color.</td>
+        </tr>
+        <tr>
+          <td class="mono">primary-dark</td>
+          <td class="mono">
+            <span class="sw" style="background: #14422b"></span>
+            #14422B
+          </td>
+          <td>Hover/pressed for primary; public-site hero ground.</td>
+        </tr>
+        <tr>
+          <td class="mono">text</td>
+          <td class="mono">
+            <span class="sw" style="background: #1b2a21"></span>
+            #1B2A21
+          </td>
+          <td>Body and headings; resident device bezel.</td>
+        </tr>
+        <tr>
+          <td class="mono">muted</td>
+          <td class="mono">
+            <span class="sw" style="background: #44544a"></span>
+            #44544A
+          </td>
+          <td>Secondary text, labels, metadata; also the dashed "unknown" stroke.</td>
+        </tr>
+        <tr>
+          <td class="mono">tint</td>
+          <td class="mono">
+            <span class="sw" style="background: #e3ede2"></span>
+            #E3EDE2
+          </td>
+          <td>Chips, secondary button fill, active nav, avatar fills, internal 1px rules.</td>
+        </tr>
+        <tr>
+          <td class="mono">line</td>
+          <td class="mono">
+            <span class="sw" style="background: #dce4d9"></span>
+            #DCE4D9
+          </td>
+          <td>Outer border of screen frames and modals.</td>
+        </tr>
+        <tr>
+          <td class="mono">accent</td>
+          <td class="mono">
+            <span class="sw" style="background: #9dbf97"></span>
+            #9DBF97
+          </td>
+          <td>Pulse rings, "talking" dots on dark, Emily's speaker band. Not for text on light.</td>
+        </tr>
+        <tr>
+          <td class="mono">warn</td>
+          <td class="mono">
+            <span class="sw" style="background: #6a4300"></span>
+            #6A4300
+          </td>
+          <td>Needs-attention text/icons; also the destructive confirm button and "Leave call".</td>
+        </tr>
+        <tr>
+          <td class="mono">warn-bg</td>
+          <td class="mono">
+            <span class="sw" style="background: #fbf1dc"></span>
+            #FBF1DC
+          </td>
+          <td>
+            Attention banners, med-note cards, pending rows. Border
+            <code>#EADFC4</code>
+            .
+          </td>
+        </tr>
+      </table>
+      <h4>Supporting neutrals (used verbatim in the mocks)</h4>
+      <ul>
+        <li>
+          <code>#F0F4EE</code>
+          — track fill for meters and progress bars; lightest row rule.
+        </li>
+        <li>
+          <code>#F0F0EA</code>
+          — neutral chip fill ("Missed", "unknown voice"), empty timeline ground.
+        </li>
+        <li>
+          <code>#C9D6C6</code>
+          — family-tree connector lines (2px family / 3px resident); muted type on the dark hero.
+        </li>
+        <li>
+          <code>#B9C4B5</code>
+          — deceased-person dashed border, generation gutter labels, unknown-speaker band.
+        </li>
+        <li>
+          <code>#EADFC4</code>
+          /
+          <code>#C9B98F</code>
+          — warn-bg border / warn outline button border.
+        </li>
+        <li>
+          <code>#EFEDE6</code>
+          — the design-sheet desk background only; not an app surface.
+        </li>
+        <li>
+          Dark video grounds:
+          <code>#1B2A21</code>
+          with a
+          <code>repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 10px, transparent 10px 20px)</code>
+          hatch; public-site device screens use
+          <code>#223026</code>
+          inside a
+          <code>#0E1A13</code>
+          bezel.
+        </li>
+        <li>
+          Photo placeholders:
+          <code>#E3EDE2</code>
+          +
+          <code>repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px)</code>
+          .
+        </li>
+      </ul>
 
-<h2 id="tokens">Design tokens</h2>
-<p class="kicker">Palette — “Forest &amp; Paper”</p>
-<table>
-  <tr><th>Token</th><th>Value</th><th>Use</th></tr>
-  <tr><td class="mono">bg</td><td class="mono"><span class="sw" style="background:#FAF8F2"></span>#FAF8F2</td><td>App background, warm paper. Never pure white as a page ground.</td></tr>
-  <tr><td class="mono">surface</td><td class="mono"><span class="sw" style="background:#FFFFFF"></span>#FFFFFF</td><td>Cards, rows, panels, nav rail, headers.</td></tr>
-  <tr><td class="mono">primary</td><td class="mono"><span class="sw" style="background:#1E5B3C"></span>#1E5B3C</td><td>Primary buttons, links, active nav, resident's own speaker color.</td></tr>
-  <tr><td class="mono">primary-dark</td><td class="mono"><span class="sw" style="background:#14422B"></span>#14422B</td><td>Hover/pressed for primary; public-site hero ground.</td></tr>
-  <tr><td class="mono">text</td><td class="mono"><span class="sw" style="background:#1B2A21"></span>#1B2A21</td><td>Body and headings; resident device bezel.</td></tr>
-  <tr><td class="mono">muted</td><td class="mono"><span class="sw" style="background:#44544A"></span>#44544A</td><td>Secondary text, labels, metadata; also the dashed "unknown" stroke.</td></tr>
-  <tr><td class="mono">tint</td><td class="mono"><span class="sw" style="background:#E3EDE2"></span>#E3EDE2</td><td>Chips, secondary button fill, active nav, avatar fills, internal 1px rules.</td></tr>
-  <tr><td class="mono">line</td><td class="mono"><span class="sw" style="background:#DCE4D9"></span>#DCE4D9</td><td>Outer border of screen frames and modals.</td></tr>
-  <tr><td class="mono">accent</td><td class="mono"><span class="sw" style="background:#9DBF97"></span>#9DBF97</td><td>Pulse rings, "talking" dots on dark, Emily's speaker band. Not for text on light.</td></tr>
-  <tr><td class="mono">warn</td><td class="mono"><span class="sw" style="background:#6A4300"></span>#6A4300</td><td>Needs-attention text/icons; also the destructive confirm button and "Leave call".</td></tr>
-  <tr><td class="mono">warn-bg</td><td class="mono"><span class="sw" style="background:#FBF1DC"></span>#FBF1DC</td><td>Attention banners, med-note cards, pending rows. Border <code>#EADFC4</code>.</td></tr>
-</table>
-<h4>Supporting neutrals (used verbatim in the mocks)</h4>
-<ul>
-  <li><code>#F0F4EE</code> — track fill for meters and progress bars; lightest row rule.</li>
-  <li><code>#F0F0EA</code> — neutral chip fill ("Missed", "unknown voice"), empty timeline ground.</li>
-  <li><code>#C9D6C6</code> — family-tree connector lines (2px family / 3px resident); muted type on the dark hero.</li>
-  <li><code>#B9C4B5</code> — deceased-person dashed border, generation gutter labels, unknown-speaker band.</li>
-  <li><code>#EADFC4</code> / <code>#C9B98F</code> — warn-bg border / warn outline button border.</li>
-  <li><code>#EFEDE6</code> — the design-sheet desk background only; not an app surface.</li>
-  <li>Dark video grounds: <code>#1B2A21</code> with a <code>repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 10px, transparent 10px 20px)</code> hatch; public-site device screens use <code>#223026</code> inside a <code>#0E1A13</code> bezel.</li>
-  <li>Photo placeholders: <code>#E3EDE2</code> + <code>repeating-linear-gradient(135deg, rgba(30,91,60,.10) 0 8px, transparent 8px 16px)</code>.</li>
-</ul>
+      <h4>Speaker palette</h4>
+      <p>Assigned per person (stable by id, not by order of speaking) and used for timeline bands, legends, and attribution:</p>
+      <table>
+        <tr>
+          <th>Person</th>
+          <th>Color</th>
+        </tr>
+        <tr>
+          <td>Mei (resident)</td>
+          <td class="mono">
+            <span class="sw" style="background: #1e5b3c"></span>
+            #1E5B3C
+          </td>
+        </tr>
+        <tr>
+          <td>David</td>
+          <td class="mono">
+            <span class="sw" style="background: #2a6647"></span>
+            #2A6647
+          </td>
+        </tr>
+        <tr>
+          <td>Lisa</td>
+          <td class="mono">
+            <span class="sw" style="background: #3f7f5e"></span>
+            #3F7F5E
+          </td>
+        </tr>
+        <tr>
+          <td>Ken</td>
+          <td class="mono">
+            <span class="sw" style="background: #6fa08a"></span>
+            #6FA08A
+          </td>
+        </tr>
+        <tr>
+          <td>Emily</td>
+          <td class="mono">
+            <span class="sw" style="background: #9dbf97"></span>
+            #9DBF97
+          </td>
+        </tr>
+        <tr>
+          <td>Unknown voice</td>
+          <td class="mono">
+            <span class="sw" style="background: #b9c4b5"></span>
+            #B9C4B5
+          </td>
+        </tr>
+      </table>
+      <p>
+        Band labels flip to
+        <code>#1B2A21</code>
+        on the two lightest colors (Emily, Unknown) and
+        <code>#FFFFFF</code>
+        on the rest. Legend swatches are 12px, radius 3px; the unknown swatch takes a
+        <code>#44544A</code>
+        border.
+      </p>
 
-<h4>Speaker palette</h4>
-<p>Assigned per person (stable by id, not by order of speaking) and used for timeline bands, legends, and attribution:</p>
-<table>
-  <tr><th>Person</th><th>Color</th></tr>
-  <tr><td>Mei (resident)</td><td class="mono"><span class="sw" style="background:#1E5B3C"></span>#1E5B3C</td></tr>
-  <tr><td>David</td><td class="mono"><span class="sw" style="background:#2A6647"></span>#2A6647</td></tr>
-  <tr><td>Lisa</td><td class="mono"><span class="sw" style="background:#3F7F5E"></span>#3F7F5E</td></tr>
-  <tr><td>Ken</td><td class="mono"><span class="sw" style="background:#6FA08A"></span>#6FA08A</td></tr>
-  <tr><td>Emily</td><td class="mono"><span class="sw" style="background:#9DBF97"></span>#9DBF97</td></tr>
-  <tr><td>Unknown voice</td><td class="mono"><span class="sw" style="background:#B9C4B5"></span>#B9C4B5</td></tr>
-</table>
-<p>Band labels flip to <code>#1B2A21</code> on the two lightest colors (Emily, Unknown) and <code>#FFFFFF</code> on the rest. Legend swatches are 12px, radius 3px; the unknown swatch takes a <code>#44544A</code> border.</p>
+      <h4>Spacing scale</h4>
+      <p>4 · 6 · 8 · 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 44 · 48 · 56 (px). Family screens: 24px page padding, 20px grid gaps, 16–22px card padding. Resident screens: 28–48px page padding, 24px gaps.</p>
 
-<h4>Spacing scale</h4>
-<p>4 · 6 · 8 · 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 44 · 48 · 56 (px). Family screens: 24px page padding, 20px grid gaps, 16–22px card padding. Resident screens: 28–48px page padding, 24px gaps.</p>
+      <h4>Radii</h4>
+      <p>
+        <code>10px</code>
+        nav rows and small inner tiles ·
+        <code>12px</code>
+        the family default (cards, inputs, buttons, screen frames, modals) ·
+        <code>16px</code>
+        resident cards and buttons ·
+        <code>18–28px</code>
+        device bezels ·
+        <code>999px</code>
+        pills, avatars, meters.
+      </p>
 
-<h4>Radii</h4>
-<p><code>10px</code> nav rows and small inner tiles · <code>12px</code> the family default (cards, inputs, buttons, screen frames, modals) · <code>16px</code> resident cards and buttons · <code>18–28px</code> device bezels · <code>999px</code> pills, avatars, meters.</p>
+      <h4>Elevation</h4>
+      <p>
+        Borders carry the work. The only shadows in the system: modal
+        <code>0 8px 32px rgba(27,42,33,.18)</code>
+        over a
+        <code>rgba(27,42,33,.34)</code>
+        scrim; the resident conversation sheet
+        <code>0 -24px 48px rgba(27,42,33,.18)</code>
+        ; a 1px tree-node lift
+        <code>0 1px 2px rgba(27,42,33,.06)</code>
+        ; the selected tree node's
+        <code>0 0 0 4px rgba(30,91,60,.12)</code>
+        halo; the signed-in avatar's double ring
+        <code>0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C</code>
+        ; and the public-site device
+        <code>0 24px 64px rgba(0,0,0,.34)</code>
+        .
+      </p>
 
-<h4>Elevation</h4>
-<p>Borders carry the work. The only shadows in the system: modal <code>0 8px 32px rgba(27,42,33,.18)</code> over a <code>rgba(27,42,33,.34)</code> scrim; the resident conversation sheet <code>0 -24px 48px rgba(27,42,33,.18)</code>; a 1px tree-node lift <code>0 1px 2px rgba(27,42,33,.06)</code>; the selected tree node's <code>0 0 0 4px rgba(30,91,60,.12)</code> halo; the signed-in avatar's double ring <code>0 0 0 2px #FFFFFF, 0 0 0 4px #1E5B3C</code>; and the public-site device <code>0 24px 64px rgba(0,0,0,.34)</code>.</p>
+      <h2 id="type">Type scales</h2>
+      <table>
+        <tr>
+          <th></th>
+          <th>Resident (iPad)</th>
+          <th>Family (web)</th>
+          <th>Public site</th>
+        </tr>
+        <tr>
+          <td>Family</td>
+          <td>Atkinson Hyperlegible 400/700</td>
+          <td>Inter 400/500/600/700</td>
+          <td>Instrument Serif (display) + Inter (body)</td>
+        </tr>
+        <tr>
+          <td>Display</td>
+          <td>56px / 700 / 1.05</td>
+          <td>32px / 700 / -.02em (stat figures)</td>
+          <td>82px / 1.02 / -.02em desktop hero</td>
+        </tr>
+        <tr>
+          <td>Title</td>
+          <td>48px / 700</td>
+          <td>24px / 600 (modal titles)</td>
+          <td>52px section / 34px privacy / 46px mobile hero</td>
+        </tr>
+        <tr>
+          <td>Heading</td>
+          <td>40px / 700 / 1.15</td>
+          <td>20px / 600 (screen + card headings)</td>
+          <td>19px / 600 nav</td>
+        </tr>
+        <tr>
+          <td>Sub-heading</td>
+          <td>32px / 400</td>
+          <td>16–17px / 600</td>
+          <td>18–19px / 1.6 body</td>
+        </tr>
+        <tr>
+          <td>Body</td>
+          <td>32px / 1.3–1.4</td>
+          <td>15px / 1.5–1.55</td>
+          <td>15px / 1.6</td>
+        </tr>
+        <tr>
+          <td>Small</td>
+          <td>28px — hard floor, nothing smaller ships</td>
+          <td>14px controls · 13px metadata · 12px chips</td>
+          <td>14–15px</td>
+        </tr>
+        <tr>
+          <td>Label</td>
+          <td>—</td>
+          <td>11px IBM Plex Mono, uppercase, .08em</td>
+          <td>10–12px mono, .14em</td>
+        </tr>
+      </table>
+      <p>
+        Resident rule: hierarchy comes from
+        <em>size and position</em>
+        , never weight alone and never color alone. Family rule: standard productivity density; IBM Plex Mono is reserved for machine-ish content — timecodes, section labels, ids, percentages, pairing codes.
+      </p>
 
-<h2 id="type">Type scales</h2>
-<table>
-  <tr><th></th><th>Resident (iPad)</th><th>Family (web)</th><th>Public site</th></tr>
-  <tr><td>Family</td><td>Atkinson Hyperlegible 400/700</td><td>Inter 400/500/600/700</td><td>Instrument Serif (display) + Inter (body)</td></tr>
-  <tr><td>Display</td><td>56px / 700 / 1.05</td><td>32px / 700 / -.02em (stat figures)</td><td>82px / 1.02 / -.02em desktop hero</td></tr>
-  <tr><td>Title</td><td>48px / 700</td><td>24px / 600 (modal titles)</td><td>52px section / 34px privacy / 46px mobile hero</td></tr>
-  <tr><td>Heading</td><td>40px / 700 / 1.15</td><td>20px / 600 (screen + card headings)</td><td>19px / 600 nav</td></tr>
-  <tr><td>Sub-heading</td><td>32px / 400</td><td>16–17px / 600</td><td>18–19px / 1.6 body</td></tr>
-  <tr><td>Body</td><td>32px / 1.3–1.4</td><td>15px / 1.5–1.55</td><td>15px / 1.6</td></tr>
-  <tr><td>Small</td><td>28px — hard floor, nothing smaller ships</td><td>14px controls · 13px metadata · 12px chips</td><td>14–15px</td></tr>
-  <tr><td>Label</td><td>—</td><td>11px IBM Plex Mono, uppercase, .08em</td><td>10–12px mono, .14em</td></tr>
-</table>
-<p>Resident rule: hierarchy comes from <em>size and position</em>, never weight alone and never color alone. Family rule: standard productivity density; IBM Plex Mono is reserved for machine-ish content — timecodes, section labels, ids, percentages, pairing codes.</p>
+      <h2 id="components">Component rules</h2>
+      <h4>Buttons — family</h4>
+      <ul>
+        <li>
+          <strong>Primary</strong>
+          —
+          <code>#1E5B3C</code>
+          fill, white text, 14–16px/600,
+          <code>min-height: 44px</code>
+          , padding
+          <code>0 18–28px</code>
+          , radius 12px, no border. Hover
+          <code>#14422B</code>
+          .
+        </li>
+        <li>
+          <strong>Secondary (outline)</strong>
+          — white fill, 1px
+          <code>#1E5B3C</code>
+          border, primary text. Hover fill
+          <code>#E3EDE2</code>
+          .
+        </li>
+        <li>
+          <strong>Quiet</strong>
+          — white fill, 1px
+          <code>#E3EDE2</code>
+          border,
+          <code>#44544A</code>
+          text. Hover either
+          <code>#FAF8F2</code>
+          fill or
+          <code>#1E5B3C</code>
+          border.
+        </li>
+        <li>
+          <strong>Destructive</strong>
+          — only inside a confirmation modal, as a
+          <code>#6A4300</code>
+          filled button. Never red, never on the page itself.
+        </li>
+        <li>Every family control is at least 44px tall, including chips and filter pills.</li>
+      </ul>
+      <h4>Buttons — resident</h4>
+      <p>
+        <code>min-height</code>
+        72px (header/back), 88px (secondary), 96px (page-level primary), 132px (Answer). Radius 16px, label 28–48px/700, always a word — never an icon alone. Outline variant is white fill with a
+        <strong>3px</strong>
+        <code>#1E5B3C</code>
+        border; primary is a flat
+        <code>#1E5B3C</code>
+        fill.
+      </p>
+      <h4>Cards &amp; rows</h4>
+      <p>
+        Family: white surface, 1px
+        <code>#E3EDE2</code>
+        , radius 12px, padding 14–22px. Resident: white,
+        <strong>3px</strong>
+        <code>#E3EDE2</code>
+        border, radius 16px, padding 20–28px. Selected/own-voice state:
+        <code>#E3EDE2</code>
+        fill with a 2px
+        <code>#1E5B3C</code>
+        border. Attention:
+        <code>#FBF1DC</code>
+        fill, 1px
+        <code>#EADFC4</code>
+        . Unresolved/unknown: white fill with a 1px
+        <strong>dashed</strong>
+        <code>#44544A</code>
+        border (the system's single "we don't know" signal, used for people, voices, and deceased relatives alike).
+      </p>
+      <h4>Chips &amp; status</h4>
+      <p>
+        Pill, radius 999px. Kind labels: 11px mono uppercase, padding 5px 10px. Counts and tags: 12px/600, padding 3–4px 9–10px. Neutral =
+        <code>#F0F0EA</code>
+        /
+        <code>#44544A</code>
+        ; positive =
+        <code>#E3EDE2</code>
+        /
+        <code>#1E5B3C</code>
+        ; attention =
+        <code>#FBF1DC</code>
+        /
+        <code>#6A4300</code>
+        .
+      </p>
+      <h4>Avatars</h4>
+      <p>
+        Circle, tint fill with hatched photo placeholder, 600-weight initial in
+        <code>#1E5B3C</code>
+        . Family sizes: 26–32 (rows, waiting-room chips), 36–48 (transcript, modals), 56 (inspector), 72 (person detail). Resident sizes: 40 (tree node), 56 (tree/resident node), 72 (strip), 80–96 (in-call cards), 140–200 (incoming call). Unknown speakers:
+        <code>#F0F0EA</code>
+        fill, dashed
+        <code>#44544A</code>
+        ring,
+        <code>?</code>
+        glyph in
+        <code>#44544A</code>
+        . The signed-in user's avatar carries the double ring.
+      </p>
+      <h4>Nav</h4>
+      <ul>
+        <li>
+          <strong>Family rail</strong>
+          —
+          <code>232px</code>
+          fixed, white, 1px
+          <code>#E3EDE2</code>
+          right border, padding
+          <code>20px 16px</code>
+          , 6px gaps. Brand row: 34px icon + "Caretaker" 16px/700, padding
+          <code>4px 8px 18px</code>
+          . Items are 40px min-height rows, 14px, radius 10px, padding
+          <code>0 12px</code>
+          ; active =
+          <code>#E3EDE2</code>
+          fill +
+          <code>#1E5B3C</code>
+          text + 600; idle =
+          <code>#44544A</code>
+          , hover
+          <code>#FAF8F2</code>
+          . Order: Dashboard · In call · Calls · Approvals · Family tree · Memories · Med notes · News (Approvals carries a warn-bg count badge). Footer, pinned bottom above a 1px rule: signed-in user (32px avatar, "Ken Chen", "voice enrolled").
+        </li>
+        <li>
+          <strong>Family header</strong>
+          — 64px, white, 1px bottom border, padding
+          <code>0 24px</code>
+          : screen title 20px/600, a 13px muted subtitle, then right-aligned actions. (Isolated empty-state frames use a 56px header with a 16px title.)
+        </li>
+        <li>
+          <strong>Resident</strong>
+          — no chrome and no tab bar. Every non-home screen carries a 72px
+          <em>Home</em>
+          outline button at the top right, in the same place every time; drill-in screens add a
+          <em>Back to…</em>
+          button top left.
+        </li>
+      </ul>
 
-<h2 id="components">Component rules</h2>
-<h4>Buttons — family</h4>
-<ul>
-  <li><strong>Primary</strong> — <code>#1E5B3C</code> fill, white text, 14–16px/600, <code>min-height: 44px</code>, padding <code>0 18–28px</code>, radius 12px, no border. Hover <code>#14422B</code>.</li>
-  <li><strong>Secondary (outline)</strong> — white fill, 1px <code>#1E5B3C</code> border, primary text. Hover fill <code>#E3EDE2</code>.</li>
-  <li><strong>Quiet</strong> — white fill, 1px <code>#E3EDE2</code> border, <code>#44544A</code> text. Hover either <code>#FAF8F2</code> fill or <code>#1E5B3C</code> border.</li>
-  <li><strong>Destructive</strong> — only inside a confirmation modal, as a <code>#6A4300</code> filled button. Never red, never on the page itself.</li>
-  <li>Every family control is at least 44px tall, including chips and filter pills.</li>
-</ul>
-<h4>Buttons — resident</h4>
-<p><code>min-height</code> 72px (header/back), 88px (secondary), 96px (page-level primary), 132px (Answer). Radius 16px, label 28–48px/700, always a word — never an icon alone. Outline variant is white fill with a <strong>3px</strong> <code>#1E5B3C</code> border; primary is a flat <code>#1E5B3C</code> fill.</p>
-<h4>Cards &amp; rows</h4>
-<p>Family: white surface, 1px <code>#E3EDE2</code>, radius 12px, padding 14–22px. Resident: white, <strong>3px</strong> <code>#E3EDE2</code> border, radius 16px, padding 20–28px. Selected/own-voice state: <code>#E3EDE2</code> fill with a 2px <code>#1E5B3C</code> border. Attention: <code>#FBF1DC</code> fill, 1px <code>#EADFC4</code>. Unresolved/unknown: white fill with a 1px <strong>dashed</strong> <code>#44544A</code> border (the system's single "we don't know" signal, used for people, voices, and deceased relatives alike).</p>
-<h4>Chips &amp; status</h4>
-<p>Pill, radius 999px. Kind labels: 11px mono uppercase, padding 5px 10px. Counts and tags: 12px/600, padding 3–4px 9–10px. Neutral = <code>#F0F0EA</code>/<code>#44544A</code>; positive = <code>#E3EDE2</code>/<code>#1E5B3C</code>; attention = <code>#FBF1DC</code>/<code>#6A4300</code>.</p>
-<h4>Avatars</h4>
-<p>Circle, tint fill with hatched photo placeholder, 600-weight initial in <code>#1E5B3C</code>. Family sizes: 26–32 (rows, waiting-room chips), 36–48 (transcript, modals), 56 (inspector), 72 (person detail). Resident sizes: 40 (tree node), 56 (tree/resident node), 72 (strip), 80–96 (in-call cards), 140–200 (incoming call). Unknown speakers: <code>#F0F0EA</code> fill, dashed <code>#44544A</code> ring, <code>?</code> glyph in <code>#44544A</code>. The signed-in user's avatar carries the double ring.</p>
-<h4>Nav</h4>
-<ul>
-  <li><strong>Family rail</strong> — <code>232px</code> fixed, white, 1px <code>#E3EDE2</code> right border, padding <code>20px 16px</code>, 6px gaps. Brand row: 34px icon + "Caretaker" 16px/700, padding <code>4px 8px 18px</code>. Items are 40px min-height rows, 14px, radius 10px, padding <code>0 12px</code>; active = <code>#E3EDE2</code> fill + <code>#1E5B3C</code> text + 600; idle = <code>#44544A</code>, hover <code>#FAF8F2</code>. Order: Dashboard · In call · Calls · Approvals · Family tree · Memories · Med notes · News (Approvals carries a warn-bg count badge). Footer, pinned bottom above a 1px rule: signed-in user (32px avatar, "Ken Chen", "voice enrolled").</li>
-  <li><strong>Family header</strong> — 64px, white, 1px bottom border, padding <code>0 24px</code>: screen title 20px/600, a 13px muted subtitle, then right-aligned actions. (Isolated empty-state frames use a 56px header with a 16px title.)</li>
-  <li><strong>Resident</strong> — no chrome and no tab bar. Every non-home screen carries a 72px <em>Home</em> outline button at the top right, in the same place every time; drill-in screens add a <em>Back to…</em> button top left.</li>
-</ul>
+      <h2 id="resident">Resident screens — iPad 1180×820 landscape</h2>
+      <p class="kicker">designs/Caretaker Resident Screens.dc.html · designs/Caretaker In Call.dc.html</p>
+      <p>
+        All resident frames are drawn inside a 12px
+        <code>#1B2A21</code>
+        bezel with a 28px radius. Page padding 28–40px, column gap 24px, and the content region is a flex column where the middle band takes
+        <code>flex: 1</code>
+        so nothing scrolls.
+      </p>
 
-<h2 id="resident">Resident screens — iPad 1180×820 landscape</h2>
-<p class="kicker">designs/Caretaker Resident Screens.dc.html · designs/Caretaker In Call.dc.html</p>
-<p>All resident frames are drawn inside a 12px <code>#1B2A21</code> bezel with a 28px radius. Page padding 28–40px, column gap 24px, and the content region is a flex column where the middle band takes <code>flex: 1</code> so nothing scrolls.</p>
+      <div class="screen">
+        <h3>R1 · Home</h3>
+        <p>
+          <span class="tag">entry</span>
+          <span class="tag">no scroll</span>
+        </p>
+        <p>
+          <strong>Purpose:</strong>
+          one screen usable without learning anything.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          three bands. Top: greeting "Good morning, Mei" 56px/700 with "Saturday, 14 March · 10:24 in the morning" 32px muted, and a tint brand plate (icon + "Caretaker" 28px/700) pushed right. Middle: a
+          <strong>single row of four equal tiles</strong>
+          (
+          <code>grid-template-columns: repeat(4, 1fr)</code>
+          , 24px gap) filling the remaining height — each tile centers a 120px circular icon over a 40px/700 label. Bottom: a full-width white reminder card, 72px avatar + one 32px sentence ("Lisa visits on Saturday at 2 o'clock.").
+        </p>
+        <p>
+          <strong>Tiles:</strong>
+          "Call family" is the only filled one (
+          <code>#1E5B3C</code>
+          , white text, translucent white icon circle); "My family", "Family news", and "Today" are white with a 3px tint border that turns
+          <code>#1E5B3C</code>
+          on hover. The Today tile's icon circle holds the date number rather than a glyph.
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          tap navigates immediately — no confirmation, no menus, whole tile is the target. There is no settings entry point on the resident device at all.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R1 · Home</h3>
-  <p><span class="tag">entry</span><span class="tag">no scroll</span></p>
-  <p><strong>Purpose:</strong> one screen usable without learning anything.</p>
-  <p><strong>Layout:</strong> three bands. Top: greeting "Good morning, Mei" 56px/700 with "Saturday, 14 March · 10:24 in the morning" 32px muted, and a tint brand plate (icon + "Caretaker" 28px/700) pushed right. Middle: a <strong>single row of four equal tiles</strong> (<code>grid-template-columns: repeat(4, 1fr)</code>, 24px gap) filling the remaining height — each tile centers a 120px circular icon over a 40px/700 label. Bottom: a full-width white reminder card, 72px avatar + one 32px sentence ("Lisa visits on Saturday at 2 o'clock.").</p>
-  <p><strong>Tiles:</strong> "Call family" is the only filled one (<code>#1E5B3C</code>, white text, translucent white icon circle); "My family", "Family news", and "Today" are white with a 3px tint border that turns <code>#1E5B3C</code> on hover. The Today tile's icon circle holds the date number rather than a glyph.</p>
-  <p><strong>Behavior:</strong> tap navigates immediately — no confirmation, no menus, whole tile is the target. There is no settings entry point on the resident device at all.</p>
-</div>
+      <div class="screen">
+        <h3>R2 · Incoming call</h3>
+        <p>
+          <strong>Purpose:</strong>
+          answer or decline, with
+          <em>everyone</em>
+          on the call unmistakable.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          centered column on a
+          <code>#E3EDE2</code>
+          ground, 32px gaps. "Your family is calling" 32px muted; then a row of avatars — the primary caller at 200px with a 6px white ring, the two others at 140px; then "Lisa, your daughter, is calling" 56px/700 over "Emily and Ken are with her" 32px muted; then the actions.
+        </p>
+        <p>
+          <strong>Actions:</strong>
+          <em>Answer</em>
+          — 132px min-height, padding
+          <code>0 72px</code>
+          ,
+          <code>#1E5B3C</code>
+          fill, 48px/700 white label.
+          <em>Not now</em>
+          — 88px, 3px
+          <code>#44544A</code>
+          border, white fill, 32px/700. Answer is always first and never moves.
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          only the primary caller's avatar animates —
+          <code>ct-ring</code>
+          , 2.4s ease-in-out infinite,
+          <code>box-shadow 0 0 0 8px rgba(157,191,151,.55)</code>
+          →
+          <code>0 0 0 18px rgba(157,191,151,.20)</code>
+          . Declining shows no explanation dialog.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R2 · Incoming call</h3>
-  <p><strong>Purpose:</strong> answer or decline, with <em>everyone</em> on the call unmistakable.</p>
-  <p><strong>Layout:</strong> centered column on a <code>#E3EDE2</code> ground, 32px gaps. "Your family is calling" 32px muted; then a row of avatars — the primary caller at 200px with a 6px white ring, the two others at 140px; then "Lisa, your daughter, is calling" 56px/700 over "Emily and Ken are with her" 32px muted; then the actions.</p>
-  <p><strong>Actions:</strong> <em>Answer</em> — 132px min-height, padding <code>0 72px</code>, <code>#1E5B3C</code> fill, 48px/700 white label. <em>Not now</em> — 88px, 3px <code>#44544A</code> border, white fill, 32px/700. Answer is always first and never moves.</p>
-  <p><strong>Behavior:</strong> only the primary caller's avatar animates — <code>ct-ring</code>, 2.4s ease-in-out infinite, <code>box-shadow 0 0 0 8px rgba(157,191,151,.55)</code> → <code>0 0 0 18px rgba(157,191,151,.20)</code>. Declining shows no explanation dialog.</p>
-</div>
+      <div class="screen">
+        <h3>R3 · In call (resident)</h3>
+        <p>
+          <strong>Purpose:</strong>
+          make it obvious who is speaking right now.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          three stacked bands, 24px gaps. (1) A fixed 360px video panel, radius 16px, dark hatched ground, with a 3-up dashed-outline placeholder grid inset 24px, a 28px/700 caption plate ("Lisa is talking") bottom-left and a 72px
+          <em>Home</em>
+          button bottom-right. (2) A
+          <strong>speaker strip</strong>
+          : one equal-width card per participant, filling the remaining height — 80px avatar (96px when active), name 32px/700 (36px active), relationship 28px muted. (3) A bottom row: the newest-line bubble (white, 2px tint border, 72px avatar, "Lisa, your daughter" 28px muted over the line at
+          32px), then
+          <em>Show conversation</em>
+          (96px outline, max-width 230px) and
+          <em>End call</em>
+          (96px,
+          <code>#1E5B3C</code>
+          fill, 32px/700).
+        </p>
+        <p>
+          <strong>Five documented states</strong>
+          (the prototype exposes them as a pill switcher):
+        </p>
+        <ul>
+          <li>
+            <strong>Nobody talking</strong>
+            — all cards at rest weight (3px
+            <code>#E3EDE2</code>
+            border), no name implied; the bubble holds the last thing said.
+          </li>
+          <li>
+            <strong>Active speaker</strong>
+            — that card's avatar and name grow, border becomes 3px
+            <code>#1E5B3C</code>
+            , the
+            <code>ct-ring</code>
+            accent pulse plays on the card, and a tint pill reads "Talking now" with a 12px dot. Never color alone, and it is the only animation on screen.
+          </li>
+          <li>
+            <strong>Unknown voice</strong>
+            — a fourth card appears: dashed
+            <code>#44544A</code>
+            border,
+            <code>#F0F0EA</code>
+            avatar with
+            <code>?</code>
+            , name "Someone new", relationship "a voice we don't know". No guessed name, no photo; the bubble is attributed to "A voice we don't know".
+          </li>
+          <li>
+            <strong>Conversation expanded</strong>
+            — a sheet rises over the lower screen (556px tall,
+            <code>#FAF8F2</code>
+            , 3px tint top border, radius 24px 24px 0 0, the
+            <code>0 -24px 48px</code>
+            shadow): "Your conversation" 40px/700, a
+            <em>Close</em>
+            button, and bottom-anchored message rows (72px avatar + white bubble, "who" 28px muted over 32px text, max-width 900px).
+          </li>
+        </ul>
+      </div>
 
-<div class="screen">
-  <h3>R3 · In call (resident)</h3>
-  <p><strong>Purpose:</strong> make it obvious who is speaking right now.</p>
-  <p><strong>Layout:</strong> three stacked bands, 24px gaps. (1) A fixed 360px video panel, radius 16px, dark hatched ground, with a 3-up dashed-outline placeholder grid inset 24px, a 28px/700 caption plate ("Lisa is talking") bottom-left and a 72px <em>Home</em> button bottom-right. (2) A <strong>speaker strip</strong>: one equal-width card per participant, filling the remaining height — 80px avatar (96px when active), name 32px/700 (36px active), relationship 28px muted. (3) A bottom row: the newest-line bubble (white, 2px tint border, 72px avatar, "Lisa, your daughter" 28px muted over the line at 32px), then <em>Show conversation</em> (96px outline, max-width 230px) and <em>End call</em> (96px, <code>#1E5B3C</code> fill, 32px/700).</p>
-  <p><strong>Five documented states</strong> (the prototype exposes them as a pill switcher):</p>
-  <ul>
-    <li><strong>Nobody talking</strong> — all cards at rest weight (3px <code>#E3EDE2</code> border), no name implied; the bubble holds the last thing said.</li>
-    <li><strong>Active speaker</strong> — that card's avatar and name grow, border becomes 3px <code>#1E5B3C</code>, the <code>ct-ring</code> accent pulse plays on the card, and a tint pill reads "Talking now" with a 12px dot. Never color alone, and it is the only animation on screen.</li>
-    <li><strong>Unknown voice</strong> — a fourth card appears: dashed <code>#44544A</code> border, <code>#F0F0EA</code> avatar with <code>?</code>, name "Someone new", relationship "a voice we don't know". No guessed name, no photo; the bubble is attributed to "A voice we don't know".</li>
-    <li><strong>Conversation expanded</strong> — a sheet rises over the lower screen (556px tall, <code>#FAF8F2</code>, 3px tint top border, radius 24px 24px 0 0, the <code>0 -24px 48px</code> shadow): "Your conversation" 40px/700, a <em>Close</em> button, and bottom-anchored message rows (72px avatar + white bubble, "who" 28px muted over 32px text, max-width 900px).</li>
-  </ul>
-</div>
+      <div class="screen">
+        <h3>R4 · My family</h3>
+        <p>
+          <strong>Purpose:</strong>
+          see where everyone fits, and call them from the picture.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          this is a
+          <em>tree</em>
+          , not a grid. Header: "Your family" 48px/700, "Tap anyone to call them" 28px muted,
+          <em>Home</em>
+          right. Below, a 240px left
+          <strong>generation rail</strong>
+          holds right-aligned tint labels positioned to line up with each row — "You and Wei", "Your children", "Your grandchildren", "Great-grandchild" (28px/700, two lines, radius 12px). The tree itself is centered: person cards 148px wide (180px for Mei and Wei), white, 3px tint border, radius
+          16px, padding 10px — 56px avatar over a 30px/700 name over a 28px relationship. Mei's card is a solid
+          <code>#1E5B3C</code>
+          fill labelled "You / this is you"; Wei's is tint with a 3px dashed
+          <code>#C9D6C6</code>
+          border labelled "remembered". Connectors are 3px
+          <code>#C9D6C6</code>
+          (dashed for the sibling link to Ling), 40px vertical drops between generations.
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          tapping any living person's card starts a call to them. Hover turns the card border
+          <code>#1E5B3C</code>
+          . No presence dots anywhere.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R4 · My family</h3>
-  <p><strong>Purpose:</strong> see where everyone fits, and call them from the picture.</p>
-  <p><strong>Layout:</strong> this is a <em>tree</em>, not a grid. Header: "Your family" 48px/700, "Tap anyone to call them" 28px muted, <em>Home</em> right. Below, a 240px left <strong>generation rail</strong> holds right-aligned tint labels positioned to line up with each row — "You and Wei", "Your children", "Your grandchildren", "Great-grandchild" (28px/700, two lines, radius 12px). The tree itself is centered: person cards 148px wide (180px for Mei and Wei), white, 3px tint border, radius 16px, padding 10px — 56px avatar over a 30px/700 name over a 28px relationship. Mei's card is a solid <code>#1E5B3C</code> fill labelled "You / this is you"; Wei's is tint with a 3px dashed <code>#C9D6C6</code> border labelled "remembered". Connectors are 3px <code>#C9D6C6</code> (dashed for the sibling link to Ling), 40px vertical drops between generations.</p>
-  <p><strong>Behavior:</strong> tapping any living person's card starts a call to them. Hover turns the card border <code>#1E5B3C</code>. No presence dots anywhere.</p>
-</div>
+      <div class="screen">
+        <h3>R5 · Person page — Emily</h3>
+        <p>
+          <strong>Purpose:</strong>
+          remind the resident who this person is, then let her call them.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          header row of two 72px outline buttons (
+          <em>Back to family</em>
+          ,
+          <em>Home</em>
+          ). Body is two columns, 32px gap. Left 340px: portrait placeholder filling available height (radius 16px), then "Emily" 48px/700 + "your granddaughter" 32px muted, then a 96px full-width
+          <em>Call Emily</em>
+          primary. Right: "Things Emily told you" 32px muted, then up to three equal-height memory cards — each a horizontal split with a 180px hatched photo panel and text at 32px/1.25 plus a 28px muted "when" ("last Sunday", "February").
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          read-only. Content is exactly what the family approved in F5 — nothing model-generated appears unreviewed.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R5 · Person page — Emily</h3>
-  <p><strong>Purpose:</strong> remind the resident who this person is, then let her call them.</p>
-  <p><strong>Layout:</strong> header row of two 72px outline buttons (<em>Back to family</em>, <em>Home</em>). Body is two columns, 32px gap. Left 340px: portrait placeholder filling available height (radius 16px), then "Emily" 48px/700 + "your granddaughter" 32px muted, then a 96px full-width <em>Call Emily</em> primary. Right: "Things Emily told you" 32px muted, then up to three equal-height memory cards — each a horizontal split with a 180px hatched photo panel and text at 32px/1.25 plus a 28px muted "when" ("last Sunday", "February").</p>
-  <p><strong>Behavior:</strong> read-only. Content is exactly what the family approved in F5 — nothing model-generated appears unreviewed.</p>
-</div>
+      <div class="screen">
+        <h3>R6 · Family news</h3>
+        <p>
+          <strong>Purpose:</strong>
+          a finite, paged feed — one story at a time.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          header "Family news" 48px/700 + "Story 2 of 4" 28px muted +
+          <em>Home</em>
+          . One story card fills the middle: 380px hatched photo panel left, text right at 32–36px padding — kicker "Gardening · this morning" 28px muted, headline 48px/700, body 32px/1.4. Footer row of three 96px buttons:
+          <em>Read to me</em>
+          (primary, left) and
+          <em>Previous</em>
+          /
+          <em>Next</em>
+          (outline, pushed right).
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          explicit paging, never infinite scroll, and never more than one story on screen. "Read to me" is text-to-speech. Items are family-posted or family-approved only.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R6 · Family news</h3>
-  <p><strong>Purpose:</strong> a finite, paged feed — one story at a time.</p>
-  <p><strong>Layout:</strong> header "Family news" 48px/700 + "Story 2 of 4" 28px muted + <em>Home</em>. One story card fills the middle: 380px hatched photo panel left, text right at 32–36px padding — kicker "Gardening · this morning" 28px muted, headline 48px/700, body 32px/1.4. Footer row of three 96px buttons: <em>Read to me</em> (primary, left) and <em>Previous</em> / <em>Next</em> (outline, pushed right).</p>
-  <p><strong>Behavior:</strong> explicit paging, never infinite scroll, and never more than one story on screen. "Read to me" is text-to-speech. Items are family-posted or family-approved only.</p>
-</div>
+      <div class="screen">
+        <h3>R7 · Today</h3>
+        <p>
+          <strong>Purpose:</strong>
+          orientation — what is happening today.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          "Today" 56px/700 over "Saturday, 14 March" 32px muted,
+          <em>Home</em>
+          right. Then equal-height event cards filling the page, 24px gaps: a 150px centered time column (time 40px/700 in
+          <code>#1E5B3C</code>
+          , "afternoon" 28px muted), a 3px tint vertical rule, then title 40px/700 and note 32px muted ("Lisa visits" / "She is bringing Emily").
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          read-only. Nothing clinical appears here — med notes are family-only (F10).
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>R7 · Today</h3>
-  <p><strong>Purpose:</strong> orientation — what is happening today.</p>
-  <p><strong>Layout:</strong> "Today" 56px/700 over "Saturday, 14 March" 32px muted, <em>Home</em> right. Then equal-height event cards filling the page, 24px gaps: a 150px centered time column (time 40px/700 in <code>#1E5B3C</code>, "afternoon" 28px muted), a 3px tint vertical rule, then title 40px/700 and note 32px muted ("Lisa visits" / "She is bringing Emily").</p>
-  <p><strong>Behavior:</strong> read-only. Nothing clinical appears here — med notes are family-only (F10).</p>
-</div>
+      <h2 id="family">Family screens — desktop 1440×900</h2>
 
-<h2 id="family">Family screens — desktop 1440×900</h2>
+      <div class="screen">
+        <h3>F1 · Dashboard</h3>
+        <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          how is Grandma, and what needs me.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Grandma Mei", "Pine Ridge, room 12 · iPad online",
+          <em>Start call</em>
+          primary right). Content padding 24px, 20px gaps: a
+          <strong>4-up stat row</strong>
+          (
+          <code>repeat(4, 1fr)</code>
+          , 16px gap) — each card has an 11px mono uppercase label, a 32px/700 figure, and a 13px muted note ("Calls this week 5 / 2 more than last week"; "Time together 94 min"; "People who spoke 6"; "Memories saved 11 / 3 waiting for approval"). Below, a
+          <code>1.35fr 1fr</code>
+          two-column grid.
+        </p>
+        <p>
+          <strong>Left column:</strong>
+          <em>Grandma's week</em>
+          — "who spoke, and for how long": rows of 32px avatar, a 132px name+relationship cell, a 12px rounded
+          <code>#F0F4EE</code>
+          track with a
+          <code>#1E5B3C</code>
+          fill at that person's share, and a right-aligned mono minutes figure. Then
+          <em>Recent memories</em>
+          with a
+          <em>See all</em>
+          link and a 3-up grid of cards (76px photo strip above 14px/600 text and 12px muted attribution).
+        </p>
+        <p>
+          <strong>Right column:</strong>
+          <em>Waiting for approval</em>
+          with a warn-bg count chip and an
+          <em>Open queue</em>
+          link, holding up to three compact items styled by kind (med note = warn-bg; new person = dashed; tree edit =
+          <code>#FAF8F2</code>
+          ). Then
+          <em>Next visit</em>
+          : "Lisa · Saturday at 2 pm" with "Shown on Grandma's Today screen" muted underneath.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F1 · Dashboard</h3>
-  <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
-  <p><strong>Purpose:</strong> how is Grandma, and what needs me.</p>
-  <p><strong>Layout:</strong> rail + header ("Grandma Mei", "Pine Ridge, room 12 · iPad online", <em>Start call</em> primary right). Content padding 24px, 20px gaps: a <strong>4-up stat row</strong> (<code>repeat(4, 1fr)</code>, 16px gap) — each card has an 11px mono uppercase label, a 32px/700 figure, and a 13px muted note ("Calls this week 5 / 2 more than last week"; "Time together 94 min"; "People who spoke 6"; "Memories saved 11 / 3 waiting for approval"). Below, a <code>1.35fr 1fr</code> two-column grid.</p>
-  <p><strong>Left column:</strong> <em>Grandma's week</em> — "who spoke, and for how long": rows of 32px avatar, a 132px name+relationship cell, a 12px rounded <code>#F0F4EE</code> track with a <code>#1E5B3C</code> fill at that person's share, and a right-aligned mono minutes figure. Then <em>Recent memories</em> with a <em>See all</em> link and a 3-up grid of cards (76px photo strip above 14px/600 text and 12px muted attribution).</p>
-  <p><strong>Right column:</strong> <em>Waiting for approval</em> with a warn-bg count chip and an <em>Open queue</em> link, holding up to three compact items styled by kind (med note = warn-bg; new person = dashed; tree edit = <code>#FAF8F2</code>). Then <em>Next visit</em>: "Lisa · Saturday at 2 pm" with "Shown on Grandma's Today screen" muted underneath.</p>
-</div>
+      <div class="screen">
+        <h3>F2 · Start call</h3>
+        <p class="kicker">designs/Caretaker Calls.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          place a call, invite the family, and confirm your voice will be named correctly.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Start a call" · "Sunday 18 Sep · 2:14 pm"). Content is a
+          <code>1fr 384px</code>
+          grid, 24px gap, top-aligned.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          <em>Who are you calling?</em>
+          — a 2-up grid of callee cards; the selected one is tint with a 2px
+          <code>#1E5B3C</code>
+          border (48px avatar, "Grandma Mei", "Pine Ridge, room 12 · iPad online"), the other is
+          <code>#FAF8F2</code>
+          with a 1px border ("Great-aunt Ling", "Home · tablet last seen Thursday"). Then
+          <em>Invite the rest of the family</em>
+          — a mono join link in a readonly field plus a
+          <em>Copy link</em>
+          primary, and a "Already in the waiting room" row of avatar+name pills. Then the commit row:
+          <em>Call Grandma Mei</em>
+          (16px/600 primary) beside "Her iPad will ring for 60 seconds, then show a missed-call card."
+        </p>
+        <p>
+          <strong>Right — Device check:</strong>
+          "Confirm your voice is matched to you before Grandma sees a name." A
+          <em>Mic test</em>
+          panel with a 48px white strip of 28 thin bars (live bars
+          <code>#1E5B3C</code>
+          , the trailing few
+          <code>#9DBF97</code>
+          , unfilled
+          <code>#E3EDE2</code>
+          ). A tint
+          <em>Matched to</em>
+          block: 44px avatar, "Ken Chen" 18px/600, "high confidence" in primary, the line "Grandma will see
+          <strong>Ken, your grandson</strong>
+          when you speak", and a
+          <em>Not me — fix this</em>
+          outline button. Then three 10px-dot check rows (mic, camera, connection).
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          identification never gates the call. The unenrolled case is a documented empty state below.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F2 · Start call</h3>
-  <p class="kicker">designs/Caretaker Calls.dc.html</p>
-  <p><strong>Purpose:</strong> place a call, invite the family, and confirm your voice will be named correctly.</p>
-  <p><strong>Layout:</strong> rail + header ("Start a call" · "Sunday 18 Sep · 2:14 pm"). Content is a <code>1fr 384px</code> grid, 24px gap, top-aligned.</p>
-  <p><strong>Left:</strong> <em>Who are you calling?</em> — a 2-up grid of callee cards; the selected one is tint with a 2px <code>#1E5B3C</code> border (48px avatar, "Grandma Mei", "Pine Ridge, room 12 · iPad online"), the other is <code>#FAF8F2</code> with a 1px border ("Great-aunt Ling", "Home · tablet last seen Thursday"). Then <em>Invite the rest of the family</em> — a mono join link in a readonly field plus a <em>Copy link</em> primary, and a "Already in the waiting room" row of avatar+name pills. Then the commit row: <em>Call Grandma Mei</em> (16px/600 primary) beside "Her iPad will ring for 60 seconds, then show a missed-call card."</p>
-  <p><strong>Right — Device check:</strong> "Confirm your voice is matched to you before Grandma sees a name." A <em>Mic test</em> panel with a 48px white strip of 28 thin bars (live bars <code>#1E5B3C</code>, the trailing few <code>#9DBF97</code>, unfilled <code>#E3EDE2</code>). A tint <em>Matched to</em> block: 44px avatar, "Ken Chen" 18px/600, "high confidence" in primary, the line "Grandma will see <strong>Ken, your grandson</strong> when you speak", and a <em>Not me — fix this</em> outline button. Then three 10px-dot check rows (mic, camera, connection).</p>
-  <p><strong>Behavior:</strong> identification never gates the call. The unenrolled case is a documented empty state below.</p>
-</div>
+      <div class="screen">
+        <h3>F3 · In call (family)</h3>
+        <p class="kicker">designs/Caretaker In Call.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          talk, watch attribution as it happens, and see what's being captured.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + a 60px header ("Live with Grandma Mei" with an 8px primary dot, a mono elapsed timer, and a right-aligned overlapped avatar stack of everyone on the call — including a
+          <code>#F0F4EE</code>
+          <code>?</code>
+          for the unknown voice). Body splits into a fluid left region (padding 20px, 16px gaps) and a
+          <strong>348px</strong>
+          right aside.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          a 300px dark video panel (radius 12px) with a 150×92 "grandma's feed" inset top-right, a caption plate "Living room laptop · Lisa, Emily, Ken", and right-aligned 44px controls —
+          <em>Mute</em>
+          ,
+          <em>Camera</em>
+          (translucent, 1px white-alpha border) and
+          <em>Leave call</em>
+          (
+          <code>#6A4300</code>
+          fill). Below it the
+          <em>Transcript</em>
+          card: header with "Grandma sees the newest line, large" and a
+          <em>Wrong speaker? Fix it</em>
+          quiet button; then scrolling lines — 36px avatar + a
+          <code>#FAF8F2</code>
+          bubble (max-width 560px) with "
+          <strong>Name</strong>
+          relationship · timecode" at 13px and the text at 16px/1.5.
+        </p>
+        <p>
+          <strong>Line states:</strong>
+          low-confidence content gets a 2px dotted
+          <code>#6A4300</code>
+          underline on the bubble and the phrase in question, plus a small "Not sure we heard this right" line. Unknown speakers get a fully dashed
+          <code>#44544A</code>
+          bubble, the name "Unknown speaker", and a
+          <em>Who is this?</em>
+          button. A speaker who is mid-sentence shows three
+          <code>ct-dot</code>
+          pulsing 7px dots instead of text.
+        </p>
+        <p>
+          <strong>Right aside — "Captured from this call":</strong>
+          "Nothing is saved or shown to Grandma until a family member approves it." Cards by kind: Memory (
+          <code>#FAF8F2</code>
+          , "Emily · 2:14 → attaches to Emily"), Med note · needs approval (warn-bg, all type in
+          <code>#6A4300</code>
+          , "David · 2:31 · low confidence"), New person? (dashed, "An unrecognised voice spoke twice",
+          <em>Identify</em>
+          ). Footer above a 1px rule: "3 items so far · review in the approval queue after the call."
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F3 · In call (family)</h3>
-  <p class="kicker">designs/Caretaker In Call.dc.html</p>
-  <p><strong>Purpose:</strong> talk, watch attribution as it happens, and see what's being captured.</p>
-  <p><strong>Layout:</strong> rail + a 60px header ("Live with Grandma Mei" with an 8px primary dot, a mono elapsed timer, and a right-aligned overlapped avatar stack of everyone on the call — including a <code>#F0F4EE</code> <code>?</code> for the unknown voice). Body splits into a fluid left region (padding 20px, 16px gaps) and a <strong>348px</strong> right aside.</p>
-  <p><strong>Left:</strong> a 300px dark video panel (radius 12px) with a 150×92 "grandma's feed" inset top-right, a caption plate "Living room laptop · Lisa, Emily, Ken", and right-aligned 44px controls — <em>Mute</em>, <em>Camera</em> (translucent, 1px white-alpha border) and <em>Leave call</em> (<code>#6A4300</code> fill). Below it the <em>Transcript</em> card: header with "Grandma sees the newest line, large" and a <em>Wrong speaker? Fix it</em> quiet button; then scrolling lines — 36px avatar + a <code>#FAF8F2</code> bubble (max-width 560px) with "<strong>Name</strong> relationship · timecode" at 13px and the text at 16px/1.5.</p>
-  <p><strong>Line states:</strong> low-confidence content gets a 2px dotted <code>#6A4300</code> underline on the bubble and the phrase in question, plus a small "Not sure we heard this right" line. Unknown speakers get a fully dashed <code>#44544A</code> bubble, the name "Unknown speaker", and a <em>Who is this?</em> button. A speaker who is mid-sentence shows three <code>ct-dot</code> pulsing 7px dots instead of text.</p>
-  <p><strong>Right aside — "Captured from this call":</strong> "Nothing is saved or shown to Grandma until a family member approves it." Cards by kind: Memory (<code>#FAF8F2</code>, "Emily · 2:14 → attaches to Emily"), Med note · needs approval (warn-bg, all type in <code>#6A4300</code>, "David · 2:31 · low confidence"), New person? (dashed, "An unrecognised voice spoke twice", <em>Identify</em>). Footer above a 1px rule: "3 items so far · review in the approval queue after the call."</p>
-</div>
+      <div class="screen">
+        <h3>F4 · Calls list</h3>
+        <p class="kicker">designs/Caretaker Calls.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          scan history and see at a glance who held the floor.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Calls" · "14 calls with Grandma Mei") with three 44px filter controls right:
+          <em>All calls</em>
+          (tint, active),
+          <em>With memories</em>
+          ,
+          <em>Missed</em>
+          . Content is grouped by period under 11px mono uppercase headings ("This week", "Last week"), 20px between groups, 10px between rows.
+        </p>
+        <p>
+          <strong>Row anatomy</strong>
+          (white card, 1px tint, radius 12px, padding
+          <code>16px 20px</code>
+          , 20px gaps, hover border
+          <code>#1E5B3C</code>
+          ): a 56px centered date cell (day 18px/600 over time 12px muted) · a 1px × 44px divider · a fluid title block (title 16px/600, participants 13px muted) · a
+          <strong>220px timeline column</strong>
+          holding a
+          <strong>10px-tall</strong>
+          rounded segmented bar on a
+          <code>#F0F0EA</code>
+          ground plus a 12px muted note beneath it ("Lisa held the floor longest") · a 148px right-aligned wrapping tag area (12px/600 pills: "3 memories", "1 med note", "Missed") · the duration in 15px/600 primary.
+        </p>
+        <p>
+          <strong>Missed calls</strong>
+          drop the timeline entirely, mute the day and title to
+          <code>#44544A</code>
+          , show "Rang for 60 seconds" as the note and "—" as the duration.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F4 · Calls list</h3>
-  <p class="kicker">designs/Caretaker Calls.dc.html</p>
-  <p><strong>Purpose:</strong> scan history and see at a glance who held the floor.</p>
-  <p><strong>Layout:</strong> rail + header ("Calls" · "14 calls with Grandma Mei") with three 44px filter controls right: <em>All calls</em> (tint, active), <em>With memories</em>, <em>Missed</em>. Content is grouped by period under 11px mono uppercase headings ("This week", "Last week"), 20px between groups, 10px between rows.</p>
-  <p><strong>Row anatomy</strong> (white card, 1px tint, radius 12px, padding <code>16px 20px</code>, 20px gaps, hover border <code>#1E5B3C</code>): a 56px centered date cell (day 18px/600 over time 12px muted) · a 1px × 44px divider · a fluid title block (title 16px/600, participants 13px muted) · a <strong>220px timeline column</strong> holding a <strong>10px-tall</strong> rounded segmented bar on a <code>#F0F0EA</code> ground plus a 12px muted note beneath it ("Lisa held the floor longest") · a 148px right-aligned wrapping tag area (12px/600 pills: "3 memories", "1 med note", "Missed") · the duration in 15px/600 primary.</p>
-  <p><strong>Missed calls</strong> drop the timeline entirely, mute the day and title to <code>#44544A</code>, show "Rang for 60 seconds" as the note and "—" as the duration.</p>
-</div>
+      <div class="screen">
+        <h3>F4b · Call detail</h3>
+        <p>
+          <strong>Purpose:</strong>
+          review a call, correct attribution, and see everything it produced.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          no rail — a full-width stack. Header:
+          <em>Back to calls</em>
+          quiet button, "Sunday 2:14 pm" 20px/600, "31 minutes · Grandma Mei, Lisa, Ken, Emily, David + 1 unknown",
+          <em>Export transcript</em>
+          right. Then a white
+          <strong>"Who held the floor"</strong>
+          band (padding
+          <code>18px 24px</code>
+          ): the label plus "Tap a band to jump to that moment", a
+          <strong>40px-tall</strong>
+          segmented bar (radius 10px, 1px white separators, each band labelled with the speaker's name at 11px/600 when it is wide enough), then a legend of 12px swatches and a right-aligned mono ruler ("0:00 · 15:30 · 31:00"). Below, a
+          <code>1fr 392px</code>
+          grid.
+        </p>
+        <p>
+          <strong>Transcript (left):</strong>
+          a heading row with a search field, then lines laid out as 40px mono timecode · 34px avatar · a bubble with name 14px/600, optional kind flag chip, an underlined
+          <em>Wrong speaker? Fix it</em>
+          link pushed right, and the text at 15px/1.55. The resident's own lines are tinted; unknown-speaker lines are dashed.
+        </p>
+        <p>
+          <strong>Right panel — correction staging:</strong>
+          a warn-bg card headed "Correction · waiting for confirmation": "Ken says 6:04 was David, not Ken", a white inner row showing the change as
+          <span class="mono">Ken</span>
+          (struck through, neutral pill) →
+          <span class="mono">David</span>
+          (tint pill), the rule "Nothing changes until another family member confirms. David's voice profile is untouched until then.", and
+          <em>Confirm</em>
+          /
+          <em>Reject</em>
+          . Below it, a scrolling "Captured from this call · 5 items" list — each card shows a 10px mono kind, a mono timecode right, the title 15px/600, and provenance ("Emily · approved by Lisa" / "David · waiting for approval").
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          corrections are proposals, not edits — a second family member must confirm before segments recolor, extractions re-score, or any voice profile is touched.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F4b · Call detail</h3>
-  <p><strong>Purpose:</strong> review a call, correct attribution, and see everything it produced.</p>
-  <p><strong>Layout:</strong> no rail — a full-width stack. Header: <em>Back to calls</em> quiet button, "Sunday 2:14 pm" 20px/600, "31 minutes · Grandma Mei, Lisa, Ken, Emily, David + 1 unknown", <em>Export transcript</em> right. Then a white <strong>"Who held the floor"</strong> band (padding <code>18px 24px</code>): the label plus "Tap a band to jump to that moment", a <strong>40px-tall</strong> segmented bar (radius 10px, 1px white separators, each band labelled with the speaker's name at 11px/600 when it is wide enough), then a legend of 12px swatches and a right-aligned mono ruler ("0:00 · 15:30 · 31:00"). Below, a <code>1fr 392px</code> grid.</p>
-  <p><strong>Transcript (left):</strong> a heading row with a search field, then lines laid out as 40px mono timecode · 34px avatar · a bubble with name 14px/600, optional kind flag chip, an underlined <em>Wrong speaker? Fix it</em> link pushed right, and the text at 15px/1.55. The resident's own lines are tinted; unknown-speaker lines are dashed.</p>
-  <p><strong>Right panel — correction staging:</strong> a warn-bg card headed "Correction · waiting for confirmation": "Ken says 6:04 was David, not Ken", a white inner row showing the change as <span class="mono">Ken</span> (struck through, neutral pill) → <span class="mono">David</span> (tint pill), the rule "Nothing changes until another family member confirms. David's voice profile is untouched until then.", and <em>Confirm</em> / <em>Reject</em>. Below it, a scrolling "Captured from this call · 5 items" list — each card shows a 10px mono kind, a mono timecode right, the title 15px/600, and provenance ("Emily · approved by Lisa" / "David · waiting for approval").</p>
-  <p><strong>Behavior:</strong> corrections are proposals, not edits — a second family member must confirm before segments recolor, extractions re-score, or any voice profile is touched.</p>
-</div>
+      <div class="screen">
+        <h3>F5 · Approval queue</h3>
+        <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          the gate. Nothing reaches the resident's device unreviewed.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Approval queue" · "Nothing reaches Grandma's iPad until someone here approves it"). A filter chip row —
+          <em>All 3</em>
+          (primary fill),
+          <em>Med notes 1</em>
+          ,
+          <em>People 1</em>
+          ,
+          <em>Tree edits 1</em>
+          , with "Oldest first" muted at the right. Then a
+          <strong>3-column grid of full-height review cards</strong>
+          (
+          <code>repeat(3, 1fr)</code>
+          , 16px gap), each padded 20px with 14px internal gaps and its actions pinned to the bottom via
+          <code>margin-top: auto</code>
+          .
+        </p>
+        <p>
+          <strong>Card anatomy:</strong>
+          a kind chip + source ("Sunday call · 2:31"); the proposed content as a 20px/600 title;
+          <strong>the verbatim quote it came from</strong>
+          in a 2px-tint left-bordered block at 15px muted; then kind-specific detail — an attribution row with avatar for med notes, a "Add as:
+          <strong>Emily's partner</strong>
+          " note for new people, a
+          <em>Jason → parent of → Ava, 2</em>
+          pill diagram for tree edits — and a plain-language consequence line ("Grandma's family screen will show Ava under 'your great-grandchildren'"). Med-note cards add a warn-bg disclaimer: "Family notes, not medical instructions." Actions are always
+          <em>Approve</em>
+          (primary) ·
+          <em>Edit</em>
+          (outline) ·
+          <em>Reject</em>
+          (quiet), in that order.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F5 · Approval queue</h3>
-  <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
-  <p><strong>Purpose:</strong> the gate. Nothing reaches the resident's device unreviewed.</p>
-  <p><strong>Layout:</strong> rail + header ("Approval queue" · "Nothing reaches Grandma's iPad until someone here approves it"). A filter chip row — <em>All 3</em> (primary fill), <em>Med notes 1</em>, <em>People 1</em>, <em>Tree edits 1</em>, with "Oldest first" muted at the right. Then a <strong>3-column grid of full-height review cards</strong> (<code>repeat(3, 1fr)</code>, 16px gap), each padded 20px with 14px internal gaps and its actions pinned to the bottom via <code>margin-top: auto</code>.</p>
-  <p><strong>Card anatomy:</strong> a kind chip + source ("Sunday call · 2:31"); the proposed content as a 20px/600 title; <strong>the verbatim quote it came from</strong> in a 2px-tint left-bordered block at 15px muted; then kind-specific detail — an attribution row with avatar for med notes, a "Add as: <strong>Emily's partner</strong>" note for new people, a <em>Jason → parent of → Ava, 2</em> pill diagram for tree edits — and a plain-language consequence line ("Grandma's family screen will show Ava under 'your great-grandchildren'"). Med-note cards add a warn-bg disclaimer: "Family notes, not medical instructions." Actions are always <em>Approve</em> (primary) · <em>Edit</em> (outline) · <em>Reject</em> (quiet), in that order.</p>
-</div>
+      <div class="screen">
+        <h3>F6 · Family tree editor</h3>
+        <p class="kicker">designs/Caretaker Tree.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          maintain the graph that every relationship label is derived from.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Family tree" · "10 people · 4 generations") with
+          <em>Add person</em>
+          (primary) and
+          <em>Add relationship</em>
+          (outline). Body is a
+          <code>1fr 336px</code>
+          grid: canvas and inspector.
+        </p>
+        <p>
+          <strong>Canvas:</strong>
+          <code>#FAF8F2</code>
+          with a 20px dotted grid (
+          <code>radial-gradient(#DCE4D9 1px, transparent 1px)</code>
+          ), 28px padding, content centered. Nodes are
+          <strong>148px</strong>
+          wide, white, 1px
+          <code>#E3EDE2</code>
+          , radius 12px, padding 10px, laid out horizontally: a 40px avatar beside a 14px/600 name and an 11px status line ("daughter · enrolled", "grandson · you", "not enrolled", "1938–2019", "age 2"). The resident's node takes a 2px
+          <code>#1E5B3C</code>
+          border and an 11px/600 primary "resident" label; a deceased person takes a dashed
+          <code>#B9C4B5</code>
+          border and a neutral avatar; the
+          <strong>selected</strong>
+          node is tint-filled with a 2px primary border and the
+          <code>0 0 0 4px rgba(30,91,60,.12)</code>
+          halo. Generations are separated by 44px with 2px
+          <code>#C9D6C6</code>
+          orthogonal connectors. A 10px mono "Gen 1–4" gutter sits at the left edge in
+          <code>#B9C4B5</code>
+          ; bottom-left holds zoom controls (44px −/+ around a mono percentage),
+          <em>Fit to screen</em>
+          , and the hint "Drag to pan · scroll to zoom".
+        </p>
+        <p>
+          <strong>Inspector:</strong>
+          56px avatar + name 20px/600 + "granddaughter of Mei";
+          <em>Upload photo</em>
+          /
+          <em>Open full profile</em>
+          ; a
+          <em>Links</em>
+          panel listing each structural link with a
+          <em>Remove</em>
+          action and the rule "'Granddaughter' is worked out from these links — there is nothing to type."; a
+          <em>Who is the resident?</em>
+          panel with the current resident row, a
+          <em>Make Emily the resident instead</em>
+          button, and the warning "Changing this rebuilds every relationship label on the resident's iPad."; and a warn-bg
+          <em>Pending from a call</em>
+          card ("Marcus — Emily's partner?", "Heard Sunday 8:31. Appears on the tree once approved.",
+          <em>Review in approvals</em>
+          ).
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F6 · Family tree editor</h3>
-  <p class="kicker">designs/Caretaker Tree.dc.html</p>
-  <p><strong>Purpose:</strong> maintain the graph that every relationship label is derived from.</p>
-  <p><strong>Layout:</strong> rail + header ("Family tree" · "10 people · 4 generations") with <em>Add person</em> (primary) and <em>Add relationship</em> (outline). Body is a <code>1fr 336px</code> grid: canvas and inspector.</p>
-  <p><strong>Canvas:</strong> <code>#FAF8F2</code> with a 20px dotted grid (<code>radial-gradient(#DCE4D9 1px, transparent 1px)</code>), 28px padding, content centered. Nodes are <strong>148px</strong> wide, white, 1px <code>#E3EDE2</code>, radius 12px, padding 10px, laid out horizontally: a 40px avatar beside a 14px/600 name and an 11px status line ("daughter · enrolled", "grandson · you", "not enrolled", "1938–2019", "age 2"). The resident's node takes a 2px <code>#1E5B3C</code> border and an 11px/600 primary "resident" label; a deceased person takes a dashed <code>#B9C4B5</code> border and a neutral avatar; the <strong>selected</strong> node is tint-filled with a 2px primary border and the <code>0 0 0 4px rgba(30,91,60,.12)</code> halo. Generations are separated by 44px with 2px <code>#C9D6C6</code> orthogonal connectors. A 10px mono "Gen 1–4" gutter sits at the left edge in <code>#B9C4B5</code>; bottom-left holds zoom controls (44px −/+ around a mono percentage), <em>Fit to screen</em>, and the hint "Drag to pan · scroll to zoom".</p>
-  <p><strong>Inspector:</strong> 56px avatar + name 20px/600 + "granddaughter of Mei"; <em>Upload photo</em> / <em>Open full profile</em>; a <em>Links</em> panel listing each structural link with a <em>Remove</em> action and the rule "'Granddaughter' is worked out from these links — there is nothing to type."; a <em>Who is the resident?</em> panel with the current resident row, a <em>Make Emily the resident instead</em> button, and the warning "Changing this rebuilds every relationship label on the resident's iPad."; and a warn-bg <em>Pending from a call</em> card ("Marcus — Emily's partner?", "Heard Sunday 8:31. Appears on the tree once approved.", <em>Review in approvals</em>).</p>
-</div>
+      <div class="screen">
+        <h3>F6b · Add relationship</h3>
+        <p>
+          <strong>Purpose:</strong>
+          relationships are structural, never free text.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          the tree canvas behind a
+          <code>rgba(27,42,33,.34)</code>
+          scrim, with a
+          <strong>616px</strong>
+          white modal (1px
+          <code>#DCE4D9</code>
+          , radius 12px, padding 28px, 20px gaps,
+          <code>0 8px 32px rgba(27,42,33,.18)</code>
+          ). Title "Add a relationship" 24px/600 over "Pick two people and how they are linked. Labels like 'great-aunt' are worked out from the structure." Then a
+          <code>1fr auto 1fr</code>
+          row: person A card, the connector word "is the", person B card (each a
+          <code>#FAF8F2</code>
+          tile with a 36px avatar, 15px/600 name, 12px muted detail). Then
+          <em>Link type</em>
+          as a
+          <code>repeat(3, 1fr)</code>
+          grid of 44px selectable tiles (selected = tint fill, 2px primary border). Then a tint
+          <strong>echo panel</strong>
+          — "What Grandma will hear": "Ava is your great-granddaughter — Jason's daughter." at 17px/600, with the derivation beneath it ("Derived from Mei → David → Jason → Ava. No label was typed."). Footer:
+          <em>Cancel</em>
+          quiet,
+          <em>Add relationship</em>
+          primary, right-aligned.
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          the echo line recomputes live from the current selection and is the confirmation the user reads before saving.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F6b · Add relationship</h3>
-  <p><strong>Purpose:</strong> relationships are structural, never free text.</p>
-  <p><strong>Layout:</strong> the tree canvas behind a <code>rgba(27,42,33,.34)</code> scrim, with a <strong>616px</strong> white modal (1px <code>#DCE4D9</code>, radius 12px, padding 28px, 20px gaps, <code>0 8px 32px rgba(27,42,33,.18)</code>). Title "Add a relationship" 24px/600 over "Pick two people and how they are linked. Labels like 'great-aunt' are worked out from the structure." Then a <code>1fr auto 1fr</code> row: person A card, the connector word "is the", person B card (each a <code>#FAF8F2</code> tile with a 36px avatar, 15px/600 name, 12px muted detail). Then <em>Link type</em> as a <code>repeat(3, 1fr)</code> grid of 44px selectable tiles (selected = tint fill, 2px primary border). Then a tint <strong>echo panel</strong> — "What Grandma will hear": "Ava is your great-granddaughter — Jason's daughter." at 17px/600, with the derivation beneath it ("Derived from Mei → David → Jason → Ava. No label was typed."). Footer: <em>Cancel</em> quiet, <em>Add relationship</em> primary, right-aligned.</p>
-  <p><strong>Behavior:</strong> the echo line recomputes live from the current selection and is the confirmation the user reads before saving.</p>
-</div>
+      <div class="screen">
+        <h3>F7 · Person detail</h3>
+        <p>
+          <strong>Purpose:</strong>
+          the family-side counterpart to R5 — edit one person and see everything about them.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header (
+          <em>Back to tree</em>
+          , "Emily Chen", "granddaughter · 8 calls · 4 memories",
+          <em>Save changes</em>
+          primary). Content is a
+          <code>424px 1fr</code>
+          grid, 24px gap, both columns scrolling independently.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          an identity card — 72px avatar,
+          <em>Replace photo</em>
+          , and the note "Shown at 220px on Grandma's iPad" — above stacked read-only-looking fields (11px mono label over a
+          <code>#FAF8F2</code>
+          12–14px input, radius 12px). Then
+          <em>Relationship to Mei</em>
+          : a tint block reading "Granddaughter" 17px/600 with "Mei → Lisa → Emily. Derived from the tree, so it cannot be typed here." and a link to edit the links. Then a
+          <em>Voice profile</em>
+          card bordered
+          <code>#EADFC4</code>
+          with a "needs re-enrolment" warn chip, the explanation ("Emily's voiceprint was made two years ago and matched wrongly twice on Sunday's call. Ninety seconds fixes it."), and
+          <em>Send re-enrol link</em>
+          /
+          <em>Delete voiceprint</em>
+          .
+        </p>
+        <p>
+          <strong>Right:</strong>
+          <em>Emily's memories</em>
+          — "4 saved · 1 waiting" — as a 2-up grid of small cards (waiting ones in warn-bg). Below it, a scrolling
+          <em>Every mention of Emily</em>
+          panel, "pulled from 8 call transcripts": rows of speaker + mono date/timecode + the quoted line, each clickable back into the transcript.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F7 · Person detail</h3>
-  <p><strong>Purpose:</strong> the family-side counterpart to R5 — edit one person and see everything about them.</p>
-  <p><strong>Layout:</strong> rail + header (<em>Back to tree</em>, "Emily Chen", "granddaughter · 8 calls · 4 memories", <em>Save changes</em> primary). Content is a <code>424px 1fr</code> grid, 24px gap, both columns scrolling independently.</p>
-  <p><strong>Left:</strong> an identity card — 72px avatar, <em>Replace photo</em>, and the note "Shown at 220px on Grandma's iPad" — above stacked read-only-looking fields (11px mono label over a <code>#FAF8F2</code> 12–14px input, radius 12px). Then <em>Relationship to Mei</em>: a tint block reading "Granddaughter" 17px/600 with "Mei → Lisa → Emily. Derived from the tree, so it cannot be typed here." and a link to edit the links. Then a <em>Voice profile</em> card bordered <code>#EADFC4</code> with a "needs re-enrolment" warn chip, the explanation ("Emily's voiceprint was made two years ago and matched wrongly twice on Sunday's call. Ninety seconds fixes it."), and <em>Send re-enrol link</em> / <em>Delete voiceprint</em>.</p>
-  <p><strong>Right:</strong> <em>Emily's memories</em> — "4 saved · 1 waiting" — as a 2-up grid of small cards (waiting ones in warn-bg). Below it, a scrolling <em>Every mention of Emily</em> panel, "pulled from 8 call transcripts": rows of speaker + mono date/timecode + the quoted line, each clickable back into the transcript.</p>
-</div>
+      <div class="screen">
+        <h3>F8 · Voice enrollment</h3>
+        <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          teach the system one family member's voice, with consent first.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          no rail — a full 1440×900 sheet, padding 28px. Header: "Set up your voice" 24px/600, "So Grandma's screen can show your name and face when you speak", and a right-aligned step tracker of four pills (numbered 20px dot + label; the active pill is primary-filled). The prototype shows
+          <strong>all four steps side by side</strong>
+          as a
+          <code>repeat(4, 1fr)</code>
+          grid so the whole flow is reviewable; in the product these are sequential, and the active card is the one with the 1px
+          <code>#1E5B3C</code>
+          border.
+        </p>
+        <ul>
+          <li>
+            <strong>1 · Consent</strong>
+            — "Your voiceprint, your choice": "We store a mathematical voiceprint — not recordings." Two
+            <code>#FAF8F2</code>
+            fact rows (retention off by default; delete any time in Privacy), then a tint checkbox row ("I agree to a voiceprint being made from my speech.",
+            <code>accent-color: #1E5B3C</code>
+            ) and
+            <em>Continue</em>
+            .
+          </li>
+          <li>
+            <strong>2 · Read aloud · 2 of 3</strong>
+            — a prompt sentence in a 17px
+            <code>#FAF8F2</code>
+            quote block, a "Microphone level" meter (14px
+            <code>#F0F4EE</code>
+            track, primary fill animated by
+            <code>ct-level</code>
+            1.6s ease-in-out infinite,
+            <code>scaleX .42 → .8</code>
+            , right-aligned status "good"), a 3-segment progress strip, "Two prompts recorded · about 20 seconds so far", then
+            <em>Next prompt</em>
+            +
+            <em>Redo</em>
+            .
+          </li>
+          <li>
+            <strong>3 · Quality check</strong>
+            — "Good enough to tell you apart": dot-prefixed findings, the last one warn-bg ("Similar to David — add one more prompt to be safe"), then the consequence line "Quality affects how often the wrong name appears on Grandma's screen." and
+            <em>Add a prompt</em>
+            /
+            <em>Continue</em>
+            .
+          </li>
+          <li>
+            <strong>4 · Test me</strong>
+            — "Say anything for five seconds": a tint result block ("We recognise you as Ken", "grandson · strong match"), a match-strength bar with a mono verbal label ("high" — never a raw percentage), the note "On Grandma's screen you will appear as
+            <strong>Ken, your grandson</strong>
+            ", then
+            <em>Finish</em>
+            /
+            <em>Test again</em>
+            .
+          </li>
+        </ul>
+      </div>
 
-<div class="screen">
-  <h3>F8 · Voice enrollment</h3>
-  <p class="kicker">designs/Caretaker Family Screens.dc.html</p>
-  <p><strong>Purpose:</strong> teach the system one family member's voice, with consent first.</p>
-  <p><strong>Layout:</strong> no rail — a full 1440×900 sheet, padding 28px. Header: "Set up your voice" 24px/600, "So Grandma's screen can show your name and face when you speak", and a right-aligned step tracker of four pills (numbered 20px dot + label; the active pill is primary-filled). The prototype shows <strong>all four steps side by side</strong> as a <code>repeat(4, 1fr)</code> grid so the whole flow is reviewable; in the product these are sequential, and the active card is the one with the 1px <code>#1E5B3C</code> border.</p>
-  <ul>
-    <li><strong>1 · Consent</strong> — "Your voiceprint, your choice": "We store a mathematical voiceprint — not recordings." Two <code>#FAF8F2</code> fact rows (retention off by default; delete any time in Privacy), then a tint checkbox row ("I agree to a voiceprint being made from my speech.", <code>accent-color: #1E5B3C</code>) and <em>Continue</em>.</li>
-    <li><strong>2 · Read aloud · 2 of 3</strong> — a prompt sentence in a 17px <code>#FAF8F2</code> quote block, a "Microphone level" meter (14px <code>#F0F4EE</code> track, primary fill animated by <code>ct-level</code> 1.6s ease-in-out infinite, <code>scaleX .42 → .8</code>, right-aligned status "good"), a 3-segment progress strip, "Two prompts recorded · about 20 seconds so far", then <em>Next prompt</em> + <em>Redo</em>.</li>
-    <li><strong>3 · Quality check</strong> — "Good enough to tell you apart": dot-prefixed findings, the last one warn-bg ("Similar to David — add one more prompt to be safe"), then the consequence line "Quality affects how often the wrong name appears on Grandma's screen." and <em>Add a prompt</em> / <em>Continue</em>.</li>
-    <li><strong>4 · Test me</strong> — "Say anything for five seconds": a tint result block ("We recognise you as Ken", "grandson · strong match"), a match-strength bar with a mono verbal label ("high" — never a raw percentage), the note "On Grandma's screen you will appear as <strong>Ken, your grandson</strong>", then <em>Finish</em> / <em>Test again</em>.</li>
-  </ul>
-</div>
+      <div class="screen">
+        <h3>F9 · Memories and search</h3>
+        <p class="kicker">designs/Caretaker Content and Settings.dc.html</p>
+        <p>
+          <strong>Purpose:</strong>
+          find any moment the household has recorded, by meaning.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Memories" · "38 saved across 14 calls"). A white search band (padding
+          <code>20px 24px</code>
+          ): the query field is
+          <code>#FAF8F2</code>
+          with a 2px
+          <code>#1E5B3C</code>
+          border at 16px ("Emily's graduation") beside a
+          <em>Search</em>
+          primary; beneath it the promise "Searches meaning, not just words — 'graduation' finds 'passed her course' too." with four 44px facet chips right-aligned. Then "4 results · best match first" and a scrolling result list.
+        </p>
+        <p>
+          <strong>Result row</strong>
+          (white, 1px tint, padding
+          <code>18px 20px</code>
+          , 20px gaps, hover border primary): a 76px square photo placeholder (radius 12px) · a fluid body with a 10px mono kind, a tint match-score chip, the title 18px/600, the source quote in a 2px-tint left-bordered block, and a provenance row ("Said by
+          <strong>Emily</strong>
+          " · call · an underlined mono timecode) · a 152px action column with a
+          <em>Play moment</em>
+          outline button and a 12px centered note about where it is shown.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F9 · Memories and search</h3>
-  <p class="kicker">designs/Caretaker Content and Settings.dc.html</p>
-  <p><strong>Purpose:</strong> find any moment the household has recorded, by meaning.</p>
-  <p><strong>Layout:</strong> rail + header ("Memories" · "38 saved across 14 calls"). A white search band (padding <code>20px 24px</code>): the query field is <code>#FAF8F2</code> with a 2px <code>#1E5B3C</code> border at 16px ("Emily's graduation") beside a <em>Search</em> primary; beneath it the promise "Searches meaning, not just words — 'graduation' finds 'passed her course' too." with four 44px facet chips right-aligned. Then "4 results · best match first" and a scrolling result list.</p>
-  <p><strong>Result row</strong> (white, 1px tint, padding <code>18px 20px</code>, 20px gaps, hover border primary): a 76px square photo placeholder (radius 12px) · a fluid body with a 10px mono kind, a tint match-score chip, the title 18px/600, the source quote in a 2px-tint left-bordered block, and a provenance row ("Said by <strong>Emily</strong>" · call · an underlined mono timecode) · a 152px action column with a <em>Play moment</em> outline button and a 12px centered note about where it is shown.</p>
-</div>
+      <div class="screen">
+        <h3>F9b · Memories empty states</h3>
+        <p>
+          <strong>Two distinct frames</strong>
+          (708×440 each, 56px header), never collapsed into one message:
+        </p>
+        <ul>
+          <li>
+            <strong>No match</strong>
+            — header subtitle "no match"; echoes the query, and offers a button to clear the facets rather than a dead end.
+          </li>
+          <li>
+            <strong>Nothing saved yet</strong>
+            — header subtitle "nothing saved yet"; "Memories come from your calls" 20px/600 over "When someone shares news on a call, we draft a memory and hold it here until a family member approves it." with a single primary action.
+          </li>
+        </ul>
+      </div>
 
-<div class="screen">
-  <h3>F9b · Memories empty states</h3>
-  <p><strong>Two distinct frames</strong> (708×440 each, 56px header), never collapsed into one message:</p>
-  <ul>
-    <li><strong>No match</strong> — header subtitle "no match"; echoes the query, and offers a button to clear the facets rather than a dead end.</li>
-    <li><strong>Nothing saved yet</strong> — header subtitle "nothing saved yet"; "Memories come from your calls" 20px/600 over "When someone shares news on a call, we draft a memory and hold it here until a family member approves it." with a single primary action.</li>
-  </ul>
-</div>
+      <div class="screen">
+        <h3>F10 · Med notes</h3>
+        <p>
+          <strong>Purpose:</strong>
+          a family-only place for care details, clearly fenced off from the resident.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Med notes" · "7 approved · 1 waiting"). Immediately below, a non-dismissible warn-bg banner with a 36px white
+          <code>!</code>
+          disc: "These are notes from your family — not medical instructions" over "Written down from what someone said on a call. They are not checked by a nurse or doctor, and they never appear on her iPad." Then a
+          <code>1fr 336px</code>
+          grid, 20px gap.
+        </p>
+        <p>
+          <strong>Left — Approved notes</strong>
+          ("newest first"): rows with the note title 16px/600, the originating quote in a 2px-tint left-bordered block, and an attribution/status line.
+          <strong>Right:</strong>
+          a warn-bg
+          <em>Waiting for approval</em>
+          card ("Blood pressure pill at 8 am", "David · Sunday 14:07. Not saved to the list until a second family member approves it.") with its actions; then
+          <em>Who can see these</em>
+          listing each family member's access.
+        </p>
+        <p>
+          <strong>Behavior:</strong>
+          med notes have no path to the resident device — enforce at the data layer, not just the route. Approval requires a
+          <em>second</em>
+          family member.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F10 · Med notes</h3>
-  <p><strong>Purpose:</strong> a family-only place for care details, clearly fenced off from the resident.</p>
-  <p><strong>Layout:</strong> rail + header ("Med notes" · "7 approved · 1 waiting"). Immediately below, a non-dismissible warn-bg banner with a 36px white <code>!</code> disc: "These are notes from your family — not medical instructions" over "Written down from what someone said on a call. They are not checked by a nurse or doctor, and they never appear on her iPad." Then a <code>1fr 336px</code> grid, 20px gap.</p>
-  <p><strong>Left — Approved notes</strong> ("newest first"): rows with the note title 16px/600, the originating quote in a 2px-tint left-bordered block, and an attribution/status line. <strong>Right:</strong> a warn-bg <em>Waiting for approval</em> card ("Blood pressure pill at 8 am", "David · Sunday 14:07. Not saved to the list until a second family member approves it.") with its actions; then <em>Who can see these</em> listing each family member's access.</p>
-  <p><strong>Behavior:</strong> med notes have no path to the resident device — enforce at the data layer, not just the route. Approval requires a <em>second</em> family member.</p>
-</div>
+      <div class="screen">
+        <h3>F11 · News settings</h3>
+        <p>
+          <strong>Purpose:</strong>
+          control what reaches R6, and see what was filtered out.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("News" · "what reaches Grandma's iPad" + a primary action). A
+          <code>1fr 396px</code>
+          grid, 24px gap.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          the master switch card, bordered 2px
+          <code>#1E5B3C</code>
+          — "Show Family News on Grandma's iPad" 17px/600 with "When off, the news tile disappears from her home screen entirely." Then
+          <em>Feeds</em>
+          ("Three stories a day, chosen from the feeds you turn on.") as per-feed rows with a toggle and a 13px note each. Then
+          <em>Keep it gentle</em>
+          — "Filters out violence, disasters, and death before anything reaches her screen. About one story in four is held back."
+        </p>
+        <p>
+          <strong>Right:</strong>
+          <em>Today on her iPad</em>
+          — a preview of the three stories she will actually see (mono source label + 15px/600 headline). Below, a scrolling
+          <em>Held back this week</em>
+          list, so the filter is auditable rather than invisible.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F11 · News settings</h3>
-  <p><strong>Purpose:</strong> control what reaches R6, and see what was filtered out.</p>
-  <p><strong>Layout:</strong> rail + header ("News" · "what reaches Grandma's iPad" + a primary action). A <code>1fr 396px</code> grid, 24px gap.</p>
-  <p><strong>Left:</strong> the master switch card, bordered 2px <code>#1E5B3C</code> — "Show Family News on Grandma's iPad" 17px/600 with "When off, the news tile disappears from her home screen entirely." Then <em>Feeds</em> ("Three stories a day, chosen from the feeds you turn on.") as per-feed rows with a toggle and a 13px note each. Then <em>Keep it gentle</em> — "Filters out violence, disasters, and death before anything reaches her screen. About one story in four is held back."</p>
-  <p><strong>Right:</strong> <em>Today on her iPad</em> — a preview of the three stories she will actually see (mono source label + 15px/600 headline). Below, a scrolling <em>Held back this week</em> list, so the filter is auditable rather than invisible.</p>
-</div>
+      <div class="screen">
+        <h3>F12 · Privacy and data</h3>
+        <p>
+          <strong>Purpose:</strong>
+          make consent, retention, and deletion legible — and real.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Privacy and data" · "Chen family"),
+          <code>1fr 396px</code>
+          grid.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          <em>What each person has agreed to</em>
+          — "Everyone consents for themselves. Nobody can consent on another adult's behalf." — as per-person rows with a 36px avatar and their consent detail. Then
+          <em>Keep call audio</em>
+          : "Off by default. We keep voiceprints — mathematical fingerprints that cannot be played back." with its toggle. Then
+          <em>Your own data</em>
+          (bordered
+          <code>#EADFC4</code>
+          ) holding export and deletion actions.
+        </p>
+        <p>
+          <strong>Right:</strong>
+          <em>What we hold right now</em>
+          — a plain label/value ledger (rows separated by 1px
+          <code>#F0F0EA</code>
+          ) so the abstract claim is countable.
+        </p>
+        <p>
+          <strong>Deletion confirmation:</strong>
+          a
+          <strong>568px</strong>
+          modal over the
+          <code>rgba(27,42,33,.34)</code>
+          scrim. Title "Delete Ken's voiceprint?" 24px/600, then a warn-bg "This is what you lose" block enumerating the consequences, then
+          <em>Cancel</em>
+          (quiet) and a
+          <code>#6A4300</code>
+          -filled confirm. No undo is promised.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F12 · Privacy and data</h3>
-  <p><strong>Purpose:</strong> make consent, retention, and deletion legible — and real.</p>
-  <p><strong>Layout:</strong> rail + header ("Privacy and data" · "Chen family"), <code>1fr 396px</code> grid.</p>
-  <p><strong>Left:</strong> <em>What each person has agreed to</em> — "Everyone consents for themselves. Nobody can consent on another adult's behalf." — as per-person rows with a 36px avatar and their consent detail. Then <em>Keep call audio</em>: "Off by default. We keep voiceprints — mathematical fingerprints that cannot be played back." with its toggle. Then <em>Your own data</em> (bordered <code>#EADFC4</code>) holding export and deletion actions.</p>
-  <p><strong>Right:</strong> <em>What we hold right now</em> — a plain label/value ledger (rows separated by 1px <code>#F0F0EA</code>) so the abstract claim is countable.</p>
-  <p><strong>Deletion confirmation:</strong> a <strong>568px</strong> modal over the <code>rgba(27,42,33,.34)</code> scrim. Title "Delete Ken's voiceprint?" 24px/600, then a warn-bg "This is what you lose" block enumerating the consequences, then <em>Cancel</em> (quiet) and a <code>#6A4300</code>-filled confirm. No undo is promised.</p>
-</div>
+      <div class="screen">
+        <h3>F13 · Settings — people, invite, device pairing</h3>
+        <p>
+          <strong>Purpose:</strong>
+          manage who has access, at what level, and the resident's device.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          rail + header ("Settings" · "Chen family · 6 members"),
+          <code>1fr 396px</code>
+          grid.
+        </p>
+        <p>
+          <strong>Left:</strong>
+          <em>Family members</em>
+          — "roles decide who can approve things" — rows of 40px avatar, name 15px/600, "relationship · voice status", and a role control. Then
+          <em>Invite someone</em>
+          : "They pick their own name, then enrol their voice. Link expires in 7 days." with a mono invite link and a
+          <em>Copy</em>
+          -style primary.
+        </p>
+        <p>
+          <strong>Right:</strong>
+          <em>Grandma's iPad</em>
+          — a tint pairing block with a 44px device tile, "Paired · online" 15px/600, "Pine Ridge, room 12 · seen 4 minutes ago", and pairing-code actions. Then
+          <em>What each role can do</em>
+          , one
+          <code>#FAF8F2</code>
+          block per role spelling out its permissions in words rather than a matrix.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>F13 · Settings — people, invite, device pairing</h3>
-  <p><strong>Purpose:</strong> manage who has access, at what level, and the resident's device.</p>
-  <p><strong>Layout:</strong> rail + header ("Settings" · "Chen family · 6 members"), <code>1fr 396px</code> grid.</p>
-  <p><strong>Left:</strong> <em>Family members</em> — "roles decide who can approve things" — rows of 40px avatar, name 15px/600, "relationship · voice status", and a role control. Then <em>Invite someone</em>: "They pick their own name, then enrol their voice. Link expires in 7 days." with a mono invite link and a <em>Copy</em>-style primary.</p>
-  <p><strong>Right:</strong> <em>Grandma's iPad</em> — a tint pairing block with a 44px device tile, "Paired · online" 15px/600, "Pine Ridge, room 12 · seen 4 minutes ago", and pairing-code actions. Then <em>What each role can do</em>, one <code>#FAF8F2</code> block per role spelling out its permissions in words rather than a matrix.</p>
-</div>
+      <h2 id="public">Public site</h2>
+      <div class="screen">
+        <h3>P1 · Landing — above the fold</h3>
+        <p class="kicker">designs/Caretaker Public.dc.html</p>
+        <p>
+          <strong>Register shift:</strong>
+          the one expressive surface. Ground is
+          <code>#14422B</code>
+          with a soft
+          <code>rgba(157,191,151,.22)</code>
+          radial bloom bleeding off the top-right corner, and the display face is
+          <strong>Instrument Serif</strong>
+          — used nowhere in the product.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          an 88px header (40px mark, "Caretaker" 19px/600, three 15px
+          <code>#C9D6C6</code>
+          nav links — "How it works", "Privacy", "For care homes" — and a paper-colored
+          <em>Try the demo</em>
+          button), then a
+          <code>1fr 560px</code>
+          grid with 56px gutters.
+        </p>
+        <p>
+          <strong>Copy (verbatim):</strong>
+          eyebrow "Video calls for people who forget faces" (12px mono, .14em). Headline "Caretaker puts a name / on every voice." at
+          <strong>82px/1.02</strong>
+          in
+          <code>#FAF8F2</code>
+          . Two 19px paragraphs — the first in
+          <code>#E3EDE2</code>
+          naming the problem ("Four people crowd around one laptop… to Grandma, a voice is just a voice."), the second in
+          <code>#FAF8F2</code>
+          /500 naming the fix. Then two 56px CTAs (
+          <em>Try the demo</em>
+          paper-filled,
+          <em>Watch a call, 90 seconds</em>
+          outlined in
+          <code>rgba(250,248,242,.36)</code>
+          ), then the reassurance line "No app for her to learn. Her iPad rings, she taps the big green button, and the rest is your job — not hers."
+        </p>
+        <p>
+          <strong>Right:</strong>
+          a 560×420 resident-screen still in a 10px
+          <code>#0E1A13</code>
+          bezel — the dark hatched call view with the large name plate ("Lisa" 30px/700 over "your daughter" 22px), a "Lisa is talking" status pill, and a paper caption bar carrying the spoken line. Beneath it, right-aligned: "What Grandma sees · real screen, not a mockup".
+        </p>
+      </div>
 
-<h2 id="public">Public site</h2>
-<div class="screen">
-  <h3>P1 · Landing — above the fold</h3>
-  <p class="kicker">designs/Caretaker Public.dc.html</p>
-  <p><strong>Register shift:</strong> the one expressive surface. Ground is <code>#14422B</code> with a soft <code>rgba(157,191,151,.22)</code> radial bloom bleeding off the top-right corner, and the display face is <strong>Instrument Serif</strong> — used nowhere in the product.</p>
-  <p><strong>Layout:</strong> an 88px header (40px mark, "Caretaker" 19px/600, three 15px <code>#C9D6C6</code> nav links — "How it works", "Privacy", "For care homes" — and a paper-colored <em>Try the demo</em> button), then a <code>1fr 560px</code> grid with 56px gutters.</p>
-  <p><strong>Copy (verbatim):</strong> eyebrow "Video calls for people who forget faces" (12px mono, .14em). Headline "Caretaker puts a name / on every voice." at <strong>82px/1.02</strong> in <code>#FAF8F2</code>. Two 19px paragraphs — the first in <code>#E3EDE2</code> naming the problem ("Four people crowd around one laptop… to Grandma, a voice is just a voice."), the second in <code>#FAF8F2</code>/500 naming the fix. Then two 56px CTAs (<em>Try the demo</em> paper-filled, <em>Watch a call, 90 seconds</em> outlined in <code>rgba(250,248,242,.36)</code>), then the reassurance line "No app for her to learn. Her iPad rings, she taps the big green button, and the rest is your job — not hers."</p>
-  <p><strong>Right:</strong> a 560×420 resident-screen still in a 10px <code>#0E1A13</code> bezel — the dark hatched call view with the large name plate ("Lisa" 30px/700 over "your daughter" 22px), a "Lisa is talking" status pill, and a paper caption bar carrying the spoken line. Beneath it, right-aligned: "What Grandma sees · real screen, not a mockup".</p>
-</div>
+      <div class="screen">
+        <h3>P1b · Two-view switcher and the privacy line</h3>
+        <p>
+          <strong>Purpose:</strong>
+          show that the two sides do different jobs, then state the privacy position plainly.
+        </p>
+        <p>
+          <strong>Layout:</strong>
+          a
+          <code>#FAF8F2</code>
+          section, padding
+          <code>48px 56px</code>
+          . Header: "Two screens, one call." (Instrument Serif, 52px) with a 620px subhead, and a right-aligned white segmented switcher (
+          <em>See what Grandma sees</em>
+          /
+          <em>What the family sees</em>
+          , 48px tabs, active tab primary-filled). Then a 1:1 grid of the two live-looking screens, each labelled with its own design constraint in 11px mono — "28px floor · one tap · no icons without words" versus "named transcript · corrections · what got captured". The family panel is a miniature
+          call detail: a 44px title bar, compact attributed transcript lines (including a dashed unknown-speaker line), and a footer strip of capture chips ending in "nothing saved without your approval".
+        </p>
+        <p>
+          <strong>Privacy band:</strong>
+          a tint block,
+          <code>300px 1fr</code>
+          grid — "A voiceprint, not a recording." (Instrument Serif 34px) plus "Read the whole policy — it is two pages, in plain words." beside a 3-up grid of short title/body pairs.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>P1b · Two-view switcher and the privacy line</h3>
-  <p><strong>Purpose:</strong> show that the two sides do different jobs, then state the privacy position plainly.</p>
-  <p><strong>Layout:</strong> a <code>#FAF8F2</code> section, padding <code>48px 56px</code>. Header: "Two screens, one call." (Instrument Serif, 52px) with a 620px subhead, and a right-aligned white segmented switcher (<em>See what Grandma sees</em> / <em>What the family sees</em>, 48px tabs, active tab primary-filled). Then a 1:1 grid of the two live-looking screens, each labelled with its own design constraint in 11px mono — "28px floor · one tap · no icons without words" versus "named transcript · corrections · what got captured". The family panel is a miniature call detail: a 44px title bar, compact attributed transcript lines (including a dashed unknown-speaker line), and a footer strip of capture chips ending in "nothing saved without your approval".</p>
-  <p><strong>Privacy band:</strong> a tint block, <code>300px 1fr</code> grid — "A voiceprint, not a recording." (Instrument Serif 34px) plus "Read the whole policy — it is two pages, in plain words." beside a 3-up grid of short title/body pairs.</p>
-</div>
+      <div class="screen">
+        <h3>P1 mobile — 390×844</h3>
+        <p>
+          Two frames, both radius 26px with a 44px status bar.
+          <strong>Hero:</strong>
+          same dark ground and bloom; headline drops to 46px, body to 16px, the resident-screen still becomes a compact 156px-tall card, and the two CTAs stack at 52px pushed to the bottom with
+          <code>margin-top: auto</code>
+          .
+          <strong>Second screen:</strong>
+          "Two screens, one call." at 36px, the switcher becomes a full-width 2-up segmented control ("Grandma's view" / "Family view"), one device preview below it, then the privacy band condensed to three bolded one-liners, and a primary
+          <em>Try the demo</em>
+          pinned last.
+        </p>
+      </div>
 
-<div class="screen">
-  <h3>P1 mobile — 390×844</h3>
-  <p>Two frames, both radius 26px with a 44px status bar. <strong>Hero:</strong> same dark ground and bloom; headline drops to 46px, body to 16px, the resident-screen still becomes a compact 156px-tall card, and the two CTAs stack at 52px pushed to the bottom with <code>margin-top: auto</code>. <strong>Second screen:</strong> "Two screens, one call." at 36px, the switcher becomes a full-width 2-up segmented control ("Grandma's view" / "Family view"), one device preview below it, then the privacy band condensed to three bolded one-liners, and a primary <em>Try the demo</em> pinned last.</p>
-</div>
+      <h2 id="responsive">Responsive behavior</h2>
+      <p class="kicker">designs/Caretaker Responsive.dc.html · designs/CaretakerScreen.dc.html</p>
+      <p>
+        F1, F3, and F5 are also built as a
+        <strong>single self-measuring component</strong>
+        (
+        <code>CaretakerScreen</code>
+        , props
+        <code>screen</code>
+        =
+        <code>dashboard | call | queue</code>
+        ) rendered at 1440×900 and 390×844 from one implementation. It measures its own container rather than the viewport and crosses over at
+        <strong>720px</strong>
+        :
+      </p>
+      <ul>
+        <li>
+          <strong>Wide (≥720px):</strong>
+          the 232px rail, a header action button, and regions that grow (
+          <code>flex: 1 1 0%</code>
+          ) to fill the height. Controls are 44px.
+        </li>
+        <li>
+          <strong>Narrow (&lt;720px):</strong>
+          the rail is replaced by a
+          <strong>bottom tab bar</strong>
+          (white, 1px top border, padding
+          <code>8px 8px 20px</code>
+          , 4px gaps, tabs
+          <code>flex: 1</code>
+          at
+          <code>min-height: 52px</code>
+          , labels Home / Call / Approvals / More with badges); the brand mark moves into the header; content becomes one stacked column with
+          <code>flex: 0 0 auto</code>
+          cards and
+          <code>align-items: start</code>
+          ; in-call controls stretch (
+          <code>flex: 1 1 124px</code>
+          ) to 48px; and
+          <strong>Approve goes full-width at 52px / 16px</strong>
+          so the queue clears one-handed.
+        </li>
+        <li>Header subtitles shorten at narrow ("Pine Ridge, room 12 · iPad online" → "iPad online"; "5 people · 31 minutes · recording off" → "5 people · 31 min"; "3 waiting · oldest from Sunday" → "3 waiting").</li>
+        <li>
+          Resident layouts are fixed to the iPad and do not reflow. Family layouts are otherwise fluid —
+          <code>minmax(0,1fr)</code>
+          tracks, no fixed widths on text containers.
+        </li>
+      </ul>
 
-<h2 id="responsive">Responsive behavior</h2>
-<p class="kicker">designs/Caretaker Responsive.dc.html · designs/CaretakerScreen.dc.html</p>
-<p>F1, F3, and F5 are also built as a <strong>single self-measuring component</strong> (<code>CaretakerScreen</code>, props <code>screen</code> = <code>dashboard | call | queue</code>) rendered at 1440×900 and 390×844 from one implementation. It measures its own container rather than the viewport and crosses over at <strong>720px</strong>:</p>
-<ul>
-  <li><strong>Wide (≥720px):</strong> the 232px rail, a header action button, and regions that grow (<code>flex: 1 1 0%</code>) to fill the height. Controls are 44px.</li>
-  <li><strong>Narrow (&lt;720px):</strong> the rail is replaced by a <strong>bottom tab bar</strong> (white, 1px top border, padding <code>8px 8px 20px</code>, 4px gaps, tabs <code>flex: 1</code> at <code>min-height: 52px</code>, labels Home / Call / Approvals / More with badges); the brand mark moves into the header; content becomes one stacked column with <code>flex: 0 0 auto</code> cards and <code>align-items: start</code>; in-call controls stretch (<code>flex: 1 1 124px</code>) to 48px; and <strong>Approve goes full-width at 52px / 16px</strong> so the queue clears one-handed.</li>
-  <li>Header subtitles shorten at narrow ("Pine Ridge, room 12 · iPad online" → "iPad online"; "5 people · 31 minutes · recording off" → "5 people · 31 min"; "3 waiting · oldest from Sunday" → "3 waiting").</li>
-  <li>Resident layouts are fixed to the iPad and do not reflow. Family layouts are otherwise fluid — <code>minmax(0,1fr)</code> tracks, no fixed widths on text containers.</li>
-</ul>
+      <h2 id="state">State &amp; data</h2>
+      <h4>Core entities</h4>
+      <ul>
+        <li>
+          <code>Resident</code>
+          — name, photo, facility + room, device pairing state and last-seen, timezone.
+        </li>
+        <li>
+          <code>Person</code>
+          — id, name, photo, voice status (
+          <code>not enrolled | enrolled | needs re-enrolment</code>
+          ), speaker color (stable by id), role, deceased flag + years.
+        </li>
+        <li>
+          <code>Relationship</code>
+          —
+          <code>{ fromId, type, toId }</code>
+          . Structured types only; all displayed labels ("granddaughter", "great-granddaughter") are
+          <strong>derived by traversal</strong>
+          , never stored strings, and never typed by a user.
+        </li>
+        <li>
+          <code>Call</code>
+          — participants (including unidentified voices), start/end, floor segments
+          <code>[{ speakerId, startMs, endMs }]</code>
+          (the single source for every timeline), transcript lines
+          <code>[{ speakerId, text, atMs, confidence }]</code>
+          .
+        </li>
+        <li>
+          <code>Correction</code>
+          — a
+          <em>proposal</em>
+          :
+          <code>{ callId, atMs, fromSpeakerId, toSpeakerId, proposedBy, status }</code>
+          . Applies only on confirmation by a different family member.
+        </li>
+        <li>
+          <code>Extraction</code>
+          — candidate
+          <code>Memory</code>
+          ,
+          <code>MedNote</code>
+          ,
+          <code>Person</code>
+          , or
+          <code>Relationship</code>
+          edit, each with the sourcing quote, speaker, timecode, confidence, and status (
+          <code>pending | approved | rejected</code>
+          ).
+        </li>
+        <li>
+          <code>Memory</code>
+          — approved content attached to a person; only approved items render on the iPad.
+        </li>
+        <li>
+          <code>MedNote</code>
+          — family-only, requires two approvals, hard-walled from resident queries.
+        </li>
+        <li>
+          <code>NewsSettings</code>
+          — master on/off, per-feed toggles, gentle filter, plus a log of held-back items.
+        </li>
+        <li>
+          <code>Consent</code>
+          — per-person, self-granted only; audio retention off by default.
+        </li>
+      </ul>
+      <h4>Transitions worth implementing carefully</h4>
+      <ul>
+        <li>
+          <strong>Live attribution:</strong>
+          <code>nobody talking → named speaker → unknown voice</code>
+          . Unknown is a first-class state with its own dashed visual language and no guessed name.
+        </li>
+        <li>
+          <strong>Correction:</strong>
+          <code>proposed → confirmed | rejected</code>
+          . Only
+          <code>confirmed</code>
+          rewrites segments, recolors timelines, and feeds voice-profile training.
+        </li>
+        <li>
+          <strong>Approval:</strong>
+          <code>pending → approved</code>
+          is the only path to resident visibility; med notes need a second approver.
+        </li>
+        <li>
+          <strong>Enrollment:</strong>
+          consent → prompts (with redo) → quality check (may demand another prompt) → verification test. Quality is always reported in words, not percentages.
+        </li>
+        <li>
+          <strong>Resident reassignment:</strong>
+          changing who the resident is rebuilds every derived relationship label — warn before committing.
+        </li>
+      </ul>
 
-<h2 id="state">State &amp; data</h2>
-<h4>Core entities</h4>
-<ul>
-  <li><code>Resident</code> — name, photo, facility + room, device pairing state and last-seen, timezone.</li>
-  <li><code>Person</code> — id, name, photo, voice status (<code>not enrolled | enrolled | needs re-enrolment</code>), speaker color (stable by id), role, deceased flag + years.</li>
-  <li><code>Relationship</code> — <code>{ fromId, type, toId }</code>. Structured types only; all displayed labels ("granddaughter", "great-granddaughter") are <strong>derived by traversal</strong>, never stored strings, and never typed by a user.</li>
-  <li><code>Call</code> — participants (including unidentified voices), start/end, floor segments <code>[{ speakerId, startMs, endMs }]</code> (the single source for every timeline), transcript lines <code>[{ speakerId, text, atMs, confidence }]</code>.</li>
-  <li><code>Correction</code> — a <em>proposal</em>: <code>{ callId, atMs, fromSpeakerId, toSpeakerId, proposedBy, status }</code>. Applies only on confirmation by a different family member.</li>
-  <li><code>Extraction</code> — candidate <code>Memory</code>, <code>MedNote</code>, <code>Person</code>, or <code>Relationship</code> edit, each with the sourcing quote, speaker, timecode, confidence, and status (<code>pending | approved | rejected</code>).</li>
-  <li><code>Memory</code> — approved content attached to a person; only approved items render on the iPad.</li>
-  <li><code>MedNote</code> — family-only, requires two approvals, hard-walled from resident queries.</li>
-  <li><code>NewsSettings</code> — master on/off, per-feed toggles, gentle filter, plus a log of held-back items.</li>
-  <li><code>Consent</code> — per-person, self-granted only; audio retention off by default.</li>
-</ul>
-<h4>Transitions worth implementing carefully</h4>
-<ul>
-  <li><strong>Live attribution:</strong> <code>nobody talking → named speaker → unknown voice</code>. Unknown is a first-class state with its own dashed visual language and no guessed name.</li>
-  <li><strong>Correction:</strong> <code>proposed → confirmed | rejected</code>. Only <code>confirmed</code> rewrites segments, recolors timelines, and feeds voice-profile training.</li>
-  <li><strong>Approval:</strong> <code>pending → approved</code> is the only path to resident visibility; med notes need a second approver.</li>
-  <li><strong>Enrollment:</strong> consent → prompts (with redo) → quality check (may demand another prompt) → verification test. Quality is always reported in words, not percentages.</li>
-  <li><strong>Resident reassignment:</strong> changing who the resident is rebuilds every derived relationship label — warn before committing.</li>
-</ul>
+      <h2 id="a11y">Accessibility contract</h2>
+      <ul>
+        <li>Resident side: 28px type floor, 72px minimum control height (88–132px for primaries), 3px borders so edges survive low contrast sensitivity, no color-only meaning ("Talking now" always accompanies the green), no timeouts, no gestures beyond tap and vertical scroll.</li>
+        <li>
+          Family side: 4.5:1 for text (3:1 permitted at 24px+/700), 44px minimum control height including chips, full keyboard paths through the approval queue, visible focus rings, and
+          <code>aria-live="polite"</code>
+          on the live transcript and approval counts.
+        </li>
+        <li>
+          Motion: three loops exist —
+          <code>ct-ring</code>
+          (incoming call / active speaker),
+          <code>ct-dot</code>
+          (typing-style speaking indicator),
+          <code>ct-level</code>
+          (mic meter). Honor
+          <code>prefers-reduced-motion</code>
+          by replacing each with its static end state.
+        </li>
+      </ul>
 
-<h2 id="a11y">Accessibility contract</h2>
-<ul>
-  <li>Resident side: 28px type floor, 72px minimum control height (88–132px for primaries), 3px borders so edges survive low contrast sensitivity, no color-only meaning ("Talking now" always accompanies the green), no timeouts, no gestures beyond tap and vertical scroll.</li>
-  <li>Family side: 4.5:1 for text (3:1 permitted at 24px+/700), 44px minimum control height including chips, full keyboard paths through the approval queue, visible focus rings, and <code>aria-live="polite"</code> on the live transcript and approval counts.</li>
-  <li>Motion: three loops exist — <code>ct-ring</code> (incoming call / active speaker), <code>ct-dot</code> (typing-style speaking indicator), <code>ct-level</code> (mic meter). Honor <code>prefers-reduced-motion</code> by replacing each with its static end state.</li>
-</ul>
+      <h2 id="assets">Assets</h2>
+      <ul>
+        <li>
+          <code>designs/assets/tile-icon.png</code>
+          — the Caretaker mark (mahjong tile). Used at 26–40px in app chrome and 34px inside a 64px tint disc in empty states. Ship as-is; generate platform icon sizes from it.
+        </li>
+        <li>
+          <strong>Every photo is a placeholder</strong>
+          — hatched tint panels labelled "portrait photo", "story photo", "photo". Replace with real uploads; keep circular crops for people and 12–16px radius for story/memory imagery.
+        </li>
+        <li>
+          The prototypes use typographic glyphs (
+          <code>☏ ♡ ✉ ? ! − +</code>
+          ) as icon stand-ins. Substitute the target codebase's icon set: ~20px at family scale, 52px inside the 120px resident tile discs,
+          <code>currentColor</code>
+          .
+        </li>
+        <li>Fonts (Google-hosted in the mocks, self-host in production): Atkinson Hyperlegible 400/700 (resident), Inter 400–700 (family), IBM Plex Mono 400/500 (labels), Instrument Serif (public site display only).</li>
+      </ul>
 
-<h2 id="assets">Assets</h2>
-<ul>
-  <li><code>designs/assets/tile-icon.png</code> — the Caretaker mark (mahjong tile). Used at 26–40px in app chrome and 34px inside a 64px tint disc in empty states. Ship as-is; generate platform icon sizes from it.</li>
-  <li><strong>Every photo is a placeholder</strong> — hatched tint panels labelled "portrait photo", "story photo", "photo". Replace with real uploads; keep circular crops for people and 12–16px radius for story/memory imagery.</li>
-  <li>The prototypes use typographic glyphs (<code>☏ ♡ ✉ ? ! − +</code>) as icon stand-ins. Substitute the target codebase's icon set: ~20px at family scale, 52px inside the 120px resident tile discs, <code>currentColor</code>.</li>
-  <li>Fonts (Google-hosted in the mocks, self-host in production): Atkinson Hyperlegible 400/700 (resident), Inter 400–700 (family), IBM Plex Mono 400/500 (labels), Instrument Serif (public site display only).</li>
-</ul>
-
-<h2 id="files">File map</h2>
-<table>
-  <tr><th>File</th><th>Contains</th></tr>
-  <tr><td class="mono">designs/Caretaker Foundations.dc.html</td><td>Tokens, contrast table, both type scales, component sheet</td></tr>
-  <tr><td class="mono">designs/Caretaker Resident Screens.dc.html</td><td>R1, R2, R4, R5, R6, R7</td></tr>
-  <tr><td class="mono">designs/Caretaker In Call.dc.html</td><td>R3 (five states) and F3</td></tr>
-  <tr><td class="mono">designs/Caretaker Family Screens.dc.html</td><td>F1, F5, F8</td></tr>
-  <tr><td class="mono">designs/Caretaker Calls.dc.html</td><td>F2, F4, F4b, and the two call empty states</td></tr>
-  <tr><td class="mono">designs/Caretaker Tree.dc.html</td><td>F6, F6b, F7</td></tr>
-  <tr><td class="mono">designs/Caretaker Content and Settings.dc.html</td><td>F9, F9b, F10, F11, F12, F13</td></tr>
-  <tr><td class="mono">designs/Caretaker Public.dc.html</td><td>P1 fold, P1b switcher/privacy, P1 mobile pair</td></tr>
-  <tr><td class="mono">designs/Caretaker Responsive.dc.html</td><td>F1/F3/F5 at 1440 and 390, side by side</td></tr>
-  <tr><td class="mono">designs/CaretakerScreen.dc.html</td><td>The self-measuring screen component (720px crossover)</td></tr>
-  <tr><td class="mono">designs/support.js</td><td>Preview harness — not part of the design. Ignore.</td></tr>
-</table>
-<p>Open any <code>designs/*.dc.html</code> in a browser to see the screens; read its source for exact values, and its trailing logic class for the fixture data and copy.</p>
-
-</div>
-</body>
+      <h2 id="files">File map</h2>
+      <table>
+        <tr>
+          <th>File</th>
+          <th>Contains</th>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Foundations.dc.html</td>
+          <td>Tokens, contrast table, both type scales, component sheet</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Resident Screens.dc.html</td>
+          <td>R1, R2, R4, R5, R6, R7</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker In Call.dc.html</td>
+          <td>R3 (five states) and F3</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Family Screens.dc.html</td>
+          <td>F1, F5, F8</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Calls.dc.html</td>
+          <td>F2, F4, F4b, and the two call empty states</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Tree.dc.html</td>
+          <td>F6, F6b, F7</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Content and Settings.dc.html</td>
+          <td>F9, F9b, F10, F11, F12, F13</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Public.dc.html</td>
+          <td>P1 fold, P1b switcher/privacy, P1 mobile pair</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/Caretaker Responsive.dc.html</td>
+          <td>F1/F3/F5 at 1440 and 390, side by side</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/CaretakerScreen.dc.html</td>
+          <td>The self-measuring screen component (720px crossover)</td>
+        </tr>
+        <tr>
+          <td class="mono">designs/support.js</td>
+          <td>Preview harness — not part of the design. Ignore.</td>
+        </tr>
+      </table>
+      <p>
+        Open any
+        <code>designs/*.dc.html</code>
+        in a browser to see the screens; read its source for exact values, and its trailing logic class for the fixture data and copy.
+      </p>
+    </div>
+  </body>
 </html>

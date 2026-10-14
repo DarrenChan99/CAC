@@ -5,7 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { ResidentHeader } from "@/components/ResidentHeader";
 import { PhotoSlot } from "@/components/ui";
-import { news } from "@/lib/mocks/content";
+import { useDemo } from "@/lib/demo-store";
+import { residentFeed } from "@/lib/residentFeed";
 import { spring } from "@/lib/motion";
 
 /**
@@ -19,7 +20,9 @@ export default function FamilyNews() {
   const [direction, setDirection] = useState(1);
   const [speaking, setSpeaking] = useState(false);
 
-  const story = news[index];
+  const { resolved } = useDemo();
+  const { news } = residentFeed(resolved);
+  const story = news[index] ?? news[0];
 
   // Never leave a voice talking about a story that is no longer on screen.
   useEffect(() => {
@@ -53,7 +56,7 @@ export default function FamilyNews() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[1180px] flex-col p-12">
+    <div className="mx-auto flex min-h-[calc(100dvh-7rem)] max-w-[1180px] flex-col p-12">
       <ResidentHeader title="Family news" note={`Story ${index + 1} of ${news.length}`} />
 
       <div className="relative min-h-0 flex-1">
@@ -67,7 +70,7 @@ export default function FamilyNews() {
             transition={spring}
             className="flex gap-10"
           >
-            <PhotoSlot label="story photo" scale="resident" className="h-[360px] w-[420px] flex-none" />
+            <PhotoSlot label="photo" scale="resident" className="h-[360px] w-[420px] flex-none" />
 
             <div className="min-w-0 flex-1">
               <div className="font-mono text-r-body uppercase tracking-widest text-muted">
