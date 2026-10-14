@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { feeds as initialFeeds, todayStories, heldBack } from "@/lib/mocks/news-settings";
+import { useDemo } from "@/lib/demo-store";
+import { news as stories, TOPICS, topicLabel, type TopicId } from "@/lib/mocks/content";
+import { feedNotes, heldBack } from "@/lib/mocks/news-settings";
+import { visibleTopics } from "@/lib/residentFeed";
 
 /** F11 News settings — control what reaches R6, and see what was filtered out. */
 export default function NewsSettings() {
-  const [masterOn, setMasterOn] = useState(true);
-  const [feeds, setFeeds] = useState(initialFeeds);
+  const { news, setNews } = useDemo();
+  const masterOn = news.on;
+  const setMasterOn = (on: boolean) => setNews({ ...news, on });
+  const toggle = (id: TopicId) =>
+    setNews({ ...news, off: news.off.includes(id) ? news.off.filter((t) => t !== id) : [...news.off, id] });
 
-  const toggle = (id: string) =>
-    setFeeds((fs) => fs.map((f) => (f.id === id ? { ...f, on: !f.on } : f)));
+  const feeds = TOPICS.filter((t) => t.id !== "family");
+  const shown = visibleTopics(news).map((t) => t.id);
+  const today = stories.filter((s) => shown.includes(s.topic)).slice(0, 3);
 
   return (
     <div className="mx-auto max-w-[1200px] p-8">
@@ -32,10 +38,15 @@ export default function NewsSettings() {
               }`}
             >
               <span>
-                <span className="block text-f-body font-medium">{f.name}</span>
-                <span className="block text-f-small text-muted">{f.note}</span>
+                <span className="block text-f-body font-medium">{f.label}</span>
+                <span className="block text-f-small text-muted">{feedNotes[f.id]}</span>
               </span>
-              <Toggle checked={f.on} onChange={() => toggle(f.id)} label={f.name} disabled={!masterOn} />
+              <Toggle
+                checked={!news.off.includes(f.id)}
+                onChange={() => toggle(f.id)}
+                label={f.label}
+                disabled={!masterOn}
+              />
             </label>
           ))}
         </section>
@@ -44,9 +55,10 @@ export default function NewsSettings() {
           <div className="rounded-[12px] border border-tint bg-surface p-4">
             <div className="mb-2 text-f-h3">On her iPad today</div>
             <div className="flex flex-col gap-2">
-              {todayStories.map((s) => (
-                <div key={s.headline} className="rounded-[12px] bg-bg p-2.5">
-                  <div className="text-f-label font-medium text-muted">{s.source}</div>
+              {today.length === 0 && <div className="text-f-small text-muted">Only family news.</div>}
+              {today.map((s) => (
+                <div key={s.id} className="rounded-[12px] bg-bg p-2.5">
+                  <div className="text-f-label font-medium text-muted">{topicLabel(s.topic)}</div>
                   <div className="text-f-body font-semibold">{s.headline}</div>
                 </div>
               ))}

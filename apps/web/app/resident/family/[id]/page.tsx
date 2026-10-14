@@ -1,7 +1,7 @@
 "use client";
 
 import { use } from "react";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { ResidentHeader } from "@/components/ResidentHeader";
@@ -18,6 +18,7 @@ import { spring } from "@/lib/motion";
  */
 export default function PersonPage({ params }: PageProps<"/resident/family/[id]">) {
   const { id } = use(params);
+  const router = useRouter();
   const { resolved } = useDemo();
   const person = byId(id);
   if (!person) notFound();
@@ -48,7 +49,12 @@ export default function PersonPage({ params }: PageProps<"/resident/family/[id]"
           <div className="mt-2 text-r-h2 text-muted">{relationshipToResident(id)}</div>
 
           {person.callable && (
-            <Button scale="resident" variant="primary" className="mt-8 min-w-[280px]">
+            <Button
+              scale="resident"
+              variant="primary"
+              className="mt-8 min-w-[280px]"
+              onClick={() => router.push("/resident/call")}
+            >
               Call {person.name}
             </Button>
           )}

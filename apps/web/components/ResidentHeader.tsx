@@ -26,7 +26,7 @@ export function ResidentHeader({
         {note && <p className="mt-2 text-r-lead text-muted">{note}</p>}
       </div>
 
-      <div className="flex flex-none gap-4">
+      <div className="flex flex-none gap-6">
         {back && <ResidentNavButton href={back.href} label={back.label} />}
         <ResidentNavButton href="/resident" label="Home" />
       </div>

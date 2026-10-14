@@ -1,16 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, Users } from "lucide-react";
+import { Image as ImageIcon, Mail, Phone, Users } from "lucide-react";
 import { Tile } from "@/components/ui";
 import { events } from "@/lib/mocks/content";
 
 /**
- * R1 Home. Three primary actions and what is on today. Every tile carries a
+ * R1 Home. Four things she can do on her own and what is on today. Every tile carries a
  * text label next to its icon.
  */
 export default function ResidentHome() {
   const next = events[0];
-  const icon = (I: typeof Phone) => <I size={72} strokeWidth={1.75} />;
+  const icon = (I: typeof Phone) => <I size={64} strokeWidth={1.75} />;
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-7rem)] max-w-[1180px] flex-col gap-10 p-12">
@@ -24,10 +24,11 @@ export default function ResidentHome() {
         <Image src="/tile.png" alt="Caretaker" width={64} height={73} className="mt-3 flex-none" />
       </header>
 
-      <div className="grid flex-1 grid-cols-3 gap-8">
+      <div className="grid flex-1 grid-cols-4 gap-6">
         <Tile icon={icon(Phone)} label="Call family" href="/resident/call" />
         <Tile icon={icon(Users)} label="My family" href="/resident/family" />
         <Tile icon={icon(Mail)} label="Family news" href="/resident/news" />
+        <Tile icon={icon(ImageIcon)} label="Photos" href="/resident/photos" />
       </div>
 
       <Link

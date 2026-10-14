@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
 import { pressFamily, pressResident, pressTransition } from "@/lib/motion";
 
-type Variant = "primary" | "secondary" | "quiet";
+type Variant = "primary" | "secondary" | "quiet" | "danger" | "warn";
 type Scale = "resident" | "family";
 
 interface ButtonProps extends Omit<ComponentProps<typeof motion.button>, "children"> {
@@ -37,6 +37,15 @@ const variants: Record<Variant, Record<Scale, string>> = {
   quiet: {
     resident: "bg-surface text-primary border border-tint",
     family: "bg-surface text-muted border border-tint hover:bg-bg",
+  },
+  // Colour by role only: danger ends a call, warn says something is off (muted).
+  danger: {
+    resident: "bg-danger text-white",
+    family: "bg-danger text-white hover:opacity-90",
+  },
+  warn: {
+    resident: "bg-warn-bg text-warn border-2 border-warn-line",
+    family: "bg-warn-bg text-warn border border-warn-line hover:opacity-90",
   },
 };
 

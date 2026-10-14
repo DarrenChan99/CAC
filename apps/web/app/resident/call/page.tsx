@@ -6,128 +6,95 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { ResidentNavButton } from "@/components/ResidentHeader";
-import { SpeakerCard } from "@/components/SpeakerCard";
 import { useDemo } from "@/lib/demo-store";
 import { participantIds, formatCallTime } from "@/lib/mocks/call-timeline";
 import { get } from "@/lib/mocks/family";
 import { relationshipToResident } from "@/lib/relationships";
+import { activeSpeaker } from "@/lib/residentFeed";
 import { useReplay } from "@/lib/useReplay";
 import { spring, springSheet } from "@/lib/motion";
 
 /**
- * R3 In call. Video on top, a large card per enrolled participant below, and
- * the newest line of the conversation in type she can read from a chair.
- * The full thread is collapsed by default and opens on request.
+ * R3 In call. Everyone on a video tile with their name on it; whoever is
+ * talking gets the ring and the words "Talking now". One line of what was just
+ * said, and three big buttons. The full thread opens on request.
  */
 export default function ResidentCall() {
   const router = useRouter();
-  const { activeSpeakerId, activeIsUnknown, bubbles } = useReplay();
+  const { bubbles } = useReplay();
   const { speakers } = useDemo();
   const [expanded, setExpanded] = useState(false);
+  const [muted, setMuted] = useState(false);
 
   const newest = bubbles[bubbles.length - 1];
   const newestSpeakerId = newest ? (newest.id in speakers ? speakers[newest.id] : newest.speakerId) : null;
   const newestSpeaker = newestSpeakerId ? get(newestSpeakerId) : null;
 
-  // Whoever is talking but has no standing card.
-  const guest = activeIsUnknown
-    ? { name: "", initial: "?", relationship: "", unknown: true }
-    : activeSpeakerId && !participantIds.includes(activeSpeakerId)
-      ? {
-          name: get(activeSpeakerId).name,
-          initial: get(activeSpeakerId).initial,
-          relationship: relationshipToResident(activeSpeakerId),
-          unknown: false,
-        }
-      : null;
+  // Someone dialling in from elsewhere, or a voice we don't know, takes the
+  // fourth tile while they talk. An unknown voice is never given a name.
+  const talking = activeSpeaker(bubbles, speakers);
+  const guest = talking && !participantIds.includes(talking) ? talking : null;
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-7rem)] max-w-[1180px] flex-col gap-6 p-8">
       {/* ---- Video ---- */}
-      <div className="relative flex min-h-0 flex-[3] gap-4">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className={`flex items-center justify-center rounded-[16px] ${
-              i === 1 ? "flex-[1.6] bg-[#334339]" : "flex-1 bg-[#2A3A30]"
-            }`}
-          >
-            <PersonAvatar
-              initial={get(participantIds[i]).initial}
-              size="resident"
-              className="opacity-30 blur-[2px]"
-            />
-          </div>
+      <div className="relative grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-4">
+        {participantIds.map((id) => (
+          <VideoTile key={id} id={id} talking={talking === id} />
         ))}
 
-        <div className="absolute right-4 top-4">
-          <ResidentNavButton href="/resident" label="Home" />
-        </div>
-      </div>
-
-      {/* ---- Speaker strip ---- */}
-      <div className="flex flex-none gap-4">
-        {participantIds.map((id) => {
-          const person = get(id);
-          return (
-            <SpeakerCard
-              key={id}
-              name={person.name}
-              initial={person.initial}
-              relationship={relationshipToResident(id)}
-              talking={activeSpeakerId === id}
-            />
-          );
-        })}
-
-        {/* The guest slot. Someone dialling in from elsewhere gets their real
-            name here; an unenrolled voice gets "Someone new" and no name at
-            all. Either way the strip stays four cards wide. */}
         <AnimatePresence>
           {guest && (
             <motion.div
+              key={guest}
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
               transition={spring}
-              className="flex flex-1"
+              className="flex"
             >
-              <SpeakerCard
-                name={guest.name}
-                initial={guest.initial}
-                relationship={guest.relationship}
-                unknown={guest.unknown}
-                talking
-              />
+              <VideoTile id={guest === "unknown" ? null : guest} talking />
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
-      {/* ---- Newest line + actions ---- */}
-      <div className="flex flex-none items-center gap-6 rounded-[16px] border border-tint bg-surface p-6">
-        <div className="min-w-0 flex-1 text-r-lead">
-          {newest ? (
-            <>
-              <span className="font-bold text-primary">
-                {newestSpeaker ? newestSpeaker.name : "Someone new"}
-              </span>{" "}
-              {newest.transcribing ? "…" : newest.text}
-            </>
-          ) : (
-            <span className="text-muted">Nobody is talking.</span>
-          )}
+        <div className="absolute right-4 top-4">
+          <ResidentNavButton href="/resident" label="Home" />
         </div>
 
-        <Button scale="resident" variant="secondary" onClick={() => setExpanded(true)}>
-          Show conversation
-        </Button>
+        {/* Her own camera, small, so she knows she is on screen. */}
+        <div className="absolute bottom-4 right-4 flex h-[120px] w-[180px] items-end rounded-[12px] border-2 border-surface bg-stage p-2">
+          <span className="rounded-full bg-black/60 px-3 text-r-body text-white">You</span>
+        </div>
+      </div>
+
+      {/* ---- Newest line ---- */}
+      <div className="flex-none truncate rounded-[16px] border border-tint bg-surface px-6 py-4 text-r-lead">
+        {newest ? (
+          <>
+            <span className="font-bold text-primary">{newestSpeaker ? newestSpeaker.name : "Someone new"}</span>{" "}
+            {newest.transcribing ? "…" : newest.text}
+          </>
+        ) : (
+          <span className="text-muted">Nobody is talking.</span>
+        )}
+      </div>
+
+      {/* ---- Actions ---- */}
+      <div className="flex flex-none gap-6">
         <Button
           scale="resident"
-          variant="primary"
-          className="!bg-[#7A2E22]"
-          onClick={() => router.push("/resident")}
+          variant={muted ? "warn" : "secondary"}
+          aria-pressed={muted}
+          onClick={() => setMuted((m) => !m)}
+          className="min-w-[280px]"
         >
+          {muted ? "You are muted" : "Mute"}
+        </Button>
+        <Button scale="resident" variant="secondary" onClick={() => setExpanded(true)} className="flex-1">
+          Show conversation
+        </Button>
+        <Button scale="resident" variant="danger" onClick={() => router.push("/resident")} className="min-w-[280px]">
           End call
         </Button>
       </div>
@@ -188,6 +155,32 @@ export default function ResidentCall() {
           </>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/** A video tile. The video itself is a placeholder until LiveKit lands. */
+function VideoTile({ id, talking }: { id: string | null; talking: boolean }) {
+  const person = id ? get(id) : null;
+
+  return (
+    <div
+      className={`relative flex flex-1 items-center justify-center rounded-[16px] bg-stage pb-14 ${
+        person ? (talking ? "ct-pulse" : "") : "border-4 border-dashed border-surface/70"
+      }`}
+    >
+      <PersonAvatar initial={person?.initial ?? "?"} size="resident" unknown={!person} className="opacity-40" />
+
+      {talking && (
+        <span className="absolute left-4 top-4 flex items-center gap-3 rounded-full bg-surface px-4 py-1 text-r-body font-bold text-primary">
+          <span className="h-3 w-3 rounded-full bg-primary" aria-hidden />
+          Talking now
+        </span>
+      )}
+
+      <span className="absolute bottom-4 left-4 max-w-[calc(100%-2rem)] truncate rounded-[12px] bg-black/60 px-4 py-1 text-r-body text-white">
+        <b>{person ? person.name : "Someone new"}</b> · {person ? relationshipToResident(person.id) : "a voice we don't know"}
+      </span>
     </div>
   );
 }

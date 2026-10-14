@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { Resolved } from "./residentFeed.ts";
+import type { NewsPrefs, Resolved } from "./residentFeed.ts";
 
 /**
  * The demo's shared state: which captured items the family removed or confirmed and which speaker
@@ -12,10 +12,12 @@ interface State {
   resolved: Resolved;
   /** utteranceId → personId, or null for "Someone new". */
   speakers: Record<string, string | null>;
+  /** Which news topics reach her iPad, set from the family's News settings. */
+  news: NewsPrefs;
 }
 
-const KEY = "caretaker-demo-v2";
-const EMPTY: State = { resolved: {}, speakers: {} };
+const KEY = "caretaker-demo-v3";
+const EMPTY: State = { resolved: {}, speakers: {}, news: { on: true, off: [] } };
 let state = EMPTY;
 let loaded = false;
 const subs = new Set<() => void>();
@@ -55,6 +57,7 @@ export function useDemo() {
     },
     fixSpeaker: (utteranceId: string, personId: string | null) =>
       write({ ...state, speakers: { ...state.speakers, [utteranceId]: personId } }),
+    setNews: (news: NewsPrefs) => write({ ...state, news }),
     reset: () => write(EMPTY),
   };
 }

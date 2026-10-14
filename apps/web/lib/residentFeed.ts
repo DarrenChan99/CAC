@@ -1,5 +1,5 @@
 import { approvals } from "./mocks/approvals.ts";
-import { memories, news, type Memory, type NewsItem } from "./mocks/content.ts";
+import { memories, news, TOPICS, type Memory, type NewsItem, type TopicId } from "./mocks/content.ts";
 
 /** "removed" = the family took it back off (or dismissed it); "confirmed" = a person/tree edit was accepted. */
 export type Resolved = Record<string, "removed" | "confirmed">;
@@ -23,15 +23,37 @@ export function residentFeed(resolved: Resolved): { memories: Memory[]; news: Ne
     news: [
       ...approved.map((m) => ({
         id: m.id,
-        category: "From your family",
+        topic: "family" as const,
         when: m.when,
         headline: m.text,
         body: quoteOf(m.id),
-        readTime: "",
       })),
       ...news,
     ],
   };
 }
 
+/** The topics on her news rail. Family is always there; the rest follow the family's switches. */
+export const visibleTopics = (n: NewsPrefs) =>
+  TOPICS.filter((t) => t.id === "family" || (n.on && !n.off.includes(t.id)));
+
+export interface NewsPrefs {
+  on: boolean;
+  off: TopicId[];
+}
+
 const quoteOf = (id: string) => `“${approvals.find((a) => a.id === id)!.quote}”`;
+
+/**
+ * Who is talking right now, after the family's speaker corrections: a personId,
+ * "unknown" for a voice nobody has named, or null. Every resident surface that
+ * names a speaker goes through this, so a voice marked unknown is never named.
+ */
+export function activeSpeaker(
+  bubbles: { id: string; speakerId: string | null; transcribing: boolean }[],
+  speakers: Record<string, string | null>,
+): string | null {
+  const b = bubbles.find((x) => x.transcribing);
+  if (!b) return null;
+  return (b.id in speakers ? speakers[b.id] : b.speakerId) ?? "unknown";
+}

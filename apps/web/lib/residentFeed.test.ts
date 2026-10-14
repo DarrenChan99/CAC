@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { approvals } from "./mocks/approvals.ts";
-import { needsConfirm, residentFeed } from "./residentFeed.ts";
+import { TOPICS } from "./mocks/content.ts";
+import { activeSpeaker, needsConfirm, residentFeed, visibleTopics } from "./residentFeed.ts";
 
 test("a captured memory reaches her news and the person's page without approval", () => {
   const f = residentFeed({});
@@ -29,4 +30,25 @@ test("med notes, people and tree edits never reach her, whatever their state", (
 test("only people and tree edits wait for a confirm", () => {
   assert.deepEqual(needsConfirm({}).map((a) => a.id).sort(), ["a2", "a3"]);
   assert.deepEqual(needsConfirm({ a2: "confirmed" }).map((a) => a.id), ["a3"]);
+});
+
+test("family news is always on her rail; other topics follow the family's switches", () => {
+  const ids = (n: Parameters<typeof visibleTopics>[0]) => visibleTopics(n).map((t) => t.id);
+  assert.deepEqual(ids({ on: true, off: [] }), TOPICS.map((t) => t.id));
+  assert.ok(!ids({ on: true, off: ["garden"] }).includes("garden"));
+  assert.deepEqual(ids({ on: false, off: [] }), ["family"]);
+});
+
+test("every story has a topic, and call memories file under family", () => {
+  const f = residentFeed({});
+  assert.equal(f.news.find((n) => n.id === "a4")!.topic, "family");
+  for (const n of f.news) assert.ok(TOPICS.some((t) => t.id === n.topic), n.id);
+});
+
+test("the talking tile follows the family's speaker corrections, so a voice they marked unknown is never named", () => {
+  const b = [{ id: "u1", speakerId: "lisa", transcribing: true }];
+  assert.equal(activeSpeaker(b, {}), "lisa");
+  assert.equal(activeSpeaker(b, { u1: null }), "unknown");
+  assert.equal(activeSpeaker([{ id: "u4", speakerId: null, transcribing: true }], { u4: "emily" }), "emily");
+  assert.equal(activeSpeaker([{ id: "u1", speakerId: "lisa", transcribing: false }], {}), null);
 });

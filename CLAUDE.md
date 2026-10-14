@@ -27,7 +27,7 @@ Grandma's News shows it. Captured (`/family/approvals`) is where the family
 removes a memory afterwards or confirms a new person / tree edit.
 
 - Family: Home, Live call, Call detail, Captured, Family tree (+ person), News settings, Enroll.
-- Resident: R1–R7 (Home has 3 tiles + Today card).
+- Resident: R1–R7 (Home has 4 tiles — call, family tree, news by topic, photos — + Today card). Family News settings switches decide her news topics (`visibleTopics`).
 - `Utterance` in `lib/mocks/call-timeline.ts` is the contract the diarization
   service will emit; `useReplay` is the single seam a live source replaces.
 - `lib/residentFeed.ts` is the only path from a call to the resident, and it
