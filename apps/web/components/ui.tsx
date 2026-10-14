@@ -75,7 +75,7 @@ export function PhotoSlot({
 }) {
   return (
     <div
-      className={`flex items-center justify-center rounded-[12px] bg-tint text-center font-mono leading-tight text-muted ${
+      className={`flex items-center justify-center rounded-[12px] bg-tint text-center leading-tight text-muted ${
         // The 28px floor applies to every word in the resident view, including
         // the ones that are only standing in for a photo.
         scale === "resident" ? "text-r-body" : "text-f-label"
@@ -137,7 +137,7 @@ export function NewsCard({
 }) {
   return (
     <div className="rounded-[12px] border border-tint bg-surface p-4">
-      <div className="font-mono text-f-label uppercase text-muted">
+      <div className="text-f-label font-medium text-muted">
         {category} · {when}
       </div>
       <div className="mt-2 text-f-h3">{headline}</div>

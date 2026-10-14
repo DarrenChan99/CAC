@@ -18,38 +18,27 @@ export default function NewsSettings() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_396px]">
-        <div className="flex flex-col gap-5">
-          <div className="rounded-[12px] border-2 border-primary bg-surface p-5">
-            <label className="flex min-h-[44px] cursor-pointer items-center justify-between">
-              <div>
-                <div className="text-f-body font-semibold">Show news on Grandma&apos;s iPad</div>
-              </div>
-              <Toggle checked={masterOn} onChange={setMasterOn} />
+        <section className="h-fit divide-y divide-tint rounded-[12px] border border-tint bg-surface">
+          <label className="flex min-h-[56px] cursor-pointer items-center justify-between px-4">
+            <span className="text-f-body font-semibold">Show news on Grandma&apos;s iPad</span>
+            <Toggle checked={masterOn} onChange={setMasterOn} label="Show news on Grandma's iPad" />
+          </label>
+
+          {feeds.map((f) => (
+            <label
+              key={f.id}
+              className={`flex min-h-[56px] items-center justify-between gap-4 px-4 py-2 transition-opacity ${
+                masterOn ? "cursor-pointer" : "pointer-events-none opacity-40"
+              }`}
+            >
+              <span>
+                <span className="block text-f-body font-medium">{f.name}</span>
+                <span className="block text-f-small text-muted">{f.note}</span>
+              </span>
+              <Toggle checked={f.on} onChange={() => toggle(f.id)} label={f.name} disabled={!masterOn} />
             </label>
-          </div>
-
-          <section className="rounded-[12px] border border-tint bg-surface p-5">
-            <div className="mb-1 text-f-h3">Feeds</div>
-            <div className="flex flex-col gap-2">
-              {feeds.map((f) => (
-                <label
-                  key={f.id}
-                  className="flex min-h-[44px] cursor-pointer items-center justify-between rounded-[12px] px-2 hover:bg-bg"
-                >
-                  <div>
-                    <div className="text-f-body font-medium">{f.name}</div>
-                    <div className="text-f-small text-muted">{f.note}</div>
-                  </div>
-                  <Toggle checked={f.on} onChange={() => toggle(f.id)} />
-                </label>
-              ))}
-            </div>
-          </section>
-
-          <div className="rounded-[12px] border border-tint bg-surface p-5">
-            <div className="text-f-h3">Keep it gentle</div>
-          </div>
-        </div>
+          ))}
+        </section>
 
         <aside className="flex flex-col gap-4">
           <div className="rounded-[12px] border border-tint bg-surface p-4">
@@ -57,7 +46,7 @@ export default function NewsSettings() {
             <div className="flex flex-col gap-2">
               {todayStories.map((s) => (
                 <div key={s.headline} className="rounded-[12px] bg-bg p-2.5">
-                  <div className="font-mono text-xs uppercase text-muted">{s.source}</div>
+                  <div className="text-f-label font-medium text-muted">{s.source}</div>
                   <div className="text-f-body font-semibold">{s.headline}</div>
                 </div>
               ))}
@@ -69,7 +58,7 @@ export default function NewsSettings() {
             <div className="flex flex-col gap-2">
               {heldBack.map((s) => (
                 <div key={s.headline} className="text-f-small">
-                  <div className="font-mono text-xs uppercase text-muted">
+                  <div className="text-f-label font-medium text-muted">
                     {s.source} · {s.reason}
                   </div>
                   <div className="text-muted line-through">{s.headline}</div>
@@ -83,22 +72,36 @@ export default function NewsSettings() {
   );
 }
 
-function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({
+  checked,
+  onChange,
+  label,
+  disabled,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  disabled?: boolean;
+}) {
   return (
     <button
       role="switch"
       aria-checked={checked}
+      aria-label={label}
+      disabled={disabled}
       onClick={(e) => {
         e.preventDefault();
         onChange(!checked);
       }}
-      className={`relative h-6 w-11 flex-none rounded-full transition-colors ${
-        checked ? "bg-primary" : "bg-tint"
+      className={`relative h-7 w-12 flex-none rounded-full transition-colors ${
+        checked ? "bg-primary" : "bg-muted/30"
       }`}
     >
+      {/* left-0.5 pins the knob to the track's left edge; without it the knob
+          starts centred and slides off the end when on. */}
       <span
-        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
-          checked ? "translate-x-[22px]" : "translate-x-0.5"
+        className={`absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform ${
+          checked ? "translate-x-5" : "translate-x-0"
         }`}
       />
     </button>

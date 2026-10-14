@@ -1,6 +1,7 @@
 /**
- * The approval queue — SPEC §8. Nothing reaches the resident's iPad until a
- * family member approves it here. Ids are shared with the call's captured items.
+ * What calls capture. Memories reach the resident's iPad on their own and the
+ * family can remove them; med notes never do; people and tree edits wait for a
+ * confirm. Ids are shared with the call's captured items.
  */
 
 export type ApprovalKind = "memory" | "med" | "person" | "tree";
@@ -71,7 +72,7 @@ export const approvals: ApprovalItem[] = [
 export const FILTERS = [
   { id: "all", label: "All", kinds: null },
   { id: "memory", label: "Memories", kinds: ["memory"] },
-  { id: "med", label: "Med notes", kinds: ["med"] },
+  { id: "med", label: "Family notes", kinds: ["med"] },
   { id: "person", label: "People", kinds: ["person"] },
-  { id: "tree", label: "Tree edits", kinds: ["tree"] },
+  { id: "tree", label: "Tree", kinds: ["tree"] },
 ] as const;

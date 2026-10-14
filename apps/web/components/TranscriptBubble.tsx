@@ -15,8 +15,8 @@ interface TranscriptBubbleProps {
   lowConfidence?: boolean;
   uncertainWord?: string;
   unknown?: boolean;
-  /** Voiceprint match, 0–1. Shown as a bare mono number. */
-  score?: number;
+  /** Rendered under the line, e.g. a CapturedChip. */
+  children?: React.ReactNode;
   /** Who this line can be reassigned to. null in onReassign means "Someone new". */
   candidates?: { id: string; name: string }[];
   onReassign?: (personId: string | null) => void;
@@ -60,7 +60,7 @@ export function TranscriptBubble({
   lowConfidence = false,
   uncertainWord,
   unknown = false,
-  score,
+  children,
   candidates = [],
   onReassign,
 }: TranscriptBubbleProps) {
@@ -87,12 +87,7 @@ export function TranscriptBubble({
           >
             {unknown ? "Unknown speaker" : name}
           </motion.span>
-          <span className="font-mono text-f-label text-muted">{meta}</span>
-          {score !== undefined && (
-            <span className={`font-mono text-f-label ${score < 0.6 ? "text-warn" : "text-muted"}`}>
-              {score.toFixed(2)}
-            </span>
-          )}
+          <span className="text-f-label font-medium tabular-nums text-muted">{meta}</span>
           {onReassign && (
             <span className="relative">
               <button
@@ -157,6 +152,8 @@ export function TranscriptBubble({
             Not sure we heard this right
           </div>
         )}
+
+        {children}
       </div>
     </motion.div>
   );

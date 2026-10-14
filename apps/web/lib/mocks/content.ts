@@ -83,19 +83,3 @@ export const events: DayEvent[] = [
   { id: "e1", time: "2:00", part: "afternoon", title: "Lisa visits", note: "She is bringing Emily" },
   { id: "e2", time: "5:30", part: "afternoon", title: "Dinner in the dining room", note: "Fish and rice today" },
 ];
-
-/** F1 dashboard — Grandma's week. */
-export const weekStats = [
-  { label: "Calls this week", value: "5", note: "2 more than last week" },
-  { label: "Time together", value: "94 min", note: "longest: Sunday, 31 min" },
-  { label: "Memories captured", value: "7", note: "3 waiting for approval" },
-  { label: "People on calls", value: "6", note: "4 voices enrolled" },
-];
-
-/** Who spoke, and for how long. */
-export const weekSpeakers = [
-  { personId: "lisa", minutes: 38, share: 0.4 },
-  { personId: "emily", minutes: 27, share: 0.29 },
-  { personId: "ken", minutes: 17, share: 0.18 },
-  { personId: "david", minutes: 12, share: 0.13 },
-];

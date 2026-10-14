@@ -56,7 +56,7 @@ export default function VoiceEnrollment() {
                 />
               )}
               <span
-                className={`flex h-6 w-6 flex-none items-center justify-center rounded-full font-mono text-f-label ${
+                className={`flex h-6 w-6 flex-none items-center justify-center rounded-full text-f-label font-medium tabular-nums ${
                   on ? "bg-white text-primary" : "bg-tint text-primary"
                 }`}
               >
@@ -102,7 +102,7 @@ export default function VoiceEnrollment() {
             {step === 1 && (
               <div className="flex flex-col gap-4">
                 <div className="rounded-[12px] border border-tint bg-surface p-5">
-                  <div className="font-mono text-f-label uppercase text-muted">
+                  <div className="text-f-label font-medium text-muted">
                     Step 2 · Read aloud · {Math.min(recorded + 1, PROMPTS.length)} of{" "}
                     {PROMPTS.length}
                   </div>
@@ -121,7 +121,7 @@ export default function VoiceEnrollment() {
                         className="h-full rounded-full bg-primary"
                       />
                     </div>
-                    <span className="font-mono text-f-label text-primary">good</span>
+                    <span className="text-f-label font-medium tabular-nums text-primary">good</span>
                   </div>
 
                   <div className="mt-3 text-f-small text-muted">
@@ -150,7 +150,7 @@ export default function VoiceEnrollment() {
             {step === 2 && (
               <div className="flex flex-col gap-4">
                 <div className="rounded-[12px] border border-tint bg-surface p-5">
-                  <div className="font-mono text-f-label uppercase text-muted">
+                  <div className="text-f-label font-medium text-muted">
                     Step 3 · Quality
                   </div>
                   <div className="mt-2 text-f-h3">Your recording looks usable</div>
@@ -164,7 +164,7 @@ export default function VoiceEnrollment() {
                         <dt className="text-f-body text-muted">{k}</dt>
                         <dd className="flex items-center gap-2 text-f-body">
                           {v}
-                          <span className="rounded-full bg-tint px-2 py-0.5 font-mono text-f-label text-primary">
+                          <span className="rounded-full bg-tint px-2 py-0.5 text-f-label font-medium tabular-nums text-primary">
                             {verdict}
                           </span>
                         </dd>
@@ -186,7 +186,7 @@ export default function VoiceEnrollment() {
             {step === 3 && (
               <div className="flex flex-col gap-4">
                 <div className="rounded-[12px] border border-tint bg-surface p-5">
-                  <div className="font-mono text-f-label uppercase text-muted">
+                  <div className="text-f-label font-medium text-muted">
                     Step 4 · Test me
                   </div>
                   <div className="mt-2 text-f-h3">Say anything, and see who we think it is</div>
@@ -196,7 +196,7 @@ export default function VoiceEnrollment() {
                     </span>
                     <div>
                       <div className="text-f-body font-semibold">Ken Chen</div>
-                      <div className="font-mono text-f-label text-muted">matched</div>
+                      <div className="text-f-label font-medium tabular-nums text-muted">matched</div>
                     </div>
                   </div>
                 </div>

@@ -6,20 +6,20 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { PersonAvatar } from "./PersonAvatar";
 import { useDemo } from "@/lib/demo-store";
-import { pending } from "@/lib/residentFeed";
+import { needsConfirm } from "@/lib/residentFeed";
 import { spring } from "@/lib/motion";
 
 const NAV = [
   { label: "Home", href: "/family" },
   { label: "Live call", href: "/family/call" },
-  { label: "Approvals", href: "/family/approvals", badge: true },
+  { label: "Captured", href: "/family/approvals", badge: true },
   { label: "Family tree", href: "/family/tree" },
 ] as const;
 
 export function FamilySidebar() {
   const pathname = usePathname();
   const { resolved } = useDemo();
-  const waiting = pending(resolved).length;
+  const waiting = needsConfirm(resolved).length;
 
   const link = (href: string) => {
     const active = href === pathname || (href !== "/family" && pathname.startsWith(href + "/"));
@@ -60,7 +60,7 @@ export function FamilySidebar() {
               )}
               {item.label}
               {"badge" in item && waiting > 0 && (
-                <span className="rounded-full bg-primary px-2 py-0.5 font-mono text-f-label text-white">
+                <span className="rounded-full bg-primary px-2 py-0.5 text-f-label font-medium tabular-nums text-white">
                   {waiting}
                 </span>
               )}

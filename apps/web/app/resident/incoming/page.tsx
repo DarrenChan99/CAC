@@ -21,7 +21,7 @@ export default function IncomingCall() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={spring}
-        className="font-mono text-r-body uppercase tracking-widest text-muted"
+        className="text-r-body font-bold text-muted"
       >
         Incoming call
       </motion.div>

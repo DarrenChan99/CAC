@@ -73,7 +73,7 @@ export default function FamilyNews() {
             <PhotoSlot label="photo" scale="resident" className="h-[360px] w-[420px] flex-none" />
 
             <div className="min-w-0 flex-1">
-              <div className="font-mono text-r-body uppercase tracking-widest text-muted">
+              <div className="text-r-body font-bold text-muted">
                 {story.category} · {story.when}
               </div>
               <h2 className="mt-4 text-r-h1">{story.headline}</h2>

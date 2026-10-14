@@ -34,7 +34,7 @@ export default function ResidentHome() {
         href="/resident/today"
         className="block rounded-[16px] border border-tint bg-surface p-8"
       >
-        <div className="font-mono text-r-body uppercase tracking-widest text-muted">Today</div>
+        <div className="text-r-body font-bold text-muted">Today</div>
         <div className="mt-3 text-r-h2">
           {next.title} at {next.time} this {next.part}.
         </div>

@@ -41,7 +41,7 @@ export default function FamilyTree() {
           <div className="flex flex-col items-center gap-11">
             {rows.map((row) => (
               <div key={row.label} className="flex w-full flex-col items-center gap-2">
-                <div className="self-start font-mono text-f-label uppercase text-[#B9C4B5]">
+                <div className="self-start text-f-label font-medium text-muted">
                   {row.label}
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
@@ -142,9 +142,9 @@ function Inspector({ person }: { person: Person }) {
       {!resolved.a2 && (
         <Link
           href="/family/approvals"
-          className="rounded-[12px] border border-[#EADFC4] bg-warn-bg p-4"
+          className="rounded-[12px] border border-warn-line bg-warn-bg p-4"
         >
-          <div className="font-mono text-f-label uppercase text-warn">Pending from a call</div>
+          <div className="text-f-label font-medium text-warn">Pending from a call</div>
           <div className="mt-1 text-f-body font-medium text-warn">Marcus — Emily&apos;s partner?</div>
         </Link>
       )}
