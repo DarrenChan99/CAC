@@ -17,3 +17,9 @@ dist/
 .DS_Store
 *.pem
 *.tsbuildinfo
+data/
+services/speaker/.venv/
+__pycache__/
+.pytest_cache/
+ml/eval/out/
+calls/

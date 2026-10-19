@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caretaker voice recorder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f2;--surface:#fff;--primary:#1e5b3c;--primary-hover:#14422b;--text:#1b2a21;--muted:#44544a;--tint:#e3ede2;--accent:#9dbf97;--warn:#6a4300;--warn-bg:#fbf1dc;--warn-line:#eadfc4;
+--lv-off:#9aa59d;--lv-amber:#c98a00;--lv-green:#2e7d4f;--lv-red:#b3261e;
+--lv-off-t:#eceee9;--lv-amber-t:#fbf1dc;--lv-green-t:#e3ede2;--lv-red-t:#f9e3e0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:32px 16px}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px}p{margin:0 0 16px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:24px;margin-bottom:16px}
+button,input{font:inherit;min-height:44px;border-radius:12px}
+button{border:1px solid var(--primary);background:var(--surface);color:var(--primary);padding:0 20px;cursor:pointer;font-weight:600}
+button.go{background:var(--primary);color:#fff}button.go:hover{background:var(--primary-hover)}
+button:disabled{opacity:.5;cursor:default}
+input{width:100%;border:1px solid var(--accent);padding:0 14px;background:var(--surface);color:var(--text)}
+.person{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;margin-bottom:8px;padding:12px 16px;min-height:56px}
+.person small{color:var(--muted);font-weight:400}
+.sentence{font-size:26px;line-height:1.4;color:var(--text);margin:16px 0 24px}
+.bar{height:12px;border-radius:6px;background:var(--tint);overflow:hidden;margin:16px 0}.bar i{display:block;height:100%;width:0;background:var(--primary)}
+.msg{padding:12px 16px;border-radius:12px;background:var(--tint);margin-bottom:16px}.msg.bad{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn)}
+.dots{display:flex;gap:8px;margin-bottom:8px}.dots b{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent)}.dots b.on{background:var(--primary);border-color:var(--primary)}
+.meter{position:relative;height:20px;border-radius:10px;overflow:hidden;margin:16px 0 8px;background:linear-gradient(90deg,var(--lv-off-t) 0 16.7%,var(--lv-amber-t) 16.7% 30%,var(--lv-green-t) 30% 90%,var(--lv-red-t) 90% 100%)}
+.meter i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--lv-off);border-radius:10px 0 0 10px;transition:width .08s linear,background-color .2s}
+.meter u{position:absolute;top:0;bottom:0;width:3px;left:0;background:var(--text);transition:left .1s linear}
+.hint{padding:8px 14px;border-radius:12px;font-weight:600;margin-bottom:16px;background:var(--lv-off-t)}
+.hint[data-z=amber]{background:var(--lv-amber-t)}.hint[data-z=green]{background:var(--lv-green-t)}.hint[data-z=red]{background:var(--lv-red-t)}
+.sp{margin:0 0 16px;font-size:14px}.bar.sm{height:8px;margin:4px 0 0}.bar.ok i{background:var(--lv-green)}
+audio{width:100%;margin-top:8px}
+.row{display:flex;gap:12px;flex-wrap:wrap}.hide{display:none}
+</style></head><body><main>
+<section id="who"><h1>Who is this?</h1><p>Pick a name, or type a new one.</p>
+<div id="list"></div>
+<div class="card"><label for="nm">Or type a new name</label><input id="nm" placeholder="e.g. Grandma Rose" autocomplete="off">
+<p></p><button class="go" id="newgo">Continue</button></div></section>
+
+<section id="ready" class="hide"><h1 id="rh"></h1>
+<div class="card"><p>Sit in a quiet room, about a forearm's length (30–40 cm) from your laptop. You'll read 6 short sentences, one at a time. Takes about two minutes.</p>
+<p><b>Mic check:</b> say hello. Keep the bar in the green.</p>
+<div class="meter"><i class="lvl"></i><u class="peak"></u></div><div class="hint" data-z="off">Starting mic…</div>
+<p id="resume" class="hide"></p>
+<div class="row"><button class="go" id="begin">Start</button><button id="fresh" class="hide">Start a new session</button><button id="back1">Back</button></div></div></section>
+
+<section id="read" class="hide"><div class="dots" id="dots"></div><p id="count"></p>
+<div class="card"><div class="sentence" id="sent"></div><div class="meter"><i class="lvl"></i><u class="peak"></u></div><div class="hint" data-z="off">Press Start, then read the sentence.</div>
+<div class="sp"><span id="sptxt">Speech: 0.0 s</span><div class="bar sm" id="spbar"><i id="sp"></i></div></div>
+<div id="note" class="msg hide"></div>
+<div class="row"><button class="go" id="rec">Start</button><button id="stop" class="hide">Done talking</button></div>
+<audio id="play" class="hide" controls></audio></div>
+<button id="quit">Stop for now</button></section>
+
+<section id="done" class="hide"><h1 id="dh"></h1><p>Voice saved. Run <code>python -m caretaker_speaker.enroll</code> to rebuild the voiceprints.</p>
+<div class="row"><button class="go" id="another">Record another person</button></div></section>
+</main>
+<script>
+const SENTENCES=[
+"When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow.",
+"The quick brown fox jumps over the lazy dog while the family waits for dinner on the porch.",
+"Please call Stella and ask her to bring these things with her from the store.",
+"The rainbow is a division of white light into many beautiful colors that arch high above the earth.",
+"My grandchildren visit on Sunday, and we always sit together and talk about the week.",
+"A good laugh and a long sleep are the best cures in the doctor's book, so they say."];
+const $=id=>document.getElementById(id);
+let person,session,n,ctx,node,chunks,stream,recording;
+const show=s=>["who","ready","read","done"].forEach(x=>$(x).classList.toggle("hide",x!==s));
+const api=(p,o)=>fetch(p,o).then(r=>r.json());
+const stamp=()=>new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);
+
+async function loadPeople(){
+  const ps=await api("/api/people");$("list").innerHTML="";
+  ps.forEach(p=>{const b=document.createElement("button");b.className="person";
+    b.innerHTML=`<span>${p.name}</span><small>${p.sessions} session${p.sessions==1?"":"s"} · ${p.seconds} s</small>`;
+    b.onclick=()=>pick(p);$("list").append(b)});
+}
+function pick(p){person=p;$("rh").textContent="Ready, "+p.name+"?";
+  const l=p.last,open=l&&l.done<SENTENCES.length;
+  $("resume").classList.toggle("hide",!open);$("fresh").classList.toggle("hide",!open);
+  if(open){$("resume").textContent=`Your last session has ${l.done} of ${SENTENCES.length} done. Start continues it.`;session=l.session;n=l.done}
+  else{session=stamp();n=0}
+  show("ready");openMic()}
+$("fresh").onclick=()=>{session=stamp();n=0;begin()};
+$("newgo").onclick=async()=>{const name=$("nm").value.trim();if(!name)return $("nm").focus();
+  const r=await api("/api/people",{method:"POST",body:JSON.stringify({name})});
+  await loadPeople();pick({id:r.id,name,sessions:0,seconds:0,last:null});$("nm").value=""};
+$("back1").onclick=()=>{release();show("who")};$("quit").onclick=()=>{release();loadPeople();show("who")};
+$("another").onclick=()=>{loadPeople();show("who")};
+$("begin").onclick=begin;
+
+let mw=0,mn=0,L={silent_db:-54,quiet_db:-42,clip_db:-1,margin_db:15,min_speech_s:2},lvl=-60,hold=-60,peak=-60,hintAt=0,fbuf=0,fsum=0,fdbs,spoke_s,playUrl;
+const Z={off:["We can't hear you. Check the mic or speak up","var(--lv-off)"],amber:["A little quiet. Move closer or speak up","var(--lv-amber)"],green:["Good level. Keep going","var(--lv-green)"],red:["Too loud. Lean back a little","var(--lv-red)"]};
+const zone=d=>d<-50?"off":d<L.quiet_db?"amber":d<-6?"green":"red";
+async function openMic(){
+  if(stream)return true;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:false,noiseSuppression:false,autoGainControl:true}});}
+  catch(e){document.querySelectorAll(".hint").forEach(h=>{h.dataset.z="red";h.textContent="Microphone blocked. Allow it in the address bar, then reload."});return false}
+  ctx=new AudioContext({sampleRate:16000});
+  const src=URL.createObjectURL(new Blob([`registerProcessor("tap",class extends AudioWorkletProcessor{process(i){if(i[0][0])this.port.postMessage(i[0][0].slice());return true}})`],{type:"text/javascript"}));
+  await ctx.audioWorklet.addModule(src);
+  node=new AudioWorkletNode(ctx,"tap");ctx.createMediaStreamSource(stream).connect(node);
+  node.port.onmessage=e=>onBlock(e.data);return true}
+async function begin(){if(await openMic())next()}
+function release(){recording=false;stream&&stream.getTracks().forEach(t=>t.stop());ctx&&ctx.close();stream=ctx=null}
+function next(){
+  if(n>=SENTENCES.length){release();$("dh").textContent=person.name+" is enrolled";show("done");return}
+  $("dots").innerHTML=SENTENCES.map((_,i)=>`<b class="${i<n?"on":""}"></b>`).join("");
+  $("count").textContent=`Sentence ${n+1} of ${SENTENCES.length}`;$("sent").textContent=SENTENCES[n];
+  $("note").classList.add("hide");$("play").classList.add("hide");resetSp();
+  $("rec").classList.remove("hide");$("rec").disabled=false;$("rec").textContent="Start";$("stop").classList.add("hide");show("read")}
+function resetSp(){fdbs=[];spoke_s=0;$("sp").style.width=0;$("spbar").classList.remove("ok");$("sptxt").textContent="Speech: 0.0 s of "+L.min_speech_s.toFixed(1)+" s needed"}
+
+function startRec(){if(recording||$("rec").disabled)return;
+  $("note").classList.add("hide");$("play").classList.add("hide");resetSp();
+  chunks=[];recording=true;$("rec").classList.add("hide");$("stop").classList.remove("hide");
+  setTimeout(()=>recording&&finish(),20000)}
+$("rec").onclick=startRec;$("stop").onclick=()=>finish();
+addEventListener("keydown",e=>{if(e.code!=="Space"||e.target.tagName==="INPUT"||$("read").classList.contains("hide"))return;
+  e.preventDefault();if(e.repeat)return;recording?finish():startRec()});
+addEventListener("keyup",e=>{if(e.code==="Space"&&e.target.tagName!=="INPUT")e.preventDefault()});
+
+function setMeter(){
+  const pct=Math.max(0,Math.min(100,(lvl+60)/60*100)),z=zone(lvl);
+  document.querySelectorAll(".lvl").forEach(el=>{el.style.width=pct+"%";el.style.background=Z[z][1]});
+  document.querySelectorAll(".peak").forEach(el=>el.style.left=Math.max(0,Math.min(99,(peak+60)/60*100))+"%");
+  const now=performance.now();if(now<hintAt)return;hintAt=now+300;
+  const hz=zone(hold);document.querySelectorAll(".hint").forEach(h=>{h.dataset.z=hz;h.textContent=Z[hz][0]});
+  peak=Math.max(-60,peak-3)}
+function onBlock(b){
+  let s=0;for(const v of b)s+=v*v;const db=20*Math.log10(Math.max(Math.sqrt(s/b.length),1e-6));
+  hold=Math.max(db,hold-.05);mw+=s;mn+=b.length;
+  if(mn>=800){const w=20*Math.log10(Math.max(Math.sqrt(mw/mn),1e-6));mw=mn=0;  // 50 ms window, fast rise / slow fall
+    lvl+=(w-lvl)*(w>lvl?.35:.12);if(w>peak)peak=w;setMeter()}
+  if(!recording)return;
+  chunks.push(b);fsum+=s;fbuf+=b.length;
+  if(fbuf>=320){fdbs.push(20*Math.log10(Math.max(Math.sqrt(fsum/fbuf),1e-6)));fsum=fbuf=0;
+    if(fdbs.length%10===0){const sorted=[...fdbs].sort((x,y)=>x-y),floor=sorted[Math.floor(sorted.length*.1)],
+      thr=Math.min(Math.max(floor+L.margin_db,L.quiet_db-10),L.quiet_db);
+      spoke_s=fdbs.filter(d=>d>thr).length*.02;const ok=spoke_s>=L.min_speech_s;
+      $("sp").style.width=Math.min(100,spoke_s/L.min_speech_s*100)+"%";$("spbar").classList.toggle("ok",ok);
+      $("sptxt").textContent=ok?"Enough speech ✓ Press Done when you finish the sentence":`Speech: ${spoke_s.toFixed(1)} s of ${L.min_speech_s.toFixed(1)} s needed`}}}
+async function finish(){
+  if(!recording)return;recording=false;$("stop").classList.add("hide");
+  const blob=new Blob([wav(chunks)],{type:"audio/wav"});
+  playUrl&&URL.revokeObjectURL(playUrl);playUrl=URL.createObjectURL(blob);$("play").src=playUrl;$("play").classList.remove("hide");
+  const r=await fetch(`/api/clip?id=${person.id}&session=${session}&n=${n+1}`,{method:"POST",body:blob}).then(r=>r.json());
+  const note=$("note");note.classList.remove("hide");
+  if(r.ok){n++;note.className="msg";note.textContent="Got it ✓";setTimeout(next,1500)}
+  else{const st=r.stats||{},why={silent:"We heard nothing. Check your mic.","too quiet":"Too quiet. Move closer (30–40 cm) or speak up. Aim for the green zone.",clipped:"Too loud. Lean back so the bar stays out of the red.","too short":`Heard ${(st.speech_s??0).toFixed(1)} s of speech, need ${L.min_speech_s.toFixed(1)} s. Keep reading to the end before pressing Done.`}[r.reason]||r.reason;
+    note.className="msg bad";note.textContent=why+" Try again.";$("rec").classList.remove("hide");$("rec").disabled=false;$("rec").textContent="Try again"}}
+function wav(parts){const len=parts.reduce((a,p)=>a+p.length,0),buf=new DataView(new ArrayBuffer(44+len*2));
+  const w=(o,s)=>[...s].forEach((c,i)=>buf.setUint8(o+i,c.charCodeAt(0)));
+  w(0,"RIFF");buf.setUint32(4,36+len*2,true);w(8,"WAVEfmt ");buf.setUint32(16,16,true);buf.setUint16(20,1,true);buf.setUint16(22,1,true);
+  buf.setUint32(24,16000,true);buf.setUint32(28,32000,true);buf.setUint16(32,2,true);buf.setUint16(34,16,true);w(36,"data");buf.setUint32(40,len*2,true);
+  let o=44;for(const p of parts)for(const v of p){buf.setInt16(o,Math.max(-1,Math.min(1,v))*32767,true);o+=2}return buf.buffer}
+api("/api/limits").then(x=>L=x).catch(()=>{});loadPeople();
+</script></body></html>

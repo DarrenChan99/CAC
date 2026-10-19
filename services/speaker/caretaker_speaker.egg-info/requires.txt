@@ -1,0 +1,14 @@
+torch==2.11.0
+torchaudio==2.11.0
+speechbrain==1.1.2
+silero-vad==6.2.3
+pyannote.audio==4.0.7
+pyannote.metrics==4.2.0
+sounddevice==0.5.6
+mlx-whisper==0.4.3
+soundfile
+numpy
+scikit-learn
+matplotlib
+websockets
+pytest

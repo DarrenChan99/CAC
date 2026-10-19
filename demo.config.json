@@ -1,0 +1,27 @@
+{
+  "_comment": "Single source: real people <-> family person ids. Read by Python and the web app. Edit names/files here.",
+  "tau": 0.5,
+  "margin": 0.05,
+  "people": [
+    {
+      "id": "lisa",
+      "name": "Lisa"
+    },
+    {
+      "id": "david",
+      "name": "David"
+    },
+    {
+      "id": "emily",
+      "name": "Emily"
+    },
+    {
+      "id": "ken",
+      "name": "Ken"
+    },
+    {
+      "id": "test",
+      "name": "Test"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+pyproject.toml
+caretaker_speaker.egg-info/PKG-INFO
+caretaker_speaker.egg-info/SOURCES.txt
+caretaker_speaker.egg-info/dependency_links.txt
+caretaker_speaker.egg-info/requires.txt
+caretaker_speaker.egg-info/top_level.txt
