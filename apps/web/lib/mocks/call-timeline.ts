@@ -7,6 +7,8 @@
  * clock, not decoration.
  */
 
+import raw from "./replay/sunday.json" with { type: "json" };
+
 export interface CapturedItem {
   id: string;
   kind: "Memory" | "Med note" | "New person" | "Tree edit";
@@ -52,56 +54,30 @@ export const participantIds = ["lisa", "emily", "ken"];
  */
 export const remoteParticipantIds = ["david"];
 
-export const CALL_START = 120; // 2:00
-export const CALL_END = 175; // 2:55
-
-export const timeline: Utterance[] = [
-  {
-    id: "u1",
-    at: 124,
-    speakFor: 3,
-    speakerId: "lisa",
-    speakerScore: 0.94,
-    text: "Mum, we're all here — Emily and Ken came over too.",
-  },
-  {
-    id: "u2",
-    at: 134,
-    speakFor: 3,
-    speakerId: "emily",
-    speakerScore: 0.91,
-    text: "I passed my driving test on the first try, Grandma.",
-    captured: { id: "a4", kind: "Memory", title: "Emily passed her driving test" },
-  },
-  {
-    id: "u3",
-    at: 151,
-    speakFor: 3,
-    speakerId: "david",
-    speakerScore: 0.88,
-    text: "Make sure she takes the blood pressure pill at eight in the morning.",
-    lowConfidence: true,
+/**
+ * Who/when/what comes from the diarization backend (replay/sunday.json, written
+ * by `python -m caretaker_speaker.replay`). What the family's notetaker captured
+ * from each line is authored here, keyed by utterance id — the backend does not
+ * extract memories yet.
+ */
+const overlay: Record<string, Pick<Utterance, "captured" | "uncertainWord">> = {
+  u2: { captured: { id: "a4", kind: "Memory", title: "Emily passed her driving test" } },
+  u3: {
     uncertainWord: "eight",
     captured: { id: "a1", kind: "Med note", title: "Blood pressure pill at 8 am", warn: true },
   },
-  {
-    id: "u4",
-    at: 158,
-    speakFor: 2.5,
-    speakerId: null,
-    speakerScore: 0.41,
-    text: "Hi Mei, it's nice to finally meet you.",
-    captured: { id: "a2", kind: "New person", title: "Marcus — Emily's boyfriend?" },
-  },
-  {
-    id: "u5",
-    at: 164,
-    speakFor: 3,
-    speakerId: "ken",
-    speakerScore: 0.96,
-    text: "We'll call again on Sunday, Grandma. Look after yourself.",
-  },
-];
+  u4: { captured: { id: "a2", kind: "New person", title: "Marcus — Emily's boyfriend?" } },
+};
+
+export const timeline: Utterance[] = (raw as Utterance[]).map((u) => ({
+  ...u,
+  ...overlay[u.id],
+}));
+
+export const CALL_START = timeline.length ? Math.floor(Math.min(...timeline.map((u) => u.at))) : 0;
+export const CALL_END = timeline.length
+  ? Math.ceil(Math.max(...timeline.map((u) => u.at + u.speakFor))) + 2
+  : 0;
 
 /** 134 → "2:14" */
 export function formatCallTime(seconds: number): string {

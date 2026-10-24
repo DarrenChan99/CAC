@@ -1,0 +1,7 @@
+[
+  { "id": "u1", "at": 124, "speakFor": 3, "speakerId": "lisa", "speakerScore": 0.94, "text": "Mum, we're all here — Emily and Ken came over too." },
+  { "id": "u2", "at": 134, "speakFor": 3, "speakerId": "emily", "speakerScore": 0.91, "text": "I passed my driving test on the first try, Grandma." },
+  { "id": "u3", "at": 151, "speakFor": 3, "speakerId": "david", "speakerScore": 0.88, "text": "Make sure she takes the blood pressure pill at eight in the morning.", "lowConfidence": true },
+  { "id": "u4", "at": 158, "speakFor": 2.5, "speakerId": null, "speakerScore": 0.41, "text": "Hi Mei, it's nice to finally meet you." },
+  { "id": "u5", "at": 164, "speakFor": 3, "speakerId": "ken", "speakerScore": 0.96, "text": "We'll call again on Sunday, Grandma. Look after yourself." }
+]
