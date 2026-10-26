@@ -1,0 +1,170 @@
+import stats from "@/lib/how/stats.json";
+import { CALL_END, CALL_START, formatCallTime, participantIds, timeline } from "@/lib/mocks/call-timeline";
+import { get } from "@/lib/mocks/family";
+import { Panel } from "./Term";
+
+const T = stats.timing;
+const num = (x: number, d = 1) => x.toFixed(d);
+
+/** A GitHub-Actions-style run graph: every step of the pipeline as a job, with its measured time. */
+export function WorkflowRun() {
+  const encode = Math.max(T.embed_ms - T.fbank_ms, 0);
+  const perHop = T.vad_ms_per_audio_s + T.embed_ms + T.score_us / 1000;
+  const cols = [
+    { n: "Capture", s: "16 kHz mono" },
+    { n: "Silero VAD", s: `${num(T.vad_ms_per_audio_s)} ms / s of audio` },
+    { n: "Window", s: "2 s window · 1 s hop" },
+    { n: "Log-Mel + CMN", s: `${num(T.fbank_ms)} ms` },
+    { n: "ECAPA-TDNN", s: `${num(encode)} ms` },
+    { n: "Cosine + decide", s: `${num(T.score_us)} µs` },
+    { n: "Hysteresis", s: `${num(T.smooth_us)} µs` },
+    { n: "Label", s: "speaker_final event" },
+  ];
+  const asr = [
+    { c: 1, n: "Whisper ASR", s: `${num(T.whisper_s_per_audio_s ?? 0, 2)} s / s of audio` },
+    { c: 2, n: "Align words", s: "to speaker turns" },
+  ];
+  const CW = 136, GAP = 22, NH = 58, Y1 = 62, Y2 = 188;
+  const x = (c: number) => c * (CW + GAP);
+  const W = 8 * CW + 7 * GAP;
+  const Node = ({ c, y, n, s }: { c: number; y: number; n: string; s: string }) => (
+    <g transform={`translate(${x(c)} ${y})`}>
+      <rect width={CW} height={NH} rx={10} className="fill-surface stroke-tint" strokeWidth={1.5} />
+      <circle cx={16} cy={NH / 2} r={8} className="fill-primary" />
+      <path d={`M${12} ${NH / 2} l3 3 l6 -6`} fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
+      <text x={32} y={NH / 2 - 4} className="fill-text text-[12.5px] font-semibold">{n}</text>
+      <text x={32} y={NH / 2 + 13} className="fill-muted text-[11px]">{s}</text>
+    </g>
+  );
+  const link = (a: number, ya: number, b: number, yb: number) => {
+    const x1 = x(a) + CW, x2 = x(b), mx = (x1 + x2) / 2;
+    return <path key={`${a}-${b}-${ya}-${yb}`} d={`M${x1} ${ya + NH / 2} C${mx} ${ya + NH / 2}, ${mx} ${yb + NH / 2}, ${x2} ${yb + NH / 2}`} fill="none" className="stroke-accent" strokeWidth={2} />;
+  };
+  return (
+    <Panel
+      title="One window, one workflow run"
+      sub={<>Every 512-sample audio block triggers this run. Each job&apos;s time was measured on this laptop; the whole chain costs about <b className="text-text">{num(perHop, 0)} ms per second of audio</b>, roughly {Math.round(1000 / perHop)}× faster than real time.</>}
+    >
+      <div className="mb-3 flex flex-wrap items-center gap-3 text-f-small">
+        <span className="flex items-center gap-2 rounded-full bg-tint px-3 py-1 font-medium text-primary"><i className="inline-block h-2.5 w-2.5 rounded-full bg-primary" />identify-speaker</span>
+        <span className="text-muted">on: audio_block · all jobs succeeded · {num(perHop, 0)} ms / 1 s hop</span>
+      </div>
+      <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${W} 262`} className="min-w-[980px] w-full" role="img" aria-label="Pipeline as a workflow graph">
+          <text x={0} y={34} className="fill-muted text-[12px] font-medium">Speaker-ID lane</text>
+          <text x={0} y={160} className="fill-muted text-[12px] font-medium">Transcript lane</text>
+          {cols.slice(0, -1).map((_, i) => link(i, Y1, i + 1, Y1))}
+          {link(0, Y1, 1, Y2)}
+          {link(1, Y2, 2, Y2)}
+          {link(2, Y2, 7, Y1)}
+          {cols.map((c, i) => <Node key={c.n} c={i} y={Y1} n={c.n} s={c.s} />)}
+          {asr.map((a) => <Node key={a.n} c={a.c} y={Y2} n={a.n} s={a.s} />)}
+        </svg>
+      </div>
+    </Panel>
+  );
+}
+
+const lang: Record<string, string> = { TypeScript: "--color-series-3", Python: "--color-series-2", HTML: "--color-series-5", CSS: "--color-series-4", Markdown: "--color-stranger" };
+
+/** GitHub's language bar and repo stats, for this repository. */
+export function RepoPanel() {
+  const r = stats.repo;
+  const total = Object.values(r.loc).reduce((a, b) => a + b, 0);
+  return (
+    <Panel title="The code" sub={`${r.files} files · ${r.commits} commits · ${r.tests.python} Python tests and ${r.tests.web} web tests`}>
+      <div className="flex h-3 overflow-hidden rounded-full">
+        {Object.entries(r.loc).map(([k, v]) => <div key={k} title={`${k} ${v} lines`} style={{ width: `${(v / total) * 100}%`, background: `var(${lang[k] ?? "--color-stranger"})` }} />)}
+      </div>
+      <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-f-small">
+        {Object.entries(r.loc).map(([k, v]) => (
+          <li key={k} className="flex items-center gap-2"><i className="inline-block h-3 w-3 rounded-full" style={{ background: `var(${lang[k] ?? "--color-stranger"})` }} /><b>{k}</b><span className="text-muted tabular-nums">{((v / total) * 100).toFixed(1)}%</span></li>
+        ))}
+      </ul>
+    </Panel>
+  );
+}
+
+const level = (s: number) => (s < 0.5 ? 25 : s < 0.6 ? 45 : s < 0.7 ? 70 : 100);
+
+/** One square per tested window, like a contribution graph: darker green = more confident correct name. */
+export function WindowHeatmap() {
+  const rows = [...stats.people.map((p) => ({ id: p.id, name: p.name, stranger: false })), { id: "stranger", name: "Strangers", stranger: true }];
+  const cell = (s: number, o: number, stranger: boolean) =>
+    o === 2 ? "var(--color-danger)"
+    : o === 1 ? (stranger ? `color-mix(in oklab, var(--color-stranger) ${s < 0.15 ? 35 : s < 0.25 ? 60 : 90}%, var(--color-surface))` : "color-mix(in oklab, var(--color-warn) 55%, var(--color-surface))")
+    : `color-mix(in oklab, var(--color-primary) ${level(s)}%, var(--color-surface))`;
+  return (
+    <Panel
+      title="Every window we tested"
+      sub="One square per 2-second window, held out from the voiceprint it was scored against. Green = correct name (darker = higher cosine); grey = stranger correctly refused; amber = a family member shown as “Someone new”; red = a wrong name."
+    >
+      <div className="flex flex-col gap-4">
+        {rows.map((r) => {
+          const w = (stats.windows as Record<string, number[][]>)[r.id] ?? [];
+          const ok = w.filter((x) => (r.stranger ? x[1] === 1 : x[1] === 0)).length;
+          return (
+            <div key={r.id} className="flex items-start gap-4">
+              <div className="w-[96px] flex-none pt-0.5 text-f-small"><b>{r.name}</b><div className="text-f-label text-muted tabular-nums">{ok}/{w.length} correct</div></div>
+              <div className="grid gap-[3px]" style={{ gridAutoFlow: "column", gridTemplateRows: "repeat(7, 13px)", gridAutoColumns: "13px" }}>
+                {w.map(([s, o], i) => (
+                  <i key={i} title={`${r.name} · window ${i + 1} · cosine ${s.toFixed(2)} · ${o === 0 ? "named correctly" : o === 1 ? (r.stranger ? "refused (correct)" : "Someone new") : "wrong name"}`}
+                    className="block rounded-[3px]" style={{ background: cell(s, o, r.stranger) }} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-f-label text-muted">
+        <span>Less</span>
+        {[25, 45, 70, 100].map((l) => <i key={l} className="block h-[13px] w-[13px] rounded-[3px]" style={{ background: `color-mix(in oklab, var(--color-primary) ${l}%, var(--color-surface))` }} />)}
+        <span>More confident</span>
+        <i className="ml-3 block h-[13px] w-[13px] rounded-[3px]" style={{ background: "color-mix(in oklab, var(--color-warn) 55%, var(--color-surface))" }} /><span>Someone new</span>
+        <i className="ml-3 block h-[13px] w-[13px] rounded-[3px]" style={{ background: "var(--color-danger)" }} /><span>wrong name</span>
+      </div>
+    </Panel>
+  );
+}
+
+/** Who spoke when in the recorded call: one lane per person, one block per utterance. */
+export function CallTimeline() {
+  const lanes = [...participantIds, "unknown"];
+  const W = 1100, L = 120, LH = 36, H = lanes.length * LH + 34;
+  const span = Math.max(CALL_END - CALL_START, 1);
+  const x = (t: number) => L + ((t - CALL_START) / span) * (W - L - 10);
+  const ticks = Array.from({ length: Math.floor(span / 10) + 1 }, (_, i) => CALL_START + i * 10).filter((t) => t <= CALL_END);
+  return (
+    <Panel title="Who spoke when" sub="The diarization output for the demo call: each block is one utterance, brighter = a closer voiceprint match. Diamonds are things the notetaker captured. Re-recording the call regenerates this.">
+      <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${W} ${H}`} className="min-w-[760px] w-full" role="img" aria-label="Speaker timeline">
+          {lanes.map((id, i) => (
+            <g key={id} transform={`translate(0 ${i * LH})`}>
+              <rect x={L} width={W - L - 10} height={LH - 6} rx={6} className="fill-bg" />
+              <text x={L - 10} y={LH / 2 - 1} textAnchor="end" className="fill-text text-[12.5px] font-medium">{id === "unknown" ? "Someone new" : get(id).name}</text>
+            </g>
+          ))}
+          {timeline.map((u) => {
+            const lane = u.speakerId === null ? lanes.length - 1 : lanes.indexOf(u.speakerId);
+            if (lane < 0) return null;
+            const fill = u.speakerId === null ? "var(--color-warn)" : `var(--color-series-${(lane % 6) + 1})`;
+            return (
+              <g key={u.id}>
+                <rect x={x(u.at)} y={lane * LH + 3} width={Math.max(x(u.at + u.speakFor) - x(u.at), 6)} height={LH - 12} rx={5} fill={fill} opacity={0.35 + 0.65 * Math.min(1, u.speakerScore)} strokeDasharray={u.lowConfidence ? "4 3" : undefined} stroke={u.lowConfidence ? "var(--color-text)" : undefined}>
+                  <title>{`${u.speakerId === null ? "Someone new" : get(u.speakerId).name} · ${formatCallTime(u.at)} · match ${u.speakerScore.toFixed(2)} · ${u.text}`}</title>
+                </rect>
+                {u.captured && <rect x={x(u.at + u.speakFor) - 4} y={lane * LH - 3} width={9} height={9} transform={`rotate(45 ${x(u.at + u.speakFor)} ${lane * LH + 1.5})`} fill={u.captured.warn ? "var(--color-warn)" : "var(--color-primary)"} />}
+              </g>
+            );
+          })}
+          {ticks.map((t) => (
+            <g key={t}>
+              <line x1={x(t)} x2={x(t)} y1={lanes.length * LH - 4} y2={lanes.length * LH + 2} className="stroke-muted" />
+              <text x={x(t)} y={lanes.length * LH + 18} textAnchor="middle" className="fill-muted text-[11px] tabular-nums">{formatCallTime(t)}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+    </Panel>
+  );
+}
