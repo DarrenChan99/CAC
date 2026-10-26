@@ -18,25 +18,25 @@ export default function HowItWorks() {
         <div>
           <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold leading-tight tracking-[-0.02em]">How Caretaker knows who is speaking</h1>
           <p className="mt-3 max-w-[70ch] text-f-h3 font-normal text-muted">
-            <Term k="vad" /> → <Term k="ecapa" /> → <Term k="openset" />. Every chart and 3-D scene below is drawn from our own recordings.
+            Caretaker <Term k="vad">finds the speech</Term>, <Term k="ecapa">turns each voice into a fingerprint</Term>, and <Term k="openset">only names people it is sure about</Term>. Every chart and 3-D scene below is drawn from my own recordings.
           </p>
         </div>
 
-        <Section id="pipeline" n="1" title="The pipeline">
+        <Section id="pipeline" n="1" title="What happens to the sound">
           <WorkflowRun />
           <Spectrogram3D />
         </Section>
 
-        <Section id="encoder" n="2" title="The encoder">
+        <Section id="encoder" n="2" title="Turning a voice into a fingerprint">
           <EcapaNet3D />
           <VoiceprintRings />
         </Section>
 
-        <Section id="space" n="3" title="The voice space">
+        <Section id="space" n="3" title="Where each voice lands">
           <EmbeddingSpace />
         </Section>
 
-        <Section id="decision" n="4" title="The decision">
+        <Section id="decision" n="4" title="Deciding who it is">
           <DecisionSphere />
         </Section>
 
@@ -53,7 +53,7 @@ export default function HowItWorks() {
             </dl>
           </details>
         </section>
-        <Link href="/how-it-works/stats" className="flex min-h-[44px] items-center justify-end text-f-body font-semibold text-primary hover:underline">Next: the stats →</Link>
+        <Link href="/how-it-works/stats" className="flex min-h-[44px] items-center justify-end text-f-body font-semibold text-primary hover:underline">Next: how well it works →</Link>
       </main>
     </>
   );

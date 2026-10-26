@@ -18,6 +18,7 @@ export const glossary = {
   xvector: { term: "x-vector embedding", gloss: "The fixed-size vector (192 numbers here) that summarises who is speaking, produced by the last fully-connected layer after pooling." },
   aam: { term: "additive angular margin softmax", gloss: "The training loss: it forces each speaker's embeddings into a tight cone on the unit sphere with a gap to other speakers, which is why a simple angle comparison works at test time." },
   voxceleb: { term: "VoxCeleb", gloss: "The public dataset of over a million utterances from thousands of celebrities that the pretrained model learned from; none of our family's voices were used to train it." },
+  inference: { term: "inference", gloss: "Running a model that is already trained, without changing it. The voice model learned from public voices; Caretaker only feeds it new audio and reads out the voiceprint." },
   l2: { term: "L2 normalization", gloss: "Divides the vector by its length so only direction matters, which makes a dot product equal to the cosine of the angle between two voices." },
   cosine: { term: "cosine similarity", gloss: "The dot product of two unit vectors: 1 means the same direction, 0 means unrelated. It ignores loudness and measures only how alike the voices are." },
   centroid: { term: "voiceprint (centroid)", gloss: "The average of a person's enrollment embeddings, re-normalised, so a few short recordings become one stable reference point." },

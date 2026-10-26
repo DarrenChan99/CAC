@@ -138,8 +138,8 @@ export function EmbeddingSpace() {
 
   return (
     <Panel
-      title="The voice space"
-      sub={<>Each dot is a 2-second window, 192 dimensions squashed to 3 by <Term k="pca" /> or <Term k="tsne" />. Spheres are voiceprints.</>}
+      title="Similar voices land close together"
+      sub={<>Each dot is 2 seconds of speech. Its 192 numbers are squashed down to 3 so you can see them (<Term k="pca">PCA</Term> or <Term k="tsne">t-SNE</Term>). The spheres are each person&apos;s voiceprint.</>}
     >
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <div role="group" aria-label="Projection" className="flex rounded-full border border-tint p-0.5">

@@ -43,8 +43,8 @@ function setupRings({ scene, camera, controls, color }: SceneCtx) {
 export function VoiceprintRings() {
   return (
     <Panel
-      title="Voiceprints are signatures"
-      sub={<>Each ring is one person&apos;s <Term k="centroid" />: 192 bars, up for positive, down for negative. The pattern is the identity; the last ring is an unrelated voice.</>}
+      title="Every voice has its own pattern"
+      sub={<>Each ring is one person&apos;s <Term k="centroid">voiceprint</Term>: 192 bars pointing up or down. The pattern is what identifies them. The last ring is a stranger, for comparison.</>}
     >
       <Stage setup={setupRings} height={400} />
     </Panel>

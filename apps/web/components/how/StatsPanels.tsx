@@ -11,11 +11,11 @@ export function Kpis() {
   const right = win.slice(0, n).reduce((a, r, i) => a + r[i], 0) / win.slice(0, n).reduce((a, r) => a + r.reduce((x, y) => x + y, 0), 0);
   const seconds = stats.per_person && Object.values(stats.per_person).reduce((a, p) => a + p.seconds, 0);
   const tiles = [
-    { v: pct(stats.det.eer, 2), l: "equal error rate", k: <Term k="eer" /> },
-    { v: stats.det.auc.toFixed(4), l: "ROC area", k: <Term k="auc" /> },
-    { v: pct(right), l: "live windows named correctly", k: <>2 s windows, leave-one-clip-out</> },
-    { v: pct(stats.strangers.named, 1), l: `of ${stats.strangers.windows} stranger windows given a name`, k: <>{stats.strangers.speakers} LibriSpeech voices</> },
-    { v: `${n}`, l: "enrolled voices", k: <>{Math.round(seconds)} s of enrollment audio</> },
+    { v: pct(stats.det.eer, 2), l: "error rate at the balance point", k: <Term k="eer" /> },
+    { v: stats.det.auc.toFixed(4), l: "separation score (1 = perfect)", k: <Term k="auc" /> },
+    { v: pct(right), l: "live windows named correctly", k: <>2-second slices it had never seen</> },
+    { v: pct(stats.strangers.named, 1), l: `of ${stats.strangers.windows} stranger slices given a name`, k: <>{stats.strangers.speakers} LibriSpeech voices</> },
+    { v: `${n}`, l: "family voices recorded", k: <>{Math.round(seconds)} s of enrollment audio</> },
   ];
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
@@ -65,10 +65,10 @@ function Matrix({ m, rows, cols }: { m: number[][]; rows: string[]; cols: string
 export function Confusion() {
   const rows = [...names, "stranger"], cols = [...names, "Someone new"];
   return (
-    <Panel title="Who the system said, vs. who really spoke" sub={<>A <Term k="confusion" /> from leave-one-clip-out testing. Row = true speaker, column = the label shown. A “stranger” should land in the last column.</>}>
+    <Panel title="So how do we know who really spoke?" sub={<>Each row is who really spoke; each column is the name Caretaker showed. Right answers sit on the <Term k="confusion">diagonal</Term>, and strangers should land in the last column, unnamed.</>}>
       <div className="grid gap-6 md:grid-cols-2">
-        <div><div className="pb-1 text-f-small font-semibold">Whole utterances</div><Matrix m={stats.confusion.clip} rows={rows} cols={cols} /></div>
-        <div><div className="pb-1 text-f-small font-semibold">2 s live windows</div><Matrix m={stats.confusion.window} rows={rows} cols={cols} /></div>
+        <div><div className="pb-1 text-f-small font-semibold">Whole sentences</div><Matrix m={stats.confusion.clip} rows={rows} cols={cols} /></div>
+        <div><div className="pb-1 text-f-small font-semibold">2-second live slices</div><Matrix m={stats.confusion.window} rows={rows} cols={cols} /></div>
       </div>
     </Panel>
   );
@@ -82,7 +82,7 @@ export function DetCurve() {
   const py = (v: number) => S - P - lg(v) * (S - P - 22);
   const pts = det.fpr.map((f, i) => `${px(f)},${py(det.fnr[i])}`).join(" ");
   return (
-    <Panel title="Trade-off curve" sub={<>The <Term k="det" /> over every possible threshold. EER = {pct(det.eer, 2)} at a score of {det.eer_threshold}; our <Term k="tau" /> of {stats.tau} trades a little extra rejection for fewer wrong names.</>}>
+    <Panel title="Strict or forgiving?" sub={<>A stricter <Term k="tau">cut-off</Term> names fewer strangers but misses more family. The <Term k="det">curve</Term> shows every setting; both mistakes are equally rare ({pct(det.eer, 2)}) at {det.eer_threshold}. I set it to {stats.tau}, so it would rather say “Someone new” than give a wrong name.</>}>
       <svg viewBox={`0 0 ${S} ${S}`} className="mx-auto w-full max-w-[340px]" role="img" aria-label="DET curve, log axes">
         <line x1={px(1e-3)} y1={py(1e-3)} x2={px(1)} y2={py(1)} className="stroke-tint" strokeDasharray="4 3" />
         <polyline points={pts} fill="none" className="stroke-primary" strokeWidth={2} />
@@ -112,7 +112,7 @@ export function EnrollCurve() {
   const lo = Math.floor(Math.min(...c.map((p) => p.right)) * 10) / 10;
   const y = (v: number) => 10 + (1 - (v - lo) / (1 - lo)) * (H - B - 10);
   return (
-    <Panel title="How much enrollment is enough" sub="Seconds of a person's speech used to build the voiceprint, vs. live windows named correctly. Returns flatten near 20 seconds, with no wrong names at any length.">
+    <Panel title="How much recording does it need?" sub="More seconds of someone's voice means more correct names, up to about 20 seconds. It never gave a wrong name at any length.">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Accuracy vs enrollment seconds">
         <polyline fill="none" className="stroke-primary" strokeWidth={2} points={c.map((p) => `${x(p.seconds)},${y(p.right)}`).join(" ")} />
         {c.map((p) => (
@@ -129,7 +129,7 @@ export function EnrollCurve() {
 
 export function CrossSim() {
   return (
-    <Panel title="Voiceprint similarity" sub={<>Cosine between each pair of <Term k="centroid" />s. Off-diagonal values far below <Term k="tau" /> mean the family cannot be confused with each other.</>}>
+    <Panel title="Could two family members be mixed up?" sub={<>How alike each pair of <Term k="centroid">voiceprints</Term> is. Scores far below the <Term k="tau">cut-off</Term> mean the family can&apos;t be confused with each other.</>}>
       <Matrix m={stats.cross_similarity.map((r) => r.map((v) => Math.round(v * 100) / 100))} rows={names} cols={names} />
     </Panel>
   );
@@ -137,7 +137,7 @@ export function CrossSim() {
 
 export function QualityTable() {
   return (
-    <Panel title="Recording quality" sub="From the enrollment recorder's own measurements; takes it rejected are counted by reason.">
+    <Panel title="How good were the recordings?" sub="Measured by the recorder as each clip was made. Rejected takes are counted by reason.">
       <table className="w-full text-f-small tabular-nums">
         <thead><tr className="text-left text-f-label text-muted"><th className="pb-1 font-medium">person</th><th className="font-medium">clips</th><th className="font-medium">speech</th><th className="font-medium">level</th><th className="font-medium">SNR</th><th className="font-medium">rejected takes</th></tr></thead>
         <tbody>

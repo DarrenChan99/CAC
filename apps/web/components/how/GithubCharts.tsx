@@ -11,18 +11,18 @@ export function WorkflowRun() {
   const encode = Math.max(T.embed_ms - T.fbank_ms, 0);
   const perHop = T.vad_ms_per_audio_s + T.embed_ms + T.score_us / 1000;
   const cols = [
-    { n: "Capture", s: "16 kHz mono" },
-    { n: "Silero VAD", s: `${num(T.vad_ms_per_audio_s)} ms / s of audio` },
-    { n: "Window", s: "2 s window · 1 s hop" },
-    { n: "Log-Mel + CMN", s: `${num(T.fbank_ms)} ms` },
-    { n: "ECAPA-TDNN", s: `${num(encode)} ms` },
-    { n: "Cosine + decide", s: `${num(T.score_us)} µs` },
-    { n: "Hysteresis", s: `${num(T.smooth_us)} µs` },
-    { n: "Label", s: "speaker_final event" },
+    { n: "Listen", s: "16 kHz audio" },
+    { n: "Find speech", s: `VAD · ${num(T.vad_ms_per_audio_s)} ms / s` },
+    { n: "Take 2 seconds", s: "new slice every 1 s" },
+    { n: "Map the pitch", s: `log-Mel · ${num(T.fbank_ms)} ms` },
+    { n: "Make voiceprint", s: `ECAPA · ${num(encode)} ms` },
+    { n: "Match a name", s: `cosine · ${num(T.score_us)} µs` },
+    { n: "Hold the name", s: `hysteresis · ${num(T.smooth_us)} µs` },
+    { n: "Show the name", s: "on screen" },
   ];
   const asr = [
-    { c: 1, n: "Whisper ASR", s: `${num(T.whisper_s_per_audio_s ?? 0, 2)} s / s of audio` },
-    { c: 2, n: "Align words", s: "to speaker turns" },
+    { c: 1, n: "Write the words", s: `Whisper · ${num(T.whisper_s_per_audio_s ?? 0, 2)} s / s` },
+    { c: 2, n: "Match words", s: "to each speaker" },
   ];
   const CW = 136, GAP = 22, NH = 58, Y1 = 62, Y2 = 188;
   const x = (c: number) => c * (CW + GAP);
@@ -42,8 +42,8 @@ export function WorkflowRun() {
   };
   return (
     <Panel
-      title="One window, one workflow run"
-      sub={<>Every 512-sample audio block triggers this run. Each job&apos;s time was measured on this laptop; the whole chain costs about <b className="text-text">{num(perHop, 0)} ms per second of audio</b>, roughly {Math.round(1000 / perHop)}× faster than real time.</>}
+      title="Each second of audio, step by step"
+      sub={<>Every slice of audio goes through these steps. I timed each one on my laptop: the whole chain takes about <b className="text-text">{num(perHop, 0)} ms per second of audio</b>, roughly {Math.round(1000 / perHop)}× faster than real time.</>}
     >
       <div className="mb-3 flex flex-wrap items-center gap-3 text-f-small">
         <span className="flex items-center gap-2 rounded-full bg-tint px-3 py-1 font-medium text-primary"><i className="inline-block h-2.5 w-2.5 rounded-full bg-primary" />identify-speaker</span>
@@ -51,8 +51,8 @@ export function WorkflowRun() {
       </div>
       <div className="overflow-x-auto">
         <svg viewBox={`0 0 ${W} 262`} className="min-w-[980px] w-full" role="img" aria-label="Pipeline as a workflow graph">
-          <text x={0} y={34} className="fill-muted text-[12px] font-medium">Speaker-ID lane</text>
-          <text x={0} y={160} className="fill-muted text-[12px] font-medium">Transcript lane</text>
+          <text x={0} y={34} className="fill-muted text-[12px] font-medium">Who is speaking</text>
+          <text x={0} y={160} className="fill-muted text-[12px] font-medium">What they said</text>
           {cols.slice(0, -1).map((_, i) => link(i, Y1, i + 1, Y1))}
           {link(0, Y1, 1, Y2)}
           {link(1, Y2, 2, Y2)}
@@ -96,8 +96,8 @@ export function WindowHeatmap() {
     : `color-mix(in oklab, var(--color-primary) ${level(s)}%, var(--color-surface))`;
   return (
     <Panel
-      title="Every window we tested"
-      sub="One square per 2-second window, held out from the voiceprint it was scored against. Green = correct name (darker = higher cosine); grey = stranger correctly refused; amber = a family member shown as “Someone new”; red = a wrong name."
+      title="Every test, one square each"
+      sub="Each square is 2 seconds of speech. Green is the right name (darker = more confident). Grey is a stranger correctly left unnamed. Amber is a family member shown as “Someone new”. Red is a wrong name."
     >
       <div className="flex flex-col gap-4">
         {rows.map((r) => {
@@ -135,7 +135,7 @@ export function CallTimeline() {
   const x = (t: number) => L + ((t - CALL_START) / span) * (W - L - 10);
   const ticks = Array.from({ length: Math.floor(span / 10) + 1 }, (_, i) => CALL_START + i * 10).filter((t) => t <= CALL_END);
   return (
-    <Panel title="Who spoke when" sub="The diarization output for the demo call: each block is one utterance, brighter = a closer voiceprint match. Diamonds are things the notetaker captured. Re-recording the call regenerates this.">
+    <Panel title="Who spoke, and when" sub="Each block is one thing someone said; brighter means a closer match to their voiceprint. Diamonds mark what the notetaker saved.">
       <div className="overflow-x-auto">
         <svg viewBox={`0 0 ${W} ${H}`} className="min-w-[760px] w-full" role="img" aria-label="Speaker timeline">
           {lanes.map((id, i) => (

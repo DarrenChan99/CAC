@@ -73,8 +73,8 @@ function setupSpectrogram({ scene, camera, controls, color }: SceneCtx) {
   };
   label("time →", 0, -0.12, D / 2 + 1.0, 0.7);
   label("pitch ↑", -W / 2 - 0.55, 0.3, -D / 2 + 0.2, 0.7);
-  label("VAD: speech", -W / 2 + 0.2, 0.05, D / 2 + 0.28, 0.55);
-  label("height = log energy", W / 2 - 0.3, H + 0.45, -D / 2, 0.6);
+  label("speech found", -W / 2 + 0.2, 0.05, D / 2 + 0.28, 0.55);
+  label("taller = louder", W / 2 - 0.3, H + 0.45, -D / 2, 0.6);
 
   // scan frame sweeping through time (outline only, so it never hides the terrain)
   const fy = H + 0.3, fz = D / 2 + 0.1;
@@ -90,8 +90,8 @@ function setupSpectrogram({ scene, camera, controls, color }: SceneCtx) {
 export function Spectrogram3D() {
   return (
     <Panel
-      title="What the network sees"
-      sub={<>A real {S.seconds} s enrollment clip after the <Term k="stft" /> and <Term k="mel" />, drawn as terrain: ridges are speech harmonics. The accent bars show where <Term k="vad" /> found speech.</>}
+      title="What the model actually hears"
+      sub={<>A real {S.seconds}-second recording, turned into a <Term k="mel">map of pitch over time</Term> and drawn as terrain. The ridges are a voice; the bars along the front mark where <Term k="vad">speech was found</Term>.</>}
     >
       <Stage setup={setupSpectrogram} height={440} autoRotate />
     </Panel>

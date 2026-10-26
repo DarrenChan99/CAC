@@ -50,7 +50,7 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
   plane.rotation.y = Math.PI / 2;
   plane.position.set(xOf(d.tau), 1.45, 0);
   scene.add(plane);
-  const tl = textSprite(`τ = ${d.tau}`, { px: 52, scale: 0.003 });
+  const tl = textSprite(`cut-off (τ = ${d.tau})`, { px: 52, scale: 0.003 });
   tl.position.set(xOf(d.tau), 3.1, 0);
   scene.add(tl);
   [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
@@ -58,7 +58,7 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
     a.position.set(xOf(v), -0.1, 2.35);
     scene.add(a);
   });
-  const ax = textSprite("cosine similarity to the voiceprint →", { px: 44, scale: 0.0028 });
+  const ax = textSprite("how alike to the voiceprint (cosine) →", { px: 44, scale: 0.0028 });
   ax.position.set(0, -0.15, 2.95);
   scene.add(ax);
 
@@ -75,7 +75,7 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
 
 export function Scores3D() {
   return (
-    <Panel title="Where the scores fall" sub={<>How alike each kind of voice is to a <Term k="centroid" /> (<Term k="cosine" />). The plane is <Term k="tau" />: the family clears it, everyone else stays behind it.</>}>
+    <Panel title="How close does each voice get?" sub={<>Each score is how alike a voice is to a <Term k="centroid">voiceprint</Term> (<Term k="cosine">1 means identical</Term>). The flat plane is the <Term k="tau">cut-off</Term>: family members clear it, everyone else stays behind it.</>}>
       <Stage setup={setupScores} height={420} />
     </Panel>
   );

@@ -60,7 +60,7 @@ function setupSphere({ scene, camera, controls, color }: SceneCtx): SceneHandle 
   };
   arrow(a, "--color-series-1", `${A.name}'s voiceprint`);
   if (B !== A) arrow(b, "--color-series-2", `${B.name}'s voiceprint`);
-  const bandLabel = textSprite("margin band: too close to call", { px: 44, color: "#f4d9a0", scale: 0.0024 });
+  const bandLabel = textSprite("too close to call → “Someone new”", { px: 44, color: "#f4d9a0", scale: 0.0024 });
   bandLabel.position.set(0, R * 1.18, 0);
   scene.add(bandLabel);
 
@@ -108,8 +108,8 @@ export function DecisionSphere() {
   );
   return (
     <Panel
-      title="From score to name"
-      sub={<>The decision on the unit sphere (3 of the 192 dimensions, real angle between the two voiceprints). A voice is named only inside a <Term k="tau" /> cap, and not in the <Term k="margin" /> band where two caps overlap.</>}
+      title="When does a voice get a name?"
+      sub={<>Each voiceprint claims a zone around it. A voice gets a name only if it lands <Term k="tau">inside one zone</Term> and not <Term k="margin">where two zones overlap</Term>; otherwise it shows as “Someone new”. Drawn in 3 of the 192 dimensions.</>}
     >
       <Stage setup={setupSphere} onHandle={onHandle} height={460}>
         <div className="pointer-events-none absolute left-4 top-4 w-[260px] rounded-[12px] bg-surface/95 p-3 text-f-small shadow-lg">

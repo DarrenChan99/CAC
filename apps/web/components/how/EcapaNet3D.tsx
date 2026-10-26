@@ -29,11 +29,11 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
     }
   };
 
-  add(new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.5, 1.9), tone("--color-accent", 0.75)), "Input: 80 mel bands × T frames, after cepstral mean normalization");
-  name("log-Mel", -5, "80 × T");
-  add(new THREE.Mesh(new THREE.BoxGeometry(0.34, 1.7, 1.7), tone("--color-series-1")), "Conv1D stem: kernel 5, 1024 channels, ReLU + BatchNorm");
+  add(new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.5, 1.9), tone("--color-accent", 0.75)), "The recording as a map of pitch over time: 80 pitch bands, one column every 10 ms. In detail: 80 log-Mel bands × T frames, after cepstral mean normalization, which cancels out the microphone.");
+  name("Sound map", -5, "log-Mel · 80 × T");
+  add(new THREE.Mesh(new THREE.BoxGeometry(0.34, 1.7, 1.7), tone("--color-series-1")), "First pass: scans 5 columns of the sound map at a time and picks out 1024 basic sound features. In detail: Conv1D stem, kernel 5, 1024 channels, ReLU + BatchNorm.");
   scene.children[scene.children.length - 1].position.x = -4;
-  name("Conv1D", -4, "k5 · 1024 ch");
+  name("First pass", -4, "Conv1D · 1024 ch");
 
   const outs: number[] = [];
   for (let b = 0; b < 3; b++) {
@@ -49,21 +49,21 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
     ring.rotation.y = Math.PI / 2;
     ring.position.set(cx, 1.05, 0);
     g.add(ring);
-    add(g, `SE-Res2Block ${b + 1}: dilation ${b + 2}. ${glossary.res2.gloss} Orange ring = squeeze-excitation: ${glossary.se.gloss}`);
-    name(`SE-Res2 ${b + 1}`, cx, `dilation ${b + 2}`);
+    add(g, `Pattern finder ${b + 1}: looks for voice patterns over longer and longer stretches of time (skipping ${b + 2} frames between looks). The orange ring picks which patterns matter most for this voice. In detail: SE-Res2Block, dilation ${b + 2}. ${glossary.res2.gloss} ${glossary.se.gloss}`);
+    name(`Patterns ${b + 1}`, cx, `SE-Res2 · dilation ${b + 2}`);
   }
 
   const mfaX = 2.1;
-  const mfa = add(new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.7, 2.1), tone("--color-series-4")), glossary.mfa.gloss);
+  const mfa = add(new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.7, 2.1), tone("--color-series-4")), `Combine: stacks what all three pattern finders noticed, so simple details like pitch and deeper ones like speaking style both count. In detail: ${glossary.mfa.gloss}`);
   mfa.position.x = mfaX;
-  name("MFA", mfaX, "3 × 1024 → 3072");
+  name("Combine", mfaX, "MFA · 3072");
   outs.forEach((x, i) => {
     const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(x, 0.7, 0), new THREE.Vector3((x + mfaX) / 2, 2.1 + i * 0.25, 0), new THREE.Vector3(mfaX - 0.2, 0.9, 0));
     scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(30)), new THREE.LineBasicMaterial({ color: color("--color-accent") })));
   });
 
   const aspX = 3.75;
-  const cone = add(new THREE.Mesh(new THREE.ConeGeometry(1.0, 1.7, 28, 1, true), tone("--color-series-5", 0.28)), glossary.asp.gloss);
+  const cone = add(new THREE.Mesh(new THREE.ConeGeometry(1.0, 1.7, 28, 1, true), tone("--color-series-5", 0.28)), `Summarize: squeezes the whole clip, however long, into one fixed summary, listening harder to clear speech than to pauses or breaths. In detail: ${glossary.asp.gloss}`);
   cone.rotation.z = -Math.PI / 2;
   cone.position.x = aspX;
   const bars = Array.from({ length: 22 }, (_, i) => {
@@ -72,11 +72,11 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
     scene.add(m);
     return m;
   });
-  name("pooling", aspX, "attention → μ, σ");
+  name("Summarize", aspX, "attentive pooling");
 
-  const fc = add(new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.6, 0.6), tone("--color-series-6")), "Fully-connected layer: 6144 → 192");
+  const fc = add(new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.6, 0.6), tone("--color-series-6")), "Compress: boils the summary (6144 numbers: an average and a spread for each feature) down to the 192 numbers that make up the voiceprint. In detail: fully-connected layer, 6144 → 192.");
   fc.position.x = 5.35;
-  name("FC", 5.35, "6144 → 192");
+  name("Compress", 5.35, "FC · 6144 → 192");
 
   // the real 192-d voiceprint of the clip, as a spiky ring
   const pm = Math.max(...emb.map(Math.abs));
@@ -85,8 +85,8 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
     return new THREE.Vector3(6.85, Math.sin(a) * r, Math.cos(a) * r);
   });
   const ringLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(ring), new THREE.LineBasicMaterial({ color: color("--color-accent") }));
-  add(ringLine, "The real 192-number voiceprint of this clip, one point per dimension, unit length");
-  name("x-vector", 6.85, "192-d, unit length");
+  add(ringLine, "The voiceprint: the real 192 numbers this clip produced, one spike per number. Two clips of the same person make nearly the same shape. In detail: x-vector, scaled to unit length.");
+  name("Voiceprint", 6.85, "x-vector · 192 numbers");
 
   // flow line + pulses
   const flow = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-5, 0, 0), new THREE.Vector3(6.85, 0, 0)]), new THREE.LineBasicMaterial({ color: color("--color-muted"), transparent: true, opacity: 0.5 }));
@@ -134,8 +134,8 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
 export function EcapaNet3D() {
   return (
     <Panel
-      title="Inside the encoder"
-      sub={<><Term k="ecapa" /> from input to voiceprint, drawn with its real layer sizes (20.8 M parameters, pretrained on <Term k="voxceleb" />, not trained on the family). Hover a block; drag to rotate.</>}
+      title="Inside the voice model"
+      sub={<>The <Term k="ecapa">model</Term> that turns a clip into 192 numbers, drawn at its real size (20.8 million settings). It learned from <Term k="voxceleb">thousands of public voices</Term>, never from my family. Hover a block; drag to rotate.</>}
     >
       <Stage setup={setupEcapa} height={380} />
     </Panel>
