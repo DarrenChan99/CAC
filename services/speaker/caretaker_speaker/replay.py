@@ -48,12 +48,23 @@ def build_utterances(finals, texts, offset_s=0.0):
     return out
 
 
+def build_call(utts, people, media=None, offset_s=0.0):
+    """Wrap utterances for the web app: enrolled voices become the family persona set in
+    demo.config.json ("as"; "camera" marks who is on webcam). Unknown voices stay None."""
+    persona = {p["id"]: p.get("as", p["id"]) for p in people}
+    utts = [{**u, "speakerId": persona.get(u["speakerId"], u["speakerId"]) if u["speakerId"] else None} for u in utts]
+    camera = next((persona[p["id"]] for p in people if p.get("camera")), None)
+    return {"media": media, "offset": offset_s, "participants": list(dict.fromkeys(u["speakerId"] for u in utts if u["speakerId"])),
+            "cameraId": camera, "utterances": utts}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("wav")
     ap.add_argument("out")
     ap.add_argument("--voiceprints", default=None)
     ap.add_argument("--offset", type=float, default=120)
+    ap.add_argument("--media", default=None, help="URL the web app plays, e.g. /demo/call.mp4")
     a = ap.parse_args()
 
     from pathlib import Path
@@ -79,7 +90,8 @@ def main():
     utts = build_utterances(finals, assign_words(finals, words), a.offset)
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.out).write_text(json.dumps(utts, indent=2, ensure_ascii=False) + "\n")
+    call = build_call(utts, cfg["people"], a.media, a.offset)
+    Path(a.out).write_text(json.dumps(call, indent=2, ensure_ascii=False) + "\n")
     for u in utts:
         print(f'{u["id"]:>4} {u["at"]:7.1f}s {str(u["speakerId"]):>6} {u["speakerScore"]:.2f}  {u["text"]}')
 

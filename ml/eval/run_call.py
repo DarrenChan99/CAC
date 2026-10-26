@@ -82,8 +82,12 @@ def main():
     a = ap.parse_args()
     if a.cmd == "make":
         return make()
-    utts = [{**u, "at": u["at"] - a.offset} for u in json.loads(Path(a.replay).read_text())]
-    r = score_call(utts, read_labels(a.labels))
+    data = json.loads(Path(a.replay).read_text())
+    data = data["utterances"] if isinstance(data, dict) else data  # new files wrap the list
+    persona = {p["id"]: p.get("as", p["id"]) for p in json.loads((Path(__file__).parents[2] / "demo.config.json").read_text())["people"]}
+    labels = [(s, e, persona.get(who, who)) for s, e, who in read_labels(a.labels)]  # labels use real ids
+    utts = [{**u, "at": u["at"] - a.offset} for u in data]
+    r = score_call(utts, labels)
     print(f'n={r["n"]}  right {r["right"]:.0%}  someone-new {r["someone_new"]:.0%}  wrong-name {r["wrong_name"]:.0%}')
     out = Path(__file__).parent / "out" / "call.json"
     out.write_text(json.dumps(r, indent=2))

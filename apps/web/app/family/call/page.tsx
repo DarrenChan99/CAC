@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Camera, CameraOff, Mic, MicOff, NotebookPen, Pause, PhoneOff, Play } from "lucide-react";
+import { CallVideo } from "@/components/CallVideo";
 import { CapturedChip, ICON, STATUS } from "@/components/CapturedRow";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { TranscriptBubble } from "@/components/TranscriptBubble";
@@ -12,7 +13,9 @@ import { useDemo } from "@/lib/demo-store";
 import {
   CALL_END,
   CALL_START,
+  cameraId,
   formatCallTime,
+  media,
   participantIds,
   remoteParticipantIds,
 } from "@/lib/mocks/call-timeline";
@@ -31,7 +34,7 @@ const candidates = everyone.map((id) => ({ id, name: get(id).name }));
 export default function FamilyCall() {
   const router = useRouter();
   const { speakers, fixSpeaker } = useDemo();
-  const { t, playing, activeSpeakerId, activeIsUnknown, bubbles, captured, toggle, seek } =
+  const { t, playing, activeSpeakerId, activeIsUnknown, bubbles, captured, toggle, seek, videoRef } =
     useReplay();
   const threadRef = useRef<HTMLDivElement>(null);
   const [mic, setMic] = useState(true);
@@ -103,7 +106,16 @@ export default function FamilyCall() {
                     talking ? "shadow-[0_0_0_3px_var(--color-accent)]" : ""
                   }`}
                 >
-                  <PersonAvatar initial={get(id).initial} size="family" className="!h-20 !w-20 !text-3xl" />
+                  {media && id === cameraId ? (
+                    <CallVideo videoRef={videoRef} />
+                  ) : (
+                    <>
+                      <PersonAvatar initial={get(id).initial} size="family" className="!h-20 !w-20 !text-3xl" />
+                      {media && (
+                        <CameraOff size={16} aria-label="Camera off" className="absolute right-3 top-3 text-white/60" />
+                      )}
+                    </>
+                  )}
                   <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-2.5 py-0.5 text-f-small text-white">
                     {get(id).name}
                   </span>

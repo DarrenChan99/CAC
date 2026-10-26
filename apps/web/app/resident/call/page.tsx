@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type RefObject } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/Button";
+import { CallVideo } from "@/components/CallVideo";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { ResidentNavButton } from "@/components/ResidentHeader";
 import { useDemo } from "@/lib/demo-store";
-import { participantIds, formatCallTime } from "@/lib/mocks/call-timeline";
+import { cameraId, formatCallTime, media, participantIds } from "@/lib/mocks/call-timeline";
 import { get } from "@/lib/mocks/family";
 import { relationshipToResident } from "@/lib/relationships";
 import { activeSpeaker } from "@/lib/residentFeed";
@@ -21,7 +22,7 @@ import { spring, springSheet } from "@/lib/motion";
  */
 export default function ResidentCall() {
   const router = useRouter();
-  const { bubbles } = useReplay();
+  const { bubbles, videoRef } = useReplay();
   const { speakers } = useDemo();
   const [expanded, setExpanded] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -38,9 +39,11 @@ export default function ResidentCall() {
   return (
     <div className="mx-auto flex h-[calc(100dvh-7rem)] max-w-[1180px] flex-col gap-6 p-8">
       {/* ---- Video ---- */}
-      <div className="relative grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-4">
+      <div
+        className={`relative grid min-h-0 flex-1 gap-4 ${participantIds.length <= 2 ? "grid-cols-3 grid-rows-1" : "grid-cols-2 grid-rows-2"}`}
+      >
         {participantIds.map((id) => (
-          <VideoTile key={id} id={id} talking={talking === id} />
+          <VideoTile key={id} id={id} talking={talking === id} video={media && id === cameraId ? videoRef : undefined} />
         ))}
 
         <AnimatePresence>
@@ -160,7 +163,15 @@ export default function ResidentCall() {
 }
 
 /** A video tile. The video itself is a placeholder until LiveKit lands. */
-function VideoTile({ id, talking }: { id: string | null; talking: boolean }) {
+function VideoTile({
+  id,
+  talking,
+  video,
+}: {
+  id: string | null;
+  talking: boolean;
+  video?: RefObject<HTMLVideoElement | null>;
+}) {
   const person = id ? get(id) : null;
 
   return (
@@ -169,7 +180,11 @@ function VideoTile({ id, talking }: { id: string | null; talking: boolean }) {
         person ? (talking ? "ct-pulse" : "") : "border-4 border-dashed border-surface/70"
       }`}
     >
-      <PersonAvatar initial={person?.initial ?? "?"} size="resident" unknown={!person} className="opacity-40" />
+      {video ? (
+        <CallVideo videoRef={video} />
+      ) : (
+        <PersonAvatar initial={person?.initial ?? "?"} size="resident" unknown={!person} className="opacity-40" />
+      )}
 
       {talking && (
         <span className="absolute left-4 top-4 flex items-center gap-3 rounded-full bg-surface px-4 py-1 text-r-body font-bold text-primary">

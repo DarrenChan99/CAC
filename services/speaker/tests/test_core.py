@@ -94,6 +94,17 @@ def test_stream_labels_then_finalizes_and_collects_unknowns():
     assert len(unknowns) == 1
 
 
+def test_stream_flushes_an_utterance_still_open_when_audio_ends():
+    emb = lambda w: np.array([1.0, 0.0])
+    blk = lambda v: np.full(512, v, "float32")
+    n = 2 * _SR // 512
+    ev = {0: "start"}  # speech starts and the recording stops before any "end"
+    it = iter(range(n))
+    out = list(run([blk(1)] * n, emb, {"a": np.array([1.0, 0.0])}, 0.5, 0.05, lambda b: ev.get(next(it))))
+    finals = [e for e in out if e["type"] == "speaker_final"]
+    assert len(finals) == 1 and finals[0]["person_id"] == "a" and finals[0]["start_ms"] == 0
+
+
 def test_stream_finals_have_absolute_times_and_score():
     emb = lambda w: np.array([1.0, 0.0])
     C = {"a": np.array([1.0, 0.0])}
@@ -110,7 +121,7 @@ def test_stream_finals_have_absolute_times_and_score():
     assert all(0 <= f["score"] <= 1 for f in finals)
 
 
-from caretaker_speaker.replay import assign_words, build_utterances
+from caretaker_speaker.replay import assign_words, build_call, build_utterances
 
 F = [{"person_id": "a", "start_ms": 0, "end_ms": 4000, "score": 0.8},
      {"person_id": None, "start_ms": 5000, "end_ms": 8000, "score": 0.3}]
@@ -143,6 +154,24 @@ def test_build_utterances_drops_empty_and_flags_low_confidence():
 
 def test_build_utterances_empty():
     assert build_utterances([], [], 0) == []
+
+
+PEOPLE = [{"id": "me", "name": "Me", "as": "david", "camera": True}, {"id": "kc", "name": "KC", "as": "emily"},
+          {"id": "plain", "name": "Plain"}]
+
+
+def test_build_call_maps_voices_to_personas_and_never_names_unknown():
+    u = [{"id": "u1", "speakerId": "kc"}, {"id": "u2", "speakerId": None}, {"id": "u3", "speakerId": "me"},
+         {"id": "u4", "speakerId": "plain"}, {"id": "u5", "speakerId": "kc"}]
+    c = build_call(u, PEOPLE, media="/demo/call.mp4", offset_s=120)
+    assert [x["speakerId"] for x in c["utterances"]] == ["emily", None, "david", "plain", "emily"]
+    assert c["participants"] == ["emily", "david", "plain"]  # first appearance, no duplicates, no None
+    assert c["cameraId"] == "david" and c["media"] == "/demo/call.mp4" and c["offset"] == 120
+
+
+def test_build_call_without_camera_or_media():
+    c = build_call([], [{"id": "a", "name": "A"}], media=None, offset_s=0)
+    assert c["cameraId"] is None and c["media"] is None and c["participants"] == []
 
 
 from ml.eval.run_call import score_call

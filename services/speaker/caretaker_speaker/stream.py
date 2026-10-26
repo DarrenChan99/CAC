@@ -68,3 +68,5 @@ def run(blocks, embed, centroids, tau, margin, vad, unknowns=None):
             since_hop = 0
             person, _, _ = label(np.array(recent, dtype="float32"))
             yield {"type": "speaker", "utt_id": n_utt + 1, "person_id": smoother.update(person)}
+    if speaking and utt:  # the recording ended mid-sentence: still a turn
+        yield finish()

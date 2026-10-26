@@ -1,6 +1,18 @@
 /* Caretaker design tokens — transcribed from "Caretaker Foundations.dc.html".
    Palette: Forest & Paper. Nothing downstream should hardcode a hex. */
 
+/* Emitted even when no utility class names them: read through var() in SVG and three.js. */
+@theme static {
+  /* data-viz series (How it works): one hue per enrolled person, grey for strangers */
+  --color-series-1: #2d8a57;
+  --color-series-2: #a8561a;
+  --color-series-3: #2f6fa3;
+  --color-series-4: #7a4c9e;
+  --color-series-5: #b0316a;
+  --color-series-6: #4b7f7a;
+  --color-stranger: #8d968f;
+}
+
 @theme {
   /* ---- Color ---- */
   --color-bg: #faf8f2;

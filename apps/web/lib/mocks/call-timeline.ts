@@ -7,7 +7,7 @@
  * clock, not decoration.
  */
 
-import raw from "./replay/sunday.json" with { type: "json" };
+import call from "./replay/demo-call.json" with { type: "json" };
 
 export interface CapturedItem {
   id: string;
@@ -42,17 +42,25 @@ export interface Utterance {
 }
 
 /**
- * The three sharing the living-room laptop. They hold a permanent card in the
- * resident's speaker strip.
+ * Who is on the call, from the replay file (`python -m caretaker_speaker.replay`
+ * maps each enrolled voice to the family persona set in demo.config.json). The
+ * resident's speaker strip gives each a permanent card.
  */
-export const participantIds = ["lisa", "emily", "ken"];
+export const participantIds: string[] = call.participants;
 
 /**
  * Anyone else on the call. They have no standing card — they take the strip's
  * guest slot while they are talking, which is the same slot an unenrolled voice
  * uses. Keeps the strip to four cards however many people dial in.
  */
-export const remoteParticipantIds = ["david"];
+export const remoteParticipantIds: string[] = (call as { remote?: string[] }).remote ?? [];
+
+/** The recording played in the camera person's tile; null = no media, a scripted clock. */
+export const media: string | null = call.media;
+/** Call-clock seconds at media time 0. */
+export const mediaOffset: number = call.offset;
+/** Persona on webcam. Everyone else's camera is off. */
+export const cameraId: string | null = call.cameraId;
 
 /**
  * Who/when/what comes from the diarization backend (replay/sunday.json, written
@@ -69,7 +77,7 @@ const overlay: Record<string, Pick<Utterance, "captured" | "uncertainWord">> = {
   u4: { captured: { id: "a2", kind: "New person", title: "Marcus — Emily's boyfriend?" } },
 };
 
-export const timeline: Utterance[] = (raw as Utterance[]).map((u) => ({
+export const timeline: Utterance[] = (call.utterances as Utterance[]).map((u) => ({
   ...u,
   ...overlay[u.id],
 }));

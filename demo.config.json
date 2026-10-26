@@ -1,27 +1,18 @@
 {
-  "_comment": "Single source: real people <-> family person ids. Read by Python and the web app. Edit names/files here.",
-  "tau": 0.5,
+  "_comment": "Single source: real people <-> family person ids. 'as' = the Chen-family persona whose tile/nametag lights for that voice (swap to change who plays whom); 'camera' = who is on the webcam. Read by Python and the web app.",
+  "tau": 0.45,
   "margin": 0.05,
   "people": [
     {
-      "id": "lisa",
-      "name": "Lisa"
-    },
-    {
-      "id": "david",
-      "name": "David"
-    },
-    {
-      "id": "emily",
-      "name": "Emily"
-    },
-    {
-      "id": "ken",
-      "name": "Ken"
-    },
-    {
       "id": "test",
-      "name": "Test"
+      "name": "Test",
+      "as": "david",
+      "camera": true
+    },
+    {
+      "id": "kc",
+      "name": "KC",
+      "as": "emily"
     }
   ]
 }

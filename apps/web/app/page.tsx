@@ -15,6 +15,9 @@ export default function Landing() {
           Try the demo
         </Button>
       </Link>
+      <Link href="/how-it-works" className="text-f-small font-medium text-primary underline underline-offset-4 hover:text-primary-hover">
+        How the voice recognition works
+      </Link>
     </main>
   );
 }
