@@ -24,3 +24,9 @@ __pycache__/
 ml/eval/out/
 calls/
 apps/web/public/demo/
+
+# private notes, not for the public repo
+CLAUDE.md
+AGENTS.md
+AI_LOG.md
+SPEC.md
