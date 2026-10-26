@@ -7,13 +7,14 @@ const GitHub = () => (
 // Add Devpost, YouTube, the CAC page… here: one line each.
 const LINKS = [{ label: "Caretaker on GitHub", href: "https://github.com/DarrenChan99/CAC", icon: <GitHub /> }];
 
-export function SiteLinks({ className = "" }: { className?: string }) {
+export function SiteLinks({ className = "", labels = false }: { className?: string; labels?: boolean }) {
   return (
     <div className={`flex items-center gap-1 ${className}`}>
       {LINKS.map((l) => (
         <a key={l.href} href={l.href} target="_blank" rel="noreferrer" aria-label={l.label} title={l.label}
-          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[12px] text-muted transition-colors hover:bg-tint/50 hover:text-primary">
+          className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-[12px] px-3 text-f-small font-medium text-muted transition-colors hover:bg-tint/50 hover:text-primary">
           {l.icon}
+          {labels && "GitHub"}
         </a>
       ))}
     </div>
