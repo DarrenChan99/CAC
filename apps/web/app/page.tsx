@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
+import { SiteLinks } from "@/components/SiteLinks";
 
 export default function Landing() {
   return (
@@ -15,9 +16,11 @@ export default function Landing() {
           Try the demo
         </Button>
       </Link>
-      <Link href="/how-it-works" className="text-f-small font-medium text-primary underline underline-offset-4 hover:text-primary-hover">
-        How the voice recognition works
-      </Link>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link href="/how-it-works"><Button variant="secondary">How it works</Button></Link>
+        <Link href="/how-it-works/stats"><Button variant="secondary">Stats</Button></Link>
+      </div>
+      <SiteLinks className="mt-4" />
     </main>
   );
 }

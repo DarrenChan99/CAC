@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
+import { BarChart3, Workflow } from "lucide-react";
+import { BrandLink } from "./BrandLink";
 import { PersonAvatar } from "./PersonAvatar";
 import { useDemo } from "@/lib/demo-store";
 import { needsConfirm } from "@/lib/residentFeed";
@@ -39,10 +41,7 @@ export function FamilySidebar() {
         WebkitBackdropFilter: "var(--ct-chrome-blur)",
       }}
     >
-      <Link href="/" className="mb-4 flex items-center gap-2 px-2 py-2">
-        <Image src="/tile.png" alt="" width={24} height={28} />
-        <span className="text-f-h3 tracking-tight">Caretaker</span>
-      </Link>
+      <BrandLink className="mb-4 px-2" />
 
       <nav className="flex flex-col gap-0.5">
         {NAV.map((item) => {
@@ -71,6 +70,13 @@ export function FamilySidebar() {
         <div className="my-2 border-t border-tint" />
         <Link href="/family/news-settings" className={link("/family/news-settings")}>
           News
+        </Link>
+        <div className="my-2 border-t border-tint" />
+        <Link href="/how-it-works" className={link("/how-it-works")}>
+          <span className="flex items-center gap-2"><Workflow size={18} aria-hidden />How it works</span>
+        </Link>
+        <Link href="/how-it-works/stats" className={link("/how-it-works/stats")}>
+          <span className="flex items-center gap-2"><BarChart3 size={18} aria-hidden />Stats</span>
         </Link>
       </nav>
 
