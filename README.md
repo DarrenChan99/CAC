@@ -151,8 +151,9 @@ pnpm dev        # http://localhost:3000
 pnpm test       # relationship, resident-feed and timeline checks
 ```
 
-The call screens replay a recorded call through the real speaker-ID output, so the
-demo works without a microphone or a second person. Pause and scrub it from the header
+The call screens play a scripted, simulated call, so the demo works without a
+microphone or a second person. The speaker-ID pipeline and its accuracy are real and
+shown on `/how-it-works` and `/how-it-works/stats`. Pause and scrub it from the header
 on `/family/call`.
 
 **The voice pipeline** (Python 3.12):
@@ -188,8 +189,9 @@ consent. Speaker ID and Whisper both run locally; nothing is sent to a cloud ser
 
 ## Honest status
 
-- **The call is a replay.** The demo plays a pre-recorded call (two people, one laptop,
-  one microphone) through the real pipeline. The labels are the pipeline's real output.
+- **The call is simulated.** The demo plays a scripted call; its labels are written to
+  match what the pipeline does, not captured from a live call. The pipeline itself
+  (`services/speaker`) and the numbers on `/how-it-works/stats` are real and measured.
   Live streaming uses the same scoring code behind a socket and is next.
 - **The notetaker is scripted.** The captured memories in the demo are written by hand.
   Pulling them out of the transcript with a language model is a 2.0 goal.

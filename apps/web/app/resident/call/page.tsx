@@ -45,6 +45,8 @@ export default function ResidentCall() {
         {participantIds.map((id) => (
           <VideoTile key={id} id={id} talking={talking === id} video={media && id === cameraId ? videoRef : undefined} />
         ))}
+        {/* Audio-only recording: nobody is on camera, but the file still drives the clock. */}
+        {media && !cameraId && <div className="hidden"><CallVideo videoRef={videoRef} /></div>}
 
         <AnimatePresence>
           {guest && (

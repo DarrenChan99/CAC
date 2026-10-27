@@ -108,7 +108,7 @@ export function WindowHeatmap({ tau = stats.tau }: { tau?: number }) {
   );
 }
 
-/** Who spoke when in the recorded call: one lane per person, one block per utterance. */
+/** Who spoke when in the simulated demo call: one lane per person, one block per utterance. */
 export function CallTimeline() {
   const lanes = [...participantIds, "unknown"];
   const W = 1100, L = 120, LH = 36, H = lanes.length * LH + 34;

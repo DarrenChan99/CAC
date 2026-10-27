@@ -71,7 +71,7 @@ export default function FamilyCall() {
 
           {/* The call is scripted, and the transport says so quietly. */}
           <div className="flex items-center gap-1 rounded-full border border-tint py-0.5 pl-3 pr-2">
-            <span className="text-f-label text-muted">Replay</span>
+            <span className="text-f-label text-muted">Simulated call</span>
             <button
               onClick={toggle}
               aria-label={playing ? "Pause" : "Play"}
@@ -96,6 +96,8 @@ export default function FamilyCall() {
       <div className="grid min-h-0 flex-1 gap-4 p-4 lg:grid-cols-[1fr_380px]">
         {/* ---- Stage ---- */}
         <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[12px] bg-stage">
+          {/* Audio-only recording: nobody is on camera, but the file still drives the clock. */}
+          {media && !cameraId && <div className="hidden"><CallVideo videoRef={videoRef} /></div>}
           <div className="grid flex-1 grid-cols-2 content-center gap-3 p-3 pb-24">
             {everyone.map((id) => {
               const talking = id === activeSpeakerId;

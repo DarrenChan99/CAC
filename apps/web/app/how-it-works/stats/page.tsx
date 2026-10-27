@@ -23,7 +23,7 @@ export default function Stats() {
       <Section id="evidence" n="1" title="Was every guess right? Move the cut-off and see">
         <ThresholdLab />
       </Section>
-      <Section id="call" n="2" title="The demo call, second by second">
+      <Section id="call" n="2" title="The simulated demo call, second by second">
         <CallTimeline />
       </Section>
       <Section id="limits" n="3" title="Where it breaks">
