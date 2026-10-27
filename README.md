@@ -209,7 +209,4 @@ consent. Speaker ID and Whisper both run locally; nothing is sent to a cloud ser
 Built by [@DarrenChan99](https://github.com/DarrenChan99) for the Congressional App
 Challenge 2026.
 
-**AI use:** I used Claude Code throughout. It wrote much of the code from my spec and
-designs. I wrote the product and technical specification, set the rules for what the resident may
-see, recorded and managed the voice data, ran the evaluations and chose the threshold
-from them, and reviewed and directed every change. `docs/technical-defense.md` explains every technique in the project.
+**AI use:** I used Claude Code for scaffolding the stack, implmenting my design vision, brainstorming and researching ways to solve challenges (like diarization). 
