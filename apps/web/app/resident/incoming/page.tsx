@@ -41,7 +41,7 @@ export default function IncomingCall() {
           <br />
           is calling
         </h1>
-        <p className="mt-4 text-r-lead text-muted">Emily and Ken are with her</p>
+        <p className="mt-4 text-r-lead text-muted">Emily and David are with her</p>
       </div>
 
       <div className="flex items-center gap-6">

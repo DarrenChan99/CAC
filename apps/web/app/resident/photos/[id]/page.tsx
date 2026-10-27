@@ -18,7 +18,7 @@ export default function PhotoPage({ params }: PageProps<"/resident/photos/[id]">
 
   const photo = photos[i];
   const people = photo.personIds.map(get);
-  // "Ken, your grandson, at his graduation". Wei reads "remembered" on the
+  // "David, your grandson, at his graduation". Wei reads "remembered" on the
   // tree; in a photo he is still her husband.
   const who = people
     .map((p) => `${p.name}, ${p.deceased ? `your ${relationship(p.id)}` : relationshipToResident(p.id)},`)

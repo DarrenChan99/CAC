@@ -69,12 +69,12 @@ export const cameraId: string | null = call.cameraId;
  * extract memories yet.
  */
 const overlay: Record<string, Pick<Utterance, "captured" | "uncertainWord">> = {
-  u2: { captured: { id: "a4", kind: "Memory", title: "Emily passed her driving test" } },
+  u2: { captured: { id: "a4", kind: "Memory", title: "David passed his driving test" } },
   u3: {
     uncertainWord: "eight",
     captured: { id: "a1", kind: "Med note", title: "Blood pressure pill at 8 am", warn: true },
   },
-  u4: { captured: { id: "a2", kind: "New person", title: "Marcus — Emily's boyfriend?" } },
+  u4: { captured: { id: "a2", kind: "New person", title: "Anna — David's aunt?" } },
 };
 
 export const timeline: Utterance[] = (call.utterances as Utterance[]).map((u) => ({

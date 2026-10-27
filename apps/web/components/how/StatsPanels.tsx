@@ -219,3 +219,47 @@ export function DecisionMap2D({ tau = stats.tau }: { tau?: number }) {
     </Panel>
   );
 }
+
+/** How different are the voices? Mean cosine of each person's test slices to every voiceprint, plus voiceprint-to-voiceprint. */
+export function VoiceDifference() {
+  const E = stats.embeddings, ids = stats.people.map((p) => p.id);
+  const sim = E.centroid_sim as Record<string, number[]>;
+  const rows = ids.map((a) => ids.map((b) => {
+    const v = E.who.map((w, k) => (w === a ? sim[b][k] : null)).filter((x): x is number => x !== null);
+    return v.reduce((s, x) => s + x, 0) / v.length;
+  }));
+  const own = rows.map((r, i) => r[i]);
+  const other = rows.flatMap((r, i) => r.filter((_, j) => j !== i));
+  const cross = stats.cross_similarity.flatMap((r, i) => r.filter((_, j) => j < i));
+  const grid = (m: number[][]) => (
+    <table className="w-full border-separate border-spacing-1 text-center text-f-small tabular-nums">
+      <thead><tr><th />{names.map((n) => <th key={n} className="px-1 pb-1 text-f-label font-medium text-muted">{n}</th>)}</tr></thead>
+      <tbody>
+        {m.map((r, i) => (
+          <tr key={names[i]}>
+            <th className="pr-2 text-right text-f-label font-medium text-muted">{names[i]}</th>
+            {r.map((v, j) => (
+              <td key={j} className="rounded-[6px] py-2"
+                style={{ background: `color-mix(in oklab, var(${i === j ? "--color-primary" : "--color-series-2"}) ${Math.round(Math.max(0, v) * 100)}%, var(--color-surface))`, color: v > 0.5 ? "white" : undefined }}>
+                {v.toFixed(2)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+  return (
+    <Panel title="How different are the voices?" sub={<>Each cell is a <Term k="cosine">cosine score</Term> (1 = identical). Left: the voiceprints compared with each other. Right: row = who spoke, column = the voiceprint they are compared with, averaged over that person&apos;s 2-second slices. The diagonal (green) is the same person, so it should be high.</>}>
+      <div className="grid gap-6 md:grid-cols-2">
+        <div><div className="pb-1 text-f-small font-semibold">Voiceprint vs voiceprint</div>{grid(stats.cross_similarity)}</div>
+        <div><div className="pb-1 text-f-small font-semibold">Slices vs voiceprint</div>{grid(rows)}</div>
+      </div>
+      <p className="mt-3 text-f-small">
+        Same person averages {(own.reduce((a, b) => a + b, 0) / own.length).toFixed(2)}; different people average {(other.reduce((a, b) => a + b, 0) / other.length).toFixed(2)}.
+        The two most alike voiceprints still only reach {Math.max(...cross).toFixed(2)}, well under the cut-off of {stats.tau}.
+      </p>
+      <p className="mt-1 text-f-label text-muted">Honest caveat: {stats.people.length} people, a few clips each, one room and one microphone. The right-hand grid uses voiceprints that include those same clips, so the leave-one-out numbers in section 4 are the fair ones.</p>
+    </Panel>
+  );
+}

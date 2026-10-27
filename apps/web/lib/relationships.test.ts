@@ -6,16 +6,16 @@ import { generation, relationship, relationshipToResident } from "./relationship
 
 test("descendants are named from the resident's point of view", () => {
   assert.equal(relationshipToResident("lisa"), "your daughter");
-  assert.equal(relationshipToResident("david"), "your son");
+  assert.equal(relationshipToResident("kevin"), "your son");
   assert.equal(relationshipToResident("emily"), "your granddaughter");
-  assert.equal(relationshipToResident("ken"), "your grandson");
+  assert.equal(relationshipToResident("david"), "your grandson");
   // Four generations deep, derived through Emily — not stored anywhere.
   assert.equal(relationshipToResident("ava"), "your great-granddaughter");
 });
 
 test("non-descendants are not given possessive labels they haven't earned", () => {
   assert.equal(relationshipToResident("ling"), "your sister");
-  assert.equal(relationship("karen"), "David's wife");
+  assert.equal(relationship("karen"), "Kevin's wife");
   assert.equal(relationshipToResident("mei"), "this is you");
   assert.equal(relationshipToResident("wei"), "remembered");
 });

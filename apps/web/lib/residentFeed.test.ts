@@ -7,7 +7,7 @@ import { activeSpeaker, needsConfirm, residentFeed, visibleTopics } from "./resi
 test("a captured memory reaches her news and the person's page without approval", () => {
   const f = residentFeed({});
   assert.ok(f.news.some((n) => n.id === "a4"));
-  assert.ok(f.memories.some((m) => m.id === "a4" && m.personId === "emily"));
+  assert.ok(f.memories.some((m) => m.id === "a4" && m.personId === "david"));
 });
 
 test("a removed memory stays out", () => {
@@ -22,7 +22,7 @@ test("med notes, people and tree edits never reach her, whatever their state", (
     const text = JSON.stringify(f).toLowerCase();
     assert.ok(!text.includes("blood pressure"));
     assert.ok(!text.includes("pill"));
-    assert.ok(!text.includes("marcus"));
+    assert.ok(!text.includes("david's aunt"));
     assert.ok(!text.includes("jason's daughter"));
   }
 });

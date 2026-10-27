@@ -92,7 +92,7 @@ export function FamilySidebar() {
           className="flex min-h-[44px] items-center gap-3 rounded-[12px] p-2 transition-colors hover:bg-tint/50"
         >
           <PersonAvatar initial="K" size="small" />
-          <div className="min-w-0 truncate text-f-body font-medium">Ken Chen</div>
+          <div className="min-w-0 truncate text-f-body font-medium">David Chen</div>
         </Link>
       </div>
     </aside>

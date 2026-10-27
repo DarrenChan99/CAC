@@ -10,7 +10,7 @@ Caretaker is a nursing-home connection product with two deliberately different f
 - a **family web app** (1440×900 desktop / 390×844 mobile) built for review and control — productivity density, 232px left rail, approval queues;
 - plus a small **public landing page** (P1), the one expressive surface (Instrument Serif, dark green ground).
 
-The resident is **Mei Chen**; the signed-in family user is her grandson **Ken Chen**. The whole prototype set uses that one family — reuse the names, the copy depends on them.
+The resident is **Mei Chen**; the signed-in family user is her grandson **David Chen**. The whole prototype set uses that one family — reuse the names, the copy depends on them.
 
 ## About the design files
 

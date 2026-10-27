@@ -11,11 +11,11 @@ export interface Memory {
 export const memories: Memory[] = [
   { id: "m2", personId: "emily", text: "Emily started her new job at the library", when: "February", hasPhoto: true },
   { id: "m3", personId: "emily", text: "Emily brought you peonies", when: "January", hasPhoto: true },
-  { id: "m4", personId: "ken", text: "Ken is learning to make dumplings from your recipe", when: "February", hasPhoto: true },
-  { id: "m5", personId: "ken", text: "Ken moved into a flat near the park", when: "January" },
+  { id: "m4", personId: "david", text: "David is learning to make dumplings from your recipe", when: "February", hasPhoto: true },
+  { id: "m5", personId: "david", text: "David moved into a flat near the park", when: "January" },
   { id: "m6", personId: "lisa", text: "Lisa repainted the front door green", when: "March", hasPhoto: true },
   { id: "m7", personId: "lisa", text: "Lisa is growing tomatoes on the balcony", when: "February" },
-  { id: "m8", personId: "david", text: "David's team won their Sunday league match", when: "March" },
+  { id: "m8", personId: "kevin", text: "Kevin's team won their Sunday league match", when: "March" },
   { id: "m9", personId: "sophie", text: "Sophie is playing the cello in the school concert", when: "March", hasPhoto: true },
   { id: "m10", personId: "jason", text: "Jason took Ava to the aquarium", when: "February", hasPhoto: true },
   { id: "m11", personId: "ava", text: "Ava said her first full sentence", when: "January" },
@@ -201,13 +201,13 @@ export interface Photo {
 }
 
 export const photos: Photo[] = [
-  { id: "p1", personIds: ["ken"], caption: "at his graduation", when: "last May" },
+  { id: "p1", personIds: ["david"], caption: "at his graduation", when: "last May" },
   { id: "p2", personIds: ["emily"], caption: "at her new desk in the library", when: "February" },
   { id: "p3", personIds: ["lisa"], caption: "by the green front door", when: "March" },
   { id: "p4", personIds: ["sophie"], caption: "with her cello before the concert", when: "March" },
   { id: "p5", personIds: ["jason", "ava"], caption: "at the aquarium", when: "February" },
   { id: "p6", personIds: ["karen"], caption: "with the finished quilt", when: "January" },
-  { id: "p7", personIds: ["david", "karen"], caption: "at their wedding anniversary dinner", when: "last autumn" },
+  { id: "p7", personIds: ["kevin", "karen"], caption: "at their wedding anniversary dinner", when: "last autumn" },
   { id: "p8", personIds: ["wei"], caption: "in the garden of the old house", when: "many years ago" },
 ];
 

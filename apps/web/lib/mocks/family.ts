@@ -30,14 +30,14 @@ export const family: Person[] = [
 
   // Children
   { id: "lisa", name: "Lisa", initial: "L", gender: "f", parentIds: ["mei", "wei"], voiceEnrolled: true, callable: true },
-  { id: "david", name: "David", initial: "D", gender: "m", parentIds: ["mei", "wei"], voiceEnrolled: true, callable: true },
-  { id: "karen", name: "Karen", initial: "K", gender: "f", spouseOf: "david", callable: true },
+  { id: "kevin", name: "Kevin", initial: "K", gender: "m", parentIds: ["mei", "wei"], voiceEnrolled: true, callable: true },
+  { id: "karen", name: "Karen", initial: "K", gender: "f", spouseOf: "kevin", callable: true },
 
   // Grandchildren
   { id: "emily", name: "Emily", initial: "E", gender: "f", parentIds: ["lisa"], voiceEnrolled: true, callable: true },
-  { id: "ken", name: "Ken", initial: "K", gender: "m", parentIds: ["lisa"], voiceEnrolled: true, callable: true },
-  { id: "jason", name: "Jason", initial: "J", gender: "m", parentIds: ["david", "karen"], callable: true },
-  { id: "sophie", name: "Sophie", initial: "S", gender: "f", parentIds: ["david", "karen"], callable: true },
+  { id: "david", name: "David", initial: "D", gender: "m", parentIds: ["lisa"], voiceEnrolled: true, callable: true },
+  { id: "jason", name: "Jason", initial: "J", gender: "m", parentIds: ["kevin", "karen"], callable: true },
+  { id: "sophie", name: "Sophie", initial: "S", gender: "f", parentIds: ["kevin", "karen"], callable: true },
 
   // Great-grandchild. Currently filed under Emily; approval item #3 moves her to Jason.
   { id: "ava", name: "Ava", initial: "A", gender: "f", parentIds: ["emily"] },

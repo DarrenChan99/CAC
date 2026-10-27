@@ -71,7 +71,7 @@ export default function FamilyCall() {
 
           {/* The call is scripted, and the transport says so quietly. */}
           <div className="flex items-center gap-1 rounded-full border border-tint py-0.5 pl-3 pr-2">
-            <span className="text-f-label text-muted">Simulated call</span>
+            <span className="text-f-label text-muted">Recorded call · edited for pacing</span>
             <button
               onClick={toggle}
               aria-label={playing ? "Pause" : "Play"}

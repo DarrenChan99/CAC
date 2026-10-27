@@ -28,6 +28,8 @@ def build(embed, seconds=None) -> dict[str, np.ndarray]:
     (all sessions), falling back to the legacy single `enroll` file."""
     out = {}
     for p in load_config()["people"]:
+        if not p.get("enrolled", True):
+            continue  # data stays on disk; no voiceprint, so this voice reads as "Someone new"
         clips = sorted((ROOT / "data" / "enroll" / p["id"]).glob("*/*.wav"))
         if clips:
             wav = np.concatenate([load_wav(c) for c in clips])

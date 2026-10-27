@@ -1,56 +1,45 @@
 {
-  "media": null,
-  "offset": 120,
+  "media": "/demo/call.m4a",
+  "offset": 120.0,
   "participants": [
-    "lisa",
-    "emily",
-    "ken"
-  ],
-  "remote": [
+    "kevin",
     "david"
   ],
   "cameraId": null,
   "utterances": [
     {
       "id": "u1",
-      "at": 124,
-      "speakFor": 3,
-      "speakerId": "lisa",
-      "speakerScore": 0.94,
-      "text": "Mum, we're all here \u2014 Emily and Ken came over too."
+      "at": 120.5,
+      "speakFor": 3.0,
+      "speakerId": "kevin",
+      "speakerScore": 0.63,
+      "text": "Hi mom, it's Kevin. David's here with me today.",
+      "lowConfidence": true,
+      "uncertainWord": "mom"
     },
     {
       "id": "u2",
-      "at": 134,
-      "speakFor": 3,
-      "speakerId": "emily",
-      "speakerScore": 0.91,
-      "text": "I passed my driving test on the first try, Grandma."
+      "at": 126.1,
+      "speakFor": 3.0,
+      "speakerId": "david",
+      "speakerScore": 0.47,
+      "text": "Hi grandma, I passed my driving test on the first try."
     },
     {
       "id": "u3",
-      "at": 151,
-      "speakFor": 3,
-      "speakerId": "david",
-      "speakerScore": 0.88,
-      "text": "Make sure she takes the blood pressure pill at eight in the morning.",
-      "lowConfidence": true
+      "at": 131.9,
+      "speakFor": 3.0,
+      "speakerId": "kevin",
+      "speakerScore": 0.54,
+      "text": "That's wonderful, David. Mom, please remember the blood pressure pill at 8 in the morning."
     },
     {
       "id": "u4",
-      "at": 158,
-      "speakFor": 2.5,
+      "at": 141.6,
+      "speakFor": 3.0,
       "speakerId": null,
-      "speakerScore": 0.41,
-      "text": "Hi Mei, it's nice to finally meet you."
-    },
-    {
-      "id": "u5",
-      "at": 164,
-      "speakFor": 3,
-      "speakerId": "ken",
-      "speakerScore": 0.96,
-      "text": "We'll call again on Sunday, Grandma. Look after yourself."
+      "speakerScore": 0.18,
+      "text": "Hi Mei, I'm Anna, David's aunt. It's lovely to finally meet you."
     }
   ]
 }

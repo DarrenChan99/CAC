@@ -195,7 +195,7 @@ export default function VoiceEnrollment() {
                       K
                     </span>
                     <div>
-                      <div className="text-f-body font-semibold">Ken Chen</div>
+                      <div className="text-f-body font-semibold">David Chen</div>
                       <div className="text-f-label font-medium tabular-nums text-muted">matched</div>
                     </div>
                   </div>

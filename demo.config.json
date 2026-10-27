@@ -1,22 +1,26 @@
 {
-  "_comment": "Single source: real people <-> family person ids. 'as' = the Chen-family persona whose tile/nametag lights for that voice (swap to change who plays whom); 'camera' = who is on the webcam. Read by Python and the web app.",
+  "_comment": "Single source: real people <-> family person ids. 'as' = the Chen-family persona whose tile/nametag lights for that voice (swap to change who plays whom); 'camera' = who is on the webcam; 'enrolled': false = keep their recordings but build no voiceprint, so they show as Someone new (re-run caretaker_speaker.enroll after flipping it). Read by Python and the web app.",
   "tau": 0.45,
   "margin": 0.05,
   "people": [
     {
       "id": "test",
       "name": "Test",
-      "as": "david",
-      "camera": true
+      "as": "david"
     },
     {
       "id": "kc",
       "name": "KC",
-      "as": "emily"
+      "as": "kevin"
     },
     {
       "id": "ms",
-      "name": "MS"
+      "name": "MS",
+      "enrolled": false
+    },
+    {
+      "id": "sc",
+      "name": "SC"
     }
   ]
 }

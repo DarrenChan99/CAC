@@ -9,7 +9,7 @@ nothing to say about a room full of voices.
 
 Caretaker is built for nursing-home residents with dementia and the families who call
 them. It names each voice as it speaks, says how that person is related to her ("your
-grandson David"), and keeps the good news from the call on her screen after everyone
+grandson Kevin"), and keeps the good news from the call on her screen after everyone
 hangs up.
 
 Built for the Congressional App Challenge 2026.
@@ -31,7 +31,7 @@ and each word is filed under the speaker who said it. The family sees a live, na
 transcript and can fix a wrong label with one tap.
 
 **It keeps the good news.** A silent notetaker picks out moments worth remembering
-("Emily passed her driving test") and puts them on her *Family News* screen.
+("David passed his driving test") and puts them on her *Family News* screen.
 Memories publish automatically and the family can remove them afterwards. New people
 and family-tree changes wait for a family member to confirm them. Medical notes never
 reach her screen.
@@ -151,8 +151,9 @@ pnpm dev        # http://localhost:3000
 pnpm test       # relationship, resident-feed and timeline checks
 ```
 
-The call screens play a scripted, simulated call, so the demo works without a
-microphone or a second person. The speaker-ID pipeline and its accuracy are real and
+The call screens replay a recorded call (three family members, one laptop mic),
+cut at speaker changes with pauses added, so the demo works without a microphone or a
+second person. The speaker-ID pipeline and its accuracy are real and
 shown on `/how-it-works` and `/how-it-works/stats`. Pause and scrub it from the header
 on `/family/call`.
 
@@ -189,8 +190,9 @@ consent. Speaker ID and Whisper both run locally; nothing is sent to a cloud ser
 
 ## Honest status
 
-- **The call is simulated.** The demo plays a scripted call; its labels are written to
-  match what the pipeline does, not captured from a live call. The pipeline itself
+- **The call is recorded, not live.** The demo replays a real recording that was cut at
+  speaker changes with pauses added and trimmed; the names and scores are the pipeline's
+  real output. The notetaker chips are scripted. The pipeline itself
   (`services/speaker`) and the numbers on `/how-it-works/stats` are real and measured.
   Live streaming uses the same scoring code behind a socket and is next.
 - **The notetaker is scripted.** The captured memories in the demo are written by hand.

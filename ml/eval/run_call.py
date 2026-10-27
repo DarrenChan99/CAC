@@ -48,7 +48,7 @@ def make(out=None):
     out = Path(out or dataset.ROOT / "data" / "fixture")
     out.mkdir(parents=True, exist_ok=True)
     fam, strangers = dataset.split()
-    ids = ["lisa", "emily", "ken"]
+    ids = ["lisa", "emily", "david"]
     embed, vp, held = Embedder(), {}, {}
     for pid, spk in zip(ids, fam):
         wav, used = dataset.enroll_audio(spk)

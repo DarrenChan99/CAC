@@ -145,7 +145,7 @@ function Inspector({ person }: { person: Person }) {
           className="rounded-[12px] border border-warn-line bg-warn-bg p-4"
         >
           <div className="text-f-label font-medium text-warn">Pending from a call</div>
-          <div className="mt-1 text-f-body font-medium text-warn">Marcus — Emily&apos;s partner?</div>
+          <div className="mt-1 text-f-body font-medium text-warn">Anna — David&apos;s aunt?</div>
         </Link>
       )}
     </aside>

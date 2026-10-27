@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SystemMap } from "@/components/how/Architecture";
 import { CallTimeline } from "@/components/how/GithubCharts";
 import { Section } from "@/components/how/Section";
-import { Confusion, DetCurve, EnrollCurve, QualityTable } from "@/components/how/StatsPanels";
+import { Confusion, DetCurve, EnrollCurve, QualityTable, VoiceDifference } from "@/components/how/StatsPanels";
 import { StressCharts } from "@/components/how/StressCharts";
 import { Term } from "@/components/how/Term";
 import { ThresholdLab } from "@/components/how/ThresholdLab";
@@ -22,8 +22,9 @@ export default function Stats() {
 
       <Section id="evidence" n="1" title="Was every guess right? Move the cut-off and see">
         <ThresholdLab />
+        <VoiceDifference />
       </Section>
-      <Section id="call" n="2" title="The simulated demo call, second by second">
+      <Section id="call" n="2" title="The recorded demo call, second by second">
         <CallTimeline />
       </Section>
       <Section id="limits" n="3" title="Where it breaks">
