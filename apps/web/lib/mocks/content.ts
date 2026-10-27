@@ -1,28 +1,33 @@
 /** Seeded content for the demo family — SPEC §14. */
 
+/** What a memory or picture is about; drawn as a simple icon in place of a photo. */
+export type Activity =
+  | "book" | "flower" | "cooking" | "home" | "paint" | "garden" | "trophy" | "music"
+  | "fish" | "talk" | "sewing" | "phone" | "album" | "graduation" | "dinner" | "car";
+
 export interface Memory {
   id: string;
   personId: string;
   text: string;
   when: string;
-  hasPhoto?: boolean;
+  activity?: Activity;
 }
 
 export const memories: Memory[] = [
-  { id: "m2", personId: "emily", text: "Emily started her new job at the library", when: "February", hasPhoto: true },
-  { id: "m3", personId: "emily", text: "Emily brought you peonies", when: "January", hasPhoto: true },
-  { id: "m4", personId: "david", text: "David is learning to make dumplings from your recipe", when: "February", hasPhoto: true },
-  { id: "m5", personId: "david", text: "David moved into a flat near the park", when: "January" },
-  { id: "m6", personId: "lisa", text: "Lisa repainted the front door green", when: "March", hasPhoto: true },
-  { id: "m7", personId: "lisa", text: "Lisa is growing tomatoes on the balcony", when: "February" },
-  { id: "m8", personId: "kevin", text: "Kevin's team won their Sunday league match", when: "March" },
-  { id: "m9", personId: "sophie", text: "Sophie is playing the cello in the school concert", when: "March", hasPhoto: true },
-  { id: "m10", personId: "jason", text: "Jason took Ava to the aquarium", when: "February", hasPhoto: true },
-  { id: "m11", personId: "ava", text: "Ava said her first full sentence", when: "January" },
-  { id: "m12", personId: "karen", text: "Karen finished her quilt for the church sale", when: "January", hasPhoto: true },
-  { id: "m13", personId: "ling", text: "Ling called from Taipei on your birthday", when: "December" },
-  { id: "m14", personId: "emily", text: "Emily read you the whole first chapter", when: "December" },
-  { id: "m15", personId: "lisa", text: "Lisa brought the photo album from the old house", when: "December", hasPhoto: true },
+  { id: "m2", personId: "emily", text: "Emily started her new job at the library", when: "February", activity: "book" },
+  { id: "m3", personId: "emily", text: "Emily brought you peonies", when: "January", activity: "flower" },
+  { id: "m4", personId: "david", text: "David is learning to make dumplings from your recipe", when: "February", activity: "cooking" },
+  { id: "m5", personId: "david", text: "David moved into a flat near the park", when: "January", activity: "home" },
+  { id: "m6", personId: "lisa", text: "Lisa repainted the front door green", when: "March", activity: "paint" },
+  { id: "m7", personId: "lisa", text: "Lisa is growing tomatoes on the balcony", when: "February", activity: "garden" },
+  { id: "m8", personId: "kevin", text: "Kevin's team won their Sunday league match", when: "March", activity: "trophy" },
+  { id: "m9", personId: "sophie", text: "Sophie is playing the cello in the school concert", when: "March", activity: "music" },
+  { id: "m10", personId: "jason", text: "Jason took Ava to the aquarium", when: "February", activity: "fish" },
+  { id: "m11", personId: "ava", text: "Ava said her first full sentence", when: "January", activity: "talk" },
+  { id: "m12", personId: "karen", text: "Karen finished her quilt for the church sale", when: "January", activity: "sewing" },
+  { id: "m13", personId: "ling", text: "Ling called from Taipei on your birthday", when: "December", activity: "phone" },
+  { id: "m14", personId: "emily", text: "Emily read you the whole first chapter", when: "December", activity: "book" },
+  { id: "m15", personId: "lisa", text: "Lisa brought the family album from the old house", when: "December", activity: "album" },
 ];
 
 export const memoriesFor = (personId: string) => memories.filter((m) => m.personId === personId);
@@ -197,18 +202,19 @@ export interface Photo {
   personIds: string[];
   /** Follows the names, e.g. "at his graduation". */
   caption: string;
+  activity: Activity;
   when: string;
 }
 
 export const photos: Photo[] = [
-  { id: "p1", personIds: ["david"], caption: "at his graduation", when: "last May" },
-  { id: "p2", personIds: ["emily"], caption: "at her new desk in the library", when: "February" },
-  { id: "p3", personIds: ["lisa"], caption: "by the green front door", when: "March" },
-  { id: "p4", personIds: ["sophie"], caption: "with her cello before the concert", when: "March" },
-  { id: "p5", personIds: ["jason", "ava"], caption: "at the aquarium", when: "February" },
-  { id: "p6", personIds: ["karen"], caption: "with the finished quilt", when: "January" },
-  { id: "p7", personIds: ["kevin", "karen"], caption: "at their wedding anniversary dinner", when: "last autumn" },
-  { id: "p8", personIds: ["wei"], caption: "in the garden of the old house", when: "many years ago" },
+  { id: "p1", personIds: ["david"], caption: "at his graduation", when: "last May", activity: "graduation" },
+  { id: "p2", personIds: ["emily"], caption: "at her new desk in the library", when: "February", activity: "book" },
+  { id: "p3", personIds: ["lisa"], caption: "by the green front door", when: "March", activity: "paint" },
+  { id: "p4", personIds: ["sophie"], caption: "with her cello before the concert", when: "March", activity: "music" },
+  { id: "p5", personIds: ["jason", "ava"], caption: "at the aquarium", when: "February", activity: "fish" },
+  { id: "p6", personIds: ["karen"], caption: "with the finished quilt", when: "January", activity: "sewing" },
+  { id: "p7", personIds: ["kevin", "karen"], caption: "at their wedding anniversary dinner", when: "last autumn", activity: "dinner" },
+  { id: "p8", personIds: ["wei"], caption: "in the garden of the old house", when: "many years ago", activity: "garden" },
 ];
 
 export interface DayEvent {

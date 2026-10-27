@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
+import { portraitFor } from "@/lib/portraits";
+import { Portrait } from "./Portrait";
 
 type Size = "resident" | "family" | "small";
 
@@ -12,6 +14,8 @@ const sizes: Record<Size, { box: string; type: string }> = {
 
 interface PersonAvatarProps {
   initial: string;
+  /** Draws their portrait instead of the initial. Ignored for unknown voices. */
+  personId?: string;
   size?: Size;
   /** Unknown voices get a dashed neutral treatment and a "?" — never a name. */
   unknown?: boolean;
@@ -23,6 +27,7 @@ interface PersonAvatarProps {
 
 export function PersonAvatar({
   initial,
+  personId,
   size = "family",
   unknown = false,
   deceased = false,
@@ -30,19 +35,26 @@ export function PersonAvatar({
   className = "",
 }: PersonAvatarProps) {
   const s = sizes[size];
+  const drawn = !unknown && personId && portraitFor(personId);
 
   return (
     <motion.div
       layoutId={layoutId}
-      className={`${s.box} ${s.type} flex flex-none items-center justify-center rounded-full font-bold ${
+      className={`${s.box} ${s.type} flex flex-none items-center justify-center overflow-hidden rounded-full font-bold ${
         unknown
           ? "border-2 border-dashed border-muted bg-surface text-muted"
           : deceased
-            ? "bg-tint/60 text-muted"
+            ? "bg-tint/60 text-primary opacity-60"
             : "bg-tint text-primary"
       } ${className}`}
     >
-      {unknown ? "?" : initial}
+      {unknown ? (
+        "?"
+      ) : drawn ? (
+        <Portrait personId={personId} bold={size === "small"} className="h-full w-full" />
+      ) : (
+        initial
+      )}
     </motion.div>
   );
 }

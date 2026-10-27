@@ -28,7 +28,7 @@ export default function PersonDetail({ params }: PageProps<"/family/tree/[id]">)
         ← Family tree
       </Link>
       <header className="mb-8 mt-3 flex items-center gap-4">
-        <PersonAvatar initial={person.initial} size="family" deceased={person.deceased} />
+        <PersonAvatar initial={person.initial} personId={person.id} size="family" deceased={person.deceased} />
         <div>
           <h1 className="text-f-h1">{person.name}</h1>
           <p className="text-f-small text-muted">
@@ -41,7 +41,7 @@ export default function PersonDetail({ params }: PageProps<"/family/tree/[id]">)
       <h2 className="mb-3 text-f-h3">Memories</h2>
       <div className="flex flex-col gap-2">
         {memories.map((m) => (
-          <MemoryCard key={m.id} text={m.text} when={m.when} hasPhoto={m.hasPhoto} />
+          <MemoryCard key={m.id} text={m.text} when={m.when} activity={m.activity} />
         ))}
         {memories.length === 0 && <div className="text-f-body text-muted">None yet</div>}
       </div>

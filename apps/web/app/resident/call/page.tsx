@@ -139,6 +139,7 @@ export default function ResidentCall() {
                     <div key={b.id} className="flex items-start gap-5">
                       <PersonAvatar
                         initial={person?.initial ?? "?"}
+                        personId={person?.id}
                         size="resident"
                         unknown={!person}
                         className="!h-16 !w-16 !text-2xl"

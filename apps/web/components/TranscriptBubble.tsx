@@ -10,6 +10,7 @@ interface TranscriptBubbleProps {
   name: string;
   meta: string;
   initial: string;
+  personId?: string;
   text: string;
   transcribing?: boolean;
   lowConfidence?: boolean;
@@ -55,6 +56,7 @@ export function TranscriptBubble({
   name,
   meta,
   initial,
+  personId,
   text,
   transcribing = false,
   lowConfidence = false,
@@ -74,7 +76,7 @@ export function TranscriptBubble({
       transition={spring}
       className="group flex gap-3"
     >
-      <PersonAvatar initial={initial} size="small" unknown={unknown} />
+      <PersonAvatar initial={initial} personId={personId} size="small" unknown={unknown} />
 
       <div className="min-w-0 flex-1">
         <div className="mb-1 flex items-baseline gap-2">

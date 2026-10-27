@@ -1,5 +1,6 @@
 "use client";
 
+import { TopicIcon } from "@/components/TopicIcon";
 import { useDemo } from "@/lib/demo-store";
 import { news as stories, TOPICS, topicLabel, type TopicId } from "@/lib/mocks/content";
 import { feedNotes, heldBack } from "@/lib/mocks/news-settings";
@@ -37,9 +38,12 @@ export default function NewsSettings() {
                 masterOn ? "cursor-pointer" : "pointer-events-none opacity-40"
               }`}
             >
-              <span>
-                <span className="block text-f-body font-medium">{f.label}</span>
-                <span className="block text-f-small text-muted">{feedNotes[f.id]}</span>
+              <span className="flex items-center gap-3">
+                <TopicIcon topic={f.id} size={20} className="flex-none text-primary" />
+                <span>
+                  <span className="block text-f-body font-medium">{f.label}</span>
+                  <span className="block text-f-small text-muted">{feedNotes[f.id]}</span>
+                </span>
               </span>
               <Toggle
                 checked={!news.off.includes(f.id)}

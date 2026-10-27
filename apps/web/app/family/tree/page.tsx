@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { PersonAvatar } from "@/components/PersonAvatar";
+import { Portrait } from "@/components/Portrait";
 import { useDemo } from "@/lib/demo-store";
+import { approvals } from "@/lib/mocks/approvals";
 import { family, RESIDENT_ID, byId, type Person } from "@/lib/mocks/family";
 import { relationship, generation, GENERATION_LABELS } from "@/lib/relationships";
 
@@ -91,7 +93,7 @@ function Node({
             : "border border-tint bg-surface hover:border-primary"
       }`}
     >
-      <PersonAvatar initial={person.initial} size="small" deceased={person.deceased} />
+      <PersonAvatar initial={person.initial} personId={person.id} size="small" deceased={person.deceased} />
       <div className="min-w-0">
         <div className="truncate text-f-small font-semibold">{person.name}</div>
         <div
@@ -118,8 +120,14 @@ function Inspector({ person }: { person: Person }) {
         href={`/family/tree/${person.id}`}
         className="rounded-[12px] border border-tint bg-surface p-4 transition-colors hover:border-primary"
       >
+        <div
+          className={`mb-3 flex h-40 items-end justify-center overflow-hidden rounded-[8px] bg-tint text-primary ${
+            person.deceased ? "opacity-60" : ""
+          }`}
+        >
+          <Portrait personId={person.id} className="h-40 w-40" />
+        </div>
         <div className="flex items-center gap-3">
-          <PersonAvatar initial={person.initial} size="family" deceased={person.deceased} />
           <div>
             <div className="text-f-h3">{person.name}</div>
             <div className="text-f-small text-muted">
@@ -139,15 +147,18 @@ function Inspector({ person }: { person: Person }) {
         </div>
       )}
 
-      {!resolved.a2 && (
-        <Link
-          href="/family/approvals"
-          className="rounded-[12px] border border-warn-line bg-warn-bg p-4"
-        >
-          <div className="text-f-label font-medium text-warn">Pending from a call</div>
-          <div className="mt-1 text-f-body font-medium text-warn">Anna — David&apos;s aunt?</div>
-        </Link>
-      )}
+      {approvals
+        .filter((a) => a.kind === "person" && a.personId === person.id && !resolved[a.id])
+        .map((a) => (
+          <Link
+            key={a.id}
+            href="/family/approvals"
+            className="rounded-[12px] border border-warn-line bg-warn-bg p-4"
+          >
+            <div className="text-f-label font-medium text-warn">Pending from a call</div>
+            <div className="mt-1 text-f-body font-medium text-warn">{a.title}</div>
+          </Link>
+        ))}
     </aside>
   );
 }

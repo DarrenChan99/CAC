@@ -4,7 +4,7 @@ import { use } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ResidentHeader } from "@/components/ResidentHeader";
-import { PhotoSlot } from "@/components/ui";
+import { TopicIcon } from "@/components/TopicIcon";
 import { useDemo } from "@/lib/demo-store";
 import { residentFeed, visibleTopics } from "@/lib/residentFeed";
 import { pressResident, pressTransition } from "@/lib/motion";
@@ -32,10 +32,11 @@ export default function FamilyNews({ searchParams }: PageProps<"/resident/news">
               <Link
                 href={`/resident/news?topic=${t.id}`}
                 aria-current={t.id === topic.id ? "page" : undefined}
-                className={`flex min-h-[72px] items-center rounded-[16px] px-6 text-r-body font-bold ${
+                className={`flex min-h-[72px] items-center gap-4 rounded-[16px] px-6 text-r-body font-bold ${
                   t.id === topic.id ? "bg-primary text-white" : "bg-tint text-primary"
                 }`}
               >
+                <TopicIcon topic={t.id} size={36} className="flex-none" />
                 {t.label}
               </Link>
             </motion.div>
@@ -50,7 +51,9 @@ export default function FamilyNews({ searchParams }: PageProps<"/resident/news">
                 href={`/resident/news/${s.id}`}
                 className="flex min-h-[72px] items-center gap-6 rounded-[16px] border border-tint bg-surface p-5"
               >
-                <PhotoSlot label="photo" scale="resident" className="h-[120px] w-[160px] flex-none" />
+                <div className="flex h-[120px] w-[160px] flex-none items-center justify-center rounded-[12px] bg-tint text-primary">
+                  <TopicIcon topic={s.topic} size={56} />
+                </div>
                 <div className="min-w-0">
                   <div className="text-r-lead font-bold">{s.headline}</div>
                   <div className="mt-1 text-r-body text-muted">{s.when}</div>

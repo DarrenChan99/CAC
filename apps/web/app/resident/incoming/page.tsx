@@ -29,10 +29,10 @@ export default function IncomingCall() {
       <div className="flex items-center gap-6">
         {/* The caller is largest; the people with her are secondary, and named. */}
         <div className="ct-pulse rounded-full">
-          <PersonAvatar initial="L" size="resident" />
+          <PersonAvatar initial="L" personId="lisa" size="resident" />
         </div>
-        <PersonAvatar initial="E" size="family" className="!h-20 !w-20 !text-3xl" />
-        <PersonAvatar initial="K" size="family" className="!h-20 !w-20 !text-3xl" />
+        <PersonAvatar initial="E" personId="emily" size="family" className="!h-20 !w-20 !text-3xl" />
+        <PersonAvatar initial="D" personId="david" size="family" className="!h-20 !w-20 !text-3xl" />
       </div>
 
       <div>

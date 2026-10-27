@@ -28,7 +28,7 @@ export default function ResidentHome() {
         <Tile icon={icon(Phone)} label="Call family" href="/resident/call" />
         <Tile icon={icon(Users)} label="My family" href="/resident/family" />
         <Tile icon={icon(Mail)} label="Family news" href="/resident/news" />
-        <Tile icon={icon(ImageIcon)} label="Photos" href="/resident/photos" />
+        <Tile icon={icon(ImageIcon)} label="Family pictures" href="/resident/photos" />
       </div>
 
       <Link

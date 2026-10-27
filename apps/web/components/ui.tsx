@@ -3,7 +3,9 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type { Activity } from "@/lib/mocks/content";
 import { pressResident, pressTransition } from "@/lib/motion";
+import { ActivityIcon } from "./ActivityIcon";
 
 /* ---------- Banners ---------- */
 
@@ -60,49 +62,25 @@ export function EmptyState({
   );
 }
 
-/* ---------- Photo slot ----------
-   Real photos land here later; until then the slot is honest about being empty
-   rather than faking it with a stock face. */
-
-export function PhotoSlot({
-  label = "photo",
-  scale = "family",
-  className = "",
-}: {
-  label?: string;
-  scale?: "resident" | "family";
-  className?: string;
-}) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-[12px] bg-tint text-center leading-tight text-muted ${
-        // The 28px floor applies to every word in the resident view, including
-        // the ones that are only standing in for a photo.
-        scale === "resident" ? "text-r-body" : "text-f-label"
-      } ${className}`}
-    >
-      {label}
-    </div>
-  );
-}
-
 /* ---------- Memory card ---------- */
 
 export function MemoryCard({
   text,
   when,
-  hasPhoto,
+  activity,
   scale = "family",
 }: {
   text: string;
   when: string;
-  hasPhoto?: boolean;
+  activity?: Activity;
   scale?: "resident" | "family";
 }) {
   if (scale === "resident") {
     return (
       <div className="flex items-center gap-6 rounded-[16px] border border-tint bg-surface p-6">
-        {hasPhoto && <PhotoSlot label="photo" scale="resident" className="h-[120px] w-[120px] flex-none" />}
+        <div className="flex h-[120px] w-[120px] flex-none items-center justify-center rounded-[12px] bg-tint text-primary">
+          <ActivityIcon activity={activity} size={56} />
+        </div>
         <div>
           <div className="text-r-lead">{text}</div>
           <div className="mt-2 text-r-body text-muted">{when}</div>
@@ -113,7 +91,9 @@ export function MemoryCard({
 
   return (
     <div className="flex items-center gap-3 rounded-[12px] border border-tint bg-surface p-3">
-      {hasPhoto && <PhotoSlot label="photo" className="h-12 w-12 flex-none" />}
+      <div className="flex h-12 w-12 flex-none items-center justify-center rounded-[8px] bg-tint text-primary">
+        <ActivityIcon activity={activity} size={24} />
+      </div>
       <div className="min-w-0">
         <div className="truncate text-f-body font-medium">{text}</div>
         <div className="text-f-small text-muted">{when}</div>

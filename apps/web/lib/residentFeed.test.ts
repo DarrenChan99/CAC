@@ -52,3 +52,7 @@ test("the talking tile follows the family's speaker corrections, so a voice they
   assert.equal(activeSpeaker([{ id: "u4", speakerId: null, transcribing: true }], { u4: "emily" }), "emily");
   assert.equal(activeSpeaker([{ id: "u1", speakerId: "lisa", transcribing: false }], {}), null);
 });
+
+test("every memory she sees has an icon", () => {
+  for (const m of residentFeed({}).memories) assert.ok(m.activity, `${m.id} has no icon`);
+});

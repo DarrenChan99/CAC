@@ -16,7 +16,7 @@ export const needsConfirm = (resolved: Resolved) =>
 export function residentFeed(resolved: Resolved): { memories: Memory[]; news: NewsItem[] } {
   const approved: Memory[] = approvals
     .filter((a) => a.kind === "memory" && a.personId && resolved[a.id] !== "removed")
-    .map((a) => ({ id: a.id, personId: a.personId!, text: a.title, when: "today" }));
+    .map((a) => ({ id: a.id, personId: a.personId!, text: a.title, when: "today", activity: a.activity }));
 
   return {
     memories: [...approved, ...memories],

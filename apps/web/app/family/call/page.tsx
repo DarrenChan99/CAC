@@ -112,7 +112,7 @@ export default function FamilyCall() {
                     <CallVideo videoRef={videoRef} />
                   ) : (
                     <>
-                      <PersonAvatar initial={get(id).initial} size="family" className="!h-20 !w-20 !text-3xl" />
+                      <PersonAvatar initial={get(id).initial} personId={id} size="family" className="!h-20 !w-20 !text-3xl" />
                       {media && (
                         <CameraOff size={16} aria-label="Camera off" className="absolute right-3 top-3 text-white/60" />
                       )}
@@ -170,6 +170,7 @@ export default function FamilyCall() {
                     key={b.id}
                     name={person?.name ?? ""}
                     initial={person?.initial ?? "?"}
+                    personId={person?.id}
                     meta={`${person ? `${relationship(person.id)} · ` : "· "}${formatCallTime(b.at)}`}
                     text={b.text}
                     transcribing={b.transcribing}

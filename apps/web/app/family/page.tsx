@@ -21,7 +21,7 @@ export default function FamilyHome() {
   return (
     <div className="mx-auto max-w-[760px] p-8">
       <header className="mb-8 flex flex-wrap items-center gap-4">
-        <PersonAvatar initial="M" size="family" />
+        <PersonAvatar initial="M" personId="mei" size="family" />
         <h1 className="min-w-0 flex-1 text-f-h1">Grandma Mei</h1>
         <Link href="/family/call">
           <Button variant="primary">
@@ -66,7 +66,7 @@ export default function FamilyHome() {
                   {c.participantIds.slice(0, 4).map((id) => (
                     <PersonAvatar
                       key={id}
-                      initial={get(id).initial}
+                      initial={get(id).initial} personId={id}
                       size="small"
                       className="ring-2 ring-[var(--color-surface)]"
                     />

@@ -84,6 +84,7 @@ function Face({ person }: { person: Person }) {
     <>
       <PersonAvatar
         initial={person.initial}
+        personId={person.id}
         size="resident"
         deceased={person.deceased}
         className="!h-24 !w-24 !text-[40px]"

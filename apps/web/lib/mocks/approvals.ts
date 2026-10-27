@@ -4,6 +4,8 @@
  * confirm. Ids are shared with the call's captured items.
  */
 
+import type { Activity } from "./content.ts";
+
 export type ApprovalKind = "memory" | "med" | "person" | "tree";
 
 export interface ApprovalItem {
@@ -17,8 +19,10 @@ export interface ApprovalItem {
   quote: string;
   quoteBy: string;
   quoteMeta: string;
-  /** For memories: who it is about, so it can land on their page. */
+  /** Who it is about, or the relative a new person is attached to. */
   personId?: string;
+  /** For memories: what it is about, drawn as an icon. */
+  activity?: Activity;
   /** Extra detail line, where the mock has one. */
   detail?: string;
 }
@@ -29,6 +33,7 @@ export const approvals: ApprovalItem[] = [
     kind: "memory",
     kindLabel: "Memory",
     personId: "david",
+    activity: "car",
     source: "Sunday call · 2:14",
     title: "David passed his driving test",
     quote: "Hi Grandma! I passed my driving test on the first try.",
@@ -49,6 +54,7 @@ export const approvals: ApprovalItem[] = [
     id: "a2",
     kind: "person",
     kindLabel: "New person",
+    personId: "david",
     source: "Sunday call · 2:38",
     title: "Anna — David's aunt?",
     quote: "Hi Mei, I'm Anna, David's aunt. It's lovely to finally meet you.",

@@ -5,7 +5,8 @@ import { notFound, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { ResidentHeader } from "@/components/ResidentHeader";
-import { MemoryCard, PhotoSlot } from "@/components/ui";
+import { MemoryCard } from "@/components/ui";
+import { Portrait } from "@/components/Portrait";
 import { byId } from "@/lib/mocks/family";
 import { useDemo } from "@/lib/demo-store";
 import { residentFeed } from "@/lib/residentFeed";
@@ -41,7 +42,9 @@ export default function PersonPage({ params }: PageProps<"/resident/family/[id]"
           transition={spring}
           className="flex-none"
         >
-          <PhotoSlot label="photo" scale="resident" className="h-[320px] w-[280px]" />
+          <div className={`flex h-[320px] w-[280px] items-end justify-center overflow-hidden rounded-[16px] bg-tint text-primary ${person.deceased ? "opacity-60" : ""}`}>
+            <Portrait personId={id} className="h-[280px] w-[280px]" />
+          </div>
         </motion.div>
 
         <div className="min-w-0 flex-1">
@@ -68,7 +71,7 @@ export default function PersonPage({ params }: PageProps<"/resident/family/[id]"
                   key={m.id}
                   text={m.text}
                   when={m.when}
-                  hasPhoto={m.hasPhoto}
+                  activity={m.activity}
                   scale="resident"
                 />
               ))}

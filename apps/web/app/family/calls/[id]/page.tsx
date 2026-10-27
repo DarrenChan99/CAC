@@ -40,7 +40,7 @@ export default function CallDetail({ params }: { params: Promise<{ id: string }>
       <section className="mb-8 flex flex-wrap gap-4">
         {call.participantIds.map((pid) => (
           <div key={pid} className="flex items-center gap-2">
-            <PersonAvatar initial={get(pid).initial} size="small" />
+            <PersonAvatar initial={get(pid).initial} personId={pid} size="small" />
             <div className="leading-tight">
               <div className="text-f-small font-medium">{get(pid).name}</div>
               <div className="text-f-label text-muted">{relationship(pid)}</div>
@@ -72,6 +72,7 @@ export default function CallDetail({ params }: { params: Promise<{ id: string }>
                   key={u.id}
                   name={person?.name ?? ""}
                   initial={person?.initial ?? "?"}
+                  personId={person?.id}
                   meta={`${person ? `${relationship(person.id)} · ` : "· "}${formatCallTime(u.at)}`}
                   text={u.text}
                   lowConfidence={u.lowConfidence}

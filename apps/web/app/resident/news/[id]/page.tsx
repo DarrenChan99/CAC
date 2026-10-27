@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { ResidentHeader } from "@/components/ResidentHeader";
-import { PhotoSlot } from "@/components/ui";
+import { TopicIcon } from "@/components/TopicIcon";
 import { topicLabel } from "@/lib/mocks/content";
 import { useDemo } from "@/lib/demo-store";
 import { residentFeed } from "@/lib/residentFeed";
@@ -61,7 +61,9 @@ export default function Story({ params }: PageProps<"/resident/news/[id]">) {
       />
 
       <article className="flex flex-1 gap-10">
-        <PhotoSlot label="photo" scale="resident" className="h-[320px] w-[400px] flex-none" />
+        <div className="flex h-[320px] w-[400px] flex-none items-center justify-center rounded-[12px] bg-tint text-primary">
+          <TopicIcon topic={story.topic} size={140} />
+        </div>
         <div className="min-w-0 flex-1">
           <div className="text-r-body font-bold text-muted">{story.when}</div>
           <h2 className="mt-3 text-r-h1">{story.headline}</h2>
