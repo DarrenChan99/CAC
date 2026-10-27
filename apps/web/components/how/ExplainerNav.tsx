@@ -12,8 +12,8 @@ const TABS = [
 
 /** Shared header for How it works + Stats: brand → landing, two tabs, demo, GitHub. */
 const ANCHORS: Record<string, [string, string][]> = {
-  "/how-it-works": [["pipeline", "Pipeline"], ["encoder", "Encoder"], ["space", "Voice space"], ["decision", "Decision"], ["glossary", "Glossary"]],
-  "/how-it-works/stats": [["evidence", "Evidence"], ["call", "Demo call"], ["accuracy", "Accuracy"], ["system", "System"]],
+  "/how-it-works": [["sound", "Sound"], ["model", "Voiceprint"], ["space", "Voice map"], ["decision", "Decision"], ["timing", "Speed"], ["glossary", "Glossary"]],
+  "/how-it-works/stats": [["evidence", "Evidence"], ["call", "Demo call"], ["limits", "Where it breaks"], ["method", "Method"]],
 };
 
 export function ExplainerNav() {

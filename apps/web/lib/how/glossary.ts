@@ -33,6 +33,7 @@ export const glossary = {
   confusion: { term: "confusion matrix", gloss: "Rows are who really spoke, columns are what the system said; the diagonal is correct and 'Someone new' is a safe miss rather than a wrong name." },
   der: { term: "diarization error rate (DER)", gloss: "The share of call time that is missed speech, false alarm or the wrong speaker; the standard metric for 'who spoke when'." },
   pca: { term: "principal component analysis (PCA)", gloss: "A linear projection that finds the three directions in which the 192-d points vary most; distances stay faithful, so it is the honest view of the space." },
+  snr: { term: "signal-to-noise ratio (SNR)", gloss: "How much louder the voice is than the background, in decibels: 30 dB is a quiet room, 10 dB is a busy one, 0 dB means the voice and the noise are equally loud." },
   tsne: { term: "t-SNE", gloss: "A non-linear projection that keeps near neighbours together and pulls clusters apart so they are easy to see, at the cost of distorting global distances." },
 } as const;
 

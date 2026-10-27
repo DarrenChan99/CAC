@@ -1,9 +1,10 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import stats from "@/lib/how/stats.json";
 import { Panel, Term } from "./Term";
-import { Stage, textSprite, type SceneCtx } from "./three/Stage";
+import { Stage, textSprite, type SceneCtx, type SceneHandle } from "./three/Stage";
 
 const d = stats.distributions;
 const rows = [
@@ -50,7 +51,7 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
   plane.rotation.y = Math.PI / 2;
   plane.position.set(xOf(d.tau), 1.45, 0);
   scene.add(plane);
-  const tl = textSprite(`cut-off (τ = ${d.tau})`, { px: 52, scale: 0.003 });
+  const tl = textSprite("cut-off", { px: 52, scale: 0.003 });
   tl.position.set(xOf(d.tau), 3.1, 0);
   scene.add(tl);
   [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
@@ -63,6 +64,7 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
   scene.add(ax);
 
   return {
+    setTau(tau: number) { plane.position.x = tl.position.x = xOf(tau); },
     update(t: number) {
       bars.forEach(({ m, h, delay }) => {
         const u = Math.min(1, Math.max(0, (t - 0.3 - delay) / 0.9)), e = 1 - (1 - u) ** 3;
@@ -73,10 +75,14 @@ function setupScores({ scene, camera, controls, color }: SceneCtx) {
   };
 }
 
-export function Scores3D() {
+export function Scores3D({ tau = d.tau }: { tau?: number }) {
+  const api = useRef<(SceneHandle & { setTau: (t: number) => void }) | null>(null);
+  const latest = useRef(tau);
+  const onHandle = useCallback((h: SceneHandle | null) => { api.current = h as typeof api.current; api.current?.setTau(latest.current); }, []);
+  useEffect(() => { latest.current = tau; api.current?.setTau(tau); }, [tau]);
   return (
-    <Panel title="How close does each voice get?" sub={<>Each score is how alike a voice is to a <Term k="centroid">voiceprint</Term> (<Term k="cosine">1 means identical</Term>). The flat plane is the <Term k="tau">cut-off</Term>: family members clear it, everyone else stays behind it.</>}>
-      <Stage setup={setupScores} height={420} />
+    <Panel title="The same scores, as a landscape" sub={<>The flat histogram above, standing up. Rotate it: the three ridges are the right person, another family member and strangers. The pane is the <Term k="tau">cut-off</Term>. Only the green ridge should poke through to its right, and the pane moves when you drag the slider.</>}>
+      <Stage setup={setupScores} onHandle={onHandle} height={420} />
     </Panel>
   );
 }

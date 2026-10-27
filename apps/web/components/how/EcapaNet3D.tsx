@@ -134,8 +134,8 @@ function setupEcapa({ scene, camera, controls, dom, color, setTip }: SceneCtx) {
 export function EcapaNet3D() {
   return (
     <Panel
-      title="Inside the voice model"
-      sub={<>The <Term k="ecapa">model</Term> that turns a clip into 192 numbers, drawn at its real size (20.8 million settings). It learned from <Term k="voxceleb">thousands of public voices</Term>, never from my family. Hover a block; drag to rotate.</>}
+      title="How a sound map becomes 192 numbers"
+      sub={<>This is the <Term k="ecapa">voice model</Term>, left to right. It reads the sound map, looks for patterns over short, medium and long stretches of time, combines them, then squeezes the whole clip into one row of 192 numbers: the voiceprint at the far right is this clip&apos;s real output. It learned what makes voices different from <Term k="voxceleb">thousands of public voices</Term>, never from my family, so it is only <Term k="inference">run</Term> here, not trained. Hover any block for what it does; drag to rotate.</>}
     >
       <Stage setup={setupEcapa} height={380} />
     </Panel>

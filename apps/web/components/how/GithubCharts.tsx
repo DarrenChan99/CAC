@@ -1,3 +1,4 @@
+import { outcomeAt } from "@/lib/how/atTau";
 import stats from "@/lib/how/stats.json";
 import { CALL_END, CALL_START, formatCallTime, participantIds, timeline } from "@/lib/mocks/call-timeline";
 import { get } from "@/lib/mocks/family";
@@ -65,30 +66,10 @@ export function WorkflowRun() {
   );
 }
 
-const lang: Record<string, string> = { TypeScript: "--color-series-3", Python: "--color-series-2", HTML: "--color-series-5", CSS: "--color-series-4", Markdown: "--color-stranger" };
-
-/** GitHub's language bar and repo stats, for this repository. */
-export function RepoPanel() {
-  const r = stats.repo;
-  const total = Object.values(r.loc).reduce((a, b) => a + b, 0);
-  return (
-    <Panel title="The code" sub={`${r.files} files · ${r.commits} commits · ${r.tests.python} Python tests and ${r.tests.web} web tests`}>
-      <div className="flex h-3 overflow-hidden rounded-full">
-        {Object.entries(r.loc).map(([k, v]) => <div key={k} title={`${k} ${v} lines`} style={{ width: `${(v / total) * 100}%`, background: `var(${lang[k] ?? "--color-stranger"})` }} />)}
-      </div>
-      <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-f-small">
-        {Object.entries(r.loc).map(([k, v]) => (
-          <li key={k} className="flex items-center gap-2"><i className="inline-block h-3 w-3 rounded-full" style={{ background: `var(${lang[k] ?? "--color-stranger"})` }} /><b>{k}</b><span className="text-muted tabular-nums">{((v / total) * 100).toFixed(1)}%</span></li>
-        ))}
-      </ul>
-    </Panel>
-  );
-}
-
 const level = (s: number) => (s < 0.5 ? 25 : s < 0.6 ? 45 : s < 0.7 ? 70 : 100);
 
 /** One square per tested window, like a contribution graph: darker green = more confident correct name. */
-export function WindowHeatmap() {
+export function WindowHeatmap({ tau = stats.tau }: { tau?: number }) {
   const rows = [...stats.people.map((p) => ({ id: p.id, name: p.name, stranger: false })), { id: "stranger", name: "Strangers", stranger: true }];
   const cell = (s: number, o: number, stranger: boolean) =>
     o === 2 ? "var(--color-danger)"
@@ -97,11 +78,11 @@ export function WindowHeatmap() {
   return (
     <Panel
       title="Every test, one square each"
-      sub="Each square is 2 seconds of speech. Green is the right name (darker = more confident). Grey is a stranger correctly left unnamed. Amber is a family member shown as “Someone new”. Red is a wrong name."
+      sub="Each square is 2 seconds of speech the system had never heard before. Green is the right name (darker = more confident). Grey is a stranger correctly left unnamed. Amber is a family member shown as “Someone new”. Red is a wrong name. Hover a square for its score."
     >
       <div className="flex flex-col gap-4">
         {rows.map((r) => {
-          const w = (stats.windows as Record<string, number[][]>)[r.id] ?? [];
+          const w = ((stats.windows as Record<string, number[][]>)[r.id] ?? []).map((x) => [x[0], outcomeAt(r.stranger, x, tau)]);
           const ok = w.filter((x) => (r.stranger ? x[1] === 1 : x[1] === 0)).length;
           return (
             <div key={r.id} className="flex items-start gap-4">
