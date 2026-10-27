@@ -44,7 +44,7 @@ export function PersonAvatar({
         unknown
           ? "border-2 border-dashed border-muted bg-surface text-muted"
           : deceased
-            ? "bg-tint/60 text-primary opacity-60"
+            ? "bg-tint text-primary opacity-60"
             : "bg-tint text-primary"
       } ${className}`}
     >

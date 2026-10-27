@@ -6,6 +6,14 @@ import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { PersonAvatar } from "@/components/PersonAvatar";
 import { spring } from "@/lib/motion";
+import { participantIds } from "@/lib/mocks/call-timeline";
+import { get } from "@/lib/mocks/family";
+import { relationshipToResident } from "@/lib/relationships";
+
+// The call she answers is the replay, so the caller is whoever is on it.
+const [callerId, ...withIds] = participantIds;
+const caller = get(callerId);
+const withNames = withIds.map((id) => get(id).name);
 
 /**
  * R2 Incoming call. It overrides everything else on the screen, so it is a full
@@ -29,19 +37,24 @@ export default function IncomingCall() {
       <div className="flex items-center gap-6">
         {/* The caller is largest; the people with her are secondary, and named. */}
         <div className="ct-pulse rounded-full">
-          <PersonAvatar initial="L" personId="lisa" size="resident" />
+          <PersonAvatar initial={caller.initial} personId={caller.id} size="resident" />
         </div>
-        <PersonAvatar initial="E" personId="emily" size="family" className="!h-20 !w-20 !text-3xl" />
-        <PersonAvatar initial="D" personId="david" size="family" className="!h-20 !w-20 !text-3xl" />
+        {withIds.map((id) => (
+          <PersonAvatar key={id} initial={get(id).initial} personId={id} size="family" className="!h-20 !w-20 !text-3xl" />
+        ))}
       </div>
 
       <div>
         <h1 className="text-r-display leading-tight">
-          Lisa, your daughter,
+          {caller.name}, {relationshipToResident(caller.id)},
           <br />
           is calling
         </h1>
-        <p className="mt-4 text-r-lead text-muted">Emily and David are with her</p>
+        {withNames.length > 0 && (
+          <p className="mt-4 text-r-lead text-muted">
+            {withNames.join(" and ")} {withNames.length === 1 ? "is" : "are"} with {caller.gender === "f" ? "her" : "him"}
+          </p>
+        )}
       </div>
 
       <div className="flex items-center gap-6">

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 import {
   CALL_END,
   CALL_START,
-  media,
   mediaOffset,
   timeline,
   type CapturedItem,
@@ -27,6 +26,8 @@ export interface ReplayState {
   bubbles: ReplayBubble[];
   captured: CapturedItem[];
   toggle: () => void;
+  /** Start playback. Call it from a tap: browsers only allow sound from a user gesture. */
+  play: () => void;
   seek: (seconds: number) => void;
   restart: () => void;
   /** Attach to the <video> that carries the recording; the clock then follows it. */
@@ -44,21 +45,30 @@ export function useReplay(autoplay = true): ReplayState {
   const last = useRef<number>(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  // A file that is missing or won't decode drops to the scripted clock, so the
+  // transcript still runs (silently) instead of refusing to play.
+  const failed = useRef(false);
   // With a recording the video is the clock (so labels stay locked to the audio);
   // without one, the rAF delta is.
-  const video = () => (media ? videoRef.current : null);
+  const video = () => (failed.current ? null : videoRef.current);
+
+  const start = (v: HTMLVideoElement) => {
+    if (v.currentTime + mediaOffset < CALL_START) v.currentTime = CALL_START - mediaOffset;
+    v.play().catch((e: DOMException) => {
+      if (e.name === "AbortError") return; // a pause() beat it; state already says paused
+      if (e.name === "NotAllowedError") return setPlaying(false); // needs a tap first
+      failed.current = true;
+    });
+  };
 
   useEffect(() => {
     if (!playing) {
       video()?.pause();
       return;
     }
+    // Autoplay on mount. A tap has already started it inside the gesture (play()).
     const v = video();
-    if (v) {
-      if (v.currentTime + mediaOffset < CALL_START) v.currentTime = CALL_START - mediaOffset;
-      // Browsers can refuse unmuted autoplay before a click; fall back to paused.
-      v.play().catch(() => setPlaying(false));
-    }
+    if (v?.paused) start(v);
     last.current = performance.now();
 
     const tick = (now: number) => {
@@ -78,7 +88,14 @@ export function useReplay(autoplay = true): ReplayState {
     return () => cancelAnimationFrame(frame.current);
   }, [playing]);
 
-  const toggle = useCallback(() => setPlaying((p) => !p), []);
+  // play() runs inside the click handler, not in the effect: Safari (and the
+  // resident iPad) only grants audio to play() called from the gesture itself.
+  const play = () => {
+    const v = video();
+    if (v?.paused) start(v);
+    setPlaying(true);
+  };
+  const toggle = () => (playing ? setPlaying(false) : play());
   const seek = useCallback((seconds: number) => {
     setT(seconds);
     const v = video();
@@ -106,6 +123,7 @@ export function useReplay(autoplay = true): ReplayState {
     bubbles,
     captured,
     toggle,
+    play,
     seek,
     restart,
     videoRef,

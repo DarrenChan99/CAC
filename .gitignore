@@ -23,7 +23,7 @@ __pycache__/
 .pytest_cache/
 ml/eval/out/
 calls/
-apps/web/public/demo/
+# public/demo/call.m4a is the demo recording the call screens play; it must ship.
 
 # private notes, not for the public repo
 CLAUDE.md

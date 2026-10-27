@@ -22,7 +22,7 @@ import { spring, springSheet } from "@/lib/motion";
  */
 export default function ResidentCall() {
   const router = useRouter();
-  const { bubbles, videoRef } = useReplay();
+  const { bubbles, videoRef, playing, play } = useReplay();
   const { speakers } = useDemo();
   const [expanded, setExpanded] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -62,6 +62,16 @@ export default function ResidentCall() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* The browser holds back sound until a tap (an iPad always does, and so
+            does any browser when the page is opened directly). Stays until tapped. */}
+        {media && !playing && (
+          <div className="absolute inset-0 z-[1] flex items-center justify-center">
+            <Button scale="resident" variant="primary" onClick={play} className="min-w-[320px] !text-r-h2">
+              Tap to hear the call
+            </Button>
+          </div>
+        )}
 
         <div className="absolute right-4 top-4">
           <ResidentNavButton href="/resident" label="Home" />

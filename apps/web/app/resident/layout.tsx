@@ -1,4 +1,5 @@
 import { Mascot } from "@/components/Mascot";
+import { MedReminder } from "@/components/MedReminder";
 
 /**
  * Resident shell. One level of navigation, a Home button always within reach,
@@ -11,6 +12,7 @@ export default function ResidentLayout({ children }: LayoutProps<"/resident">) {
     <div className="min-h-dvh bg-bg pb-28 font-resident text-text">
       {children}
       <Mascot view="resident" />
+      <MedReminder />
     </div>
   );
 }

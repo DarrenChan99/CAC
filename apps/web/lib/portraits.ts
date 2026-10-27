@@ -1,41 +1,42 @@
 /**
- * How each family member is drawn until real pictures exist: hair and glasses
- * are the cues that tell people apart. Unknown voices are deliberately absent —
- * they are never given a face.
+ * How each family member is drawn until real pictures exist: hair, glasses and
+ * facial hair are the cues that tell people apart. Unknown voices are
+ * deliberately absent — they are never given a face.
  */
 
 export type Hair =
   | "bun"
   | "short"
+  | "parted"
   | "bob"
   | "curly"
   | "long"
   | "ponytail"
   | "messy"
   | "braids"
-  | "tuft"
-  | "receding";
+  | "pigtails"
+  | "bald";
 
 export interface Traits {
   hair: Hair;
   glasses?: boolean;
   beard?: boolean;
-  older?: boolean;
+  moustache?: boolean;
   child?: boolean;
 }
 
 export const portraits: Record<string, Traits> = {
-  mei: { hair: "bun", glasses: true, older: true },
-  wei: { hair: "receding", glasses: true, older: true },
-  ling: { hair: "bob", older: true },
+  mei: { hair: "bun", glasses: true },
+  wei: { hair: "bald", glasses: true, moustache: true },
+  ling: { hair: "bob" },
   lisa: { hair: "curly" },
-  kevin: { hair: "short", glasses: true },
+  kevin: { hair: "parted", glasses: true },
   karen: { hair: "long" },
   emily: { hair: "ponytail" },
   david: { hair: "messy" },
   jason: { hair: "short", beard: true },
   sophie: { hair: "braids" },
-  ava: { hair: "tuft", child: true },
+  ava: { hair: "pigtails", child: true },
 };
 
 export const portraitFor = (id: string): Traits | undefined => portraits[id];
